@@ -1,0 +1,108 @@
+<div class='span12'>
+    <div class='span3'><!--{{{-->
+        <div class='thumbnail'>
+            <img class='user-avatar' src='".
+            $this->user->get_avatar($this->user->email,128)
+            ."' alt=\"".$this->user->uname."'s avatar\" />
+            <!--<h5>".$this->user->uname."</h5>-->
+            <div class='user-name'>
+                <h5>".$this->user->first_name."<br/>
+                ".$this->user->last_name."</h5>
+            </div>
+            <div class='user-class'>
+                ".$this->user->uclass."
+            </div>
+        </div>
+    </div><!--}}}-->
+    <div class='span9'><!--{{{-->
+           <table class='table table-hover table-stats'>
+               <tr>
+                   <td>Joined</td>
+                   <td>".$this->user->joindate."</td>
+               </tr>
+               <tr>
+                   <td>Affiliations</td>
+                   <td>Member of CRJI</td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td>Writer for Techrepublic.com</td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td>Freelance Photographer</td>
+               </tr>
+               ".(authCommon::isAdmin() ? "
+                   <tr>
+                       <td>System groups</td>
+                       <td>".$this->user->groups."</td>
+                   </tr>"
+                   : "")
+               ."
+               <tr>
+                   <td>Language</td>
+                   <td>".$this->user->language."</td>
+               </tr>
+               <tr>
+                   <td>Location</td>
+                   <td>
+                        <span class='f16'><span class='flag ".$this->user->country."'></span></span>
+                       ".Toolbox::code_to_country(strtoupper($this->user->country))."
+                        , ".$this->user->city."</td>
+               </tr>
+           </table>
+    </div><!--}}}-->
+</div>
+
+<script type='text/javascript'>
+    $(function () {
+        $('[rel=\'tooltip\']').tooltip();
+    });
+</script>
+
+<hr />
+
+<div class='row-fluid '>
+  <div class='span12'>
+    <div class='span4'><!--{{{-->
+        <h4>Contact</h4>
+        <table class='table table-hover table-contact socialicons bw'><!--{{{-->
+            <tr class='skype'>
+                <td><i class='skype'></i></td>
+                <td>imaginary".$this->user->username."</td>
+            </tr>
+            <tr class='email'>
+                <td><i class='email'></i></td>
+                <td><a href='#'>Send email</a></td>
+            </tr>
+            <tr class='identica'>
+                <td><i class='identica'></i></td>
+                <td>identicafred</td>
+            </tr>
+            <tr class='twitter'>
+                <td><i class='twitter'></i></td>
+                <td>fredtweets</td>
+            </tr>
+            <tr class='wordpress'>
+                <td><i class='wordpress'></i></td>
+                <td><a href='http://fredbloggs.wordpress.com' class='wordpress'>Link</a></td>
+            </tr>
+        </table><!--}}}-->
+    </div><!--}}}-->
+    <div class='span8'>
+        <h4>BlackSea feed</h4>
+        <div class='well'>
+            //
+        </div>
+        <div class='pagination pull-right'><!--{{{-->
+            <ul>
+                <li class='disabled'><a href='#'>Prev</a></li>
+                <li class='disabled'><a href='#'>1</a></li>
+                <li><a href='#'>2</a></li>
+                <li><a href='#'>3</a></li>
+                <li><a href='#'>4</a></li>
+                <li><a href='#'>Next</a></li>
+            </ul>
+        </div><!--}}}-->
+    </div>
+    </div>

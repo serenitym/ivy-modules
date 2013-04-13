@@ -1,0 +1,56 @@
+<div class='{$ao->EDrecord}ENT container-fluid record' id='record_{$ao->idRecord}_{$ao->LG}' >
+      <div class='row'>
+            <div class='articleBar'>
+
+
+                ".$this->isEmpty(   $ao->publishDate,"
+                <small class='Cgray'> <b>Date: </b> {$ao->publishDate}</small> ","
+                <span class='label label-warning label-mini'>not published</span>")."
+
+
+
+
+                <small class='Cgray'>&nbsp;Last update: {$ao->entryDate}</small>
+
+
+
+
+
+                <small class='Cgray pull-right' style='width: 120px;'>
+                     <i class='icon-comment icon-light '></i>
+                     {$ao->total_nrComments}
+
+                      ".$this->renderDisplay_fromObj (
+                             $this->rating->{'SET_record'.$ao->idRecord},'',
+                            'PLUGINS/rating/tmpl/o.rating.html')."
+
+                </small>
+            </div>
+
+            ".$this->isEmpty(   $ao->record_mainPic,"
+            <a href='{$ao->record_href}' class='thumbnail pull-left mainPic'>
+                 {$ao->record_mainPic}
+            </a>")."
+
+
+
+            <p class='lead preview-title'>
+                <a href='{$ao->record_href}'>{$ao->title} </a>
+            </p>
+
+            <small>
+                by <a href='#'>{$ao->fullName}</a>,
+                <span class='muted'>uidRec {$ao->uidRec} </span>
+            </small>
+
+            <p>{$ao->lead}</p>
+
+
+            <div class='b40'>
+                ".$this->isEmpty ( $ao->tagsName,"
+                <span class='pull-left labels'> {$ao->tagsName}</span>  ")."
+                <small class='pull-right lh10'> {$ao->ReadMore_link}</small>
+            </div>
+
+      </div>
+</div>

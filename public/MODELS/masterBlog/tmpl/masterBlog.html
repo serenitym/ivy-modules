@@ -1,0 +1,24 @@
+
+
+".($this->idT==$this->idC && !isset($_GET['idRec']) && (!isset($_GET['Pn']) || $_GET['Pn']==1)
+   ? $this->renderDisplay_fromObj($this->{$o->current_modelBlog}->homeSET
+                            ,'', "MODELS/blog/tmpl/blogRecords_home.html")
+   : ""
+)."
+
+<div class='sidebar'>
+  <div id='sidebar-cat' class='sub-sidebar well'>
+    $o->categoriesHTML
+  </div>
+
+  <div class='sub-sidebar well' id='others-sidebar'>
+
+  </div>
+</div>
+
+
+<div id='page' class='span9'>
+  <div class='container-fluid'>
+    ".$this->ctrlDisplay_fromObj($this->{$o->current_modelBlog})."
+  </div>
+</div>

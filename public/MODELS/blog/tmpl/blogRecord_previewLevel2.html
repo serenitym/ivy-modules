@@ -1,0 +1,90 @@
+<div class='{$ao->EDrecord}ENT container-fluid recordPrev-L2 recordHome' id='recordHome_{$ao->idRecord}_{$ao->LG}' >
+
+
+    ".( $ao->record_mainPic
+      ? "
+          <div class='recordPrevCont-L2'>
+               <a href='{$ao->record_href}' class='thumbnail  mainPic-L2'>
+                     {$ao->record_mainPic}
+               </a>
+               <br>
+               <p>
+                     <a href='{$ao->record_href}' class='preview-title-L2'>{$ao->title} </a>
+               </p>
+
+               <small class='lead-L2'>
+                   {$ao->lead}
+               </small>
+          </div>
+        "
+
+      : "
+         <div class='recordPrevCont-L2'>
+              <p>
+                    <a href='{$ao->record_href}' class='preview-title-L2'>{$ao->title} </a>
+              </p>
+
+              <small class='lead-L2 lead-L2'>
+                   {$ao->lead}
+                    <br>
+                    <br>
+                   {$ao->content}
+              </small>
+         </div>
+        "
+
+    )."
+
+
+
+
+
+    <!-- [Author, readmoreLink ] ______________________________________________-->
+
+    <small  class='pull-left pt8'>
+          by <a href='#'>{$ao->fullName}</a>
+          ".$this->isEmpty($ao->admin,"
+                ,
+                <span class='muted'>uidRec {$ao->uidRec} </span>
+        ")."
+    </small>
+
+    <small class='pull-right readMore-L2 pt8'> {$ao->ReadMore_link}</small>
+
+
+
+    <!-- [Comments, date, lastUpdate] ________________________________________________-->
+
+    <div style='clear: both; ' class='muted pt9'>
+
+        <small>
+            <span class='muted pt8 r5'>
+                <i class='icon-light icon-comment'></i>
+                {$ao->total_nrComments}
+            </span>
+
+            <b>Date: </b>
+
+            ".$this->isEmpty(   $ao->publishDate,"
+            <span class=''>{$ao->publishDate}</span> ","
+            <span class='label label-warning'>not published</span>")."
+        </small>
+
+        ".$this->isEmpty($this->admin,
+        " <br><small class='muted'>&nbsp;Last update: {$ao->entryDate}</small>"
+        )."
+
+    </div>
+
+
+    <!-- [Tages] -->
+    <div>
+
+        <span class='m0 muted pt7 b  '>
+             ".$this->isEmpty ( $ao->tagsName,"
+             <i class='icon-tags icon-light'></i>
+             <span> {$ao->tagsName}</span>  ")."
+        </span>
+
+    </div>
+</div>

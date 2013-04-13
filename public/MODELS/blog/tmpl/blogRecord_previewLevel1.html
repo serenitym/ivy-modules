@@ -1,0 +1,56 @@
+
+<div class='{$ao->EDrecord}ENT container-fluid recordHome' id='recordHome_{$ao->idRecord}_{$ao->LG}' >
+      <div class='row'>
+
+            <p class='lead preview-title'>
+                  <a href='{$ao->record_href}'>{$ao->title} </a>
+                  <small  class='pull-right' style='font-size: 10pt;'>
+
+                       by <a href='#'>{$ao->fullName}</a>,
+                       <span class='muted'>uidRec {$ao->uidRec} </span>
+                      <br>
+
+                   </small>
+            </p>
+
+            ".$this->isEmpty(   $ao->record_mainPic,"
+                      <a href='{$ao->record_href}' class='thumbnail pull-left mainPic-L1'>
+                           {$ao->record_mainPic}
+                      </a>")."
+
+            <p class='b'>{$ao->lead}</p>
+            <p>{$ao->content} <b>...</b></p>
+
+
+
+
+            <div>
+                <p class='m0 muted'>
+                    <small>
+                        <b>Date: </b>
+
+                        ".$this->isEmpty(   $ao->publishDate,"
+                        <span class=''>{$ao->publishDate}</span> ","
+                        <span class='label label-warning'>not published</span>")."
+                    </small>
+                    <small class='muted'>&nbsp;Last update: {$ao->entryDate}</small>
+
+                    <span class='muted'>
+                         <i class='icon-light icon-comment'></i>
+                         {$ao->total_nrComments}
+                   </span>
+                    <small class='pull-right'> {$ao->ReadMore_link}</small>
+
+                    <br>
+                    ".$this->isEmpty ( $ao->tagsName,"
+                    <span class='labels'> {$ao->tagsName}</span>  ")."
+
+
+                </p>
+            </div>
+
+
+
+
+      </div>
+</div>

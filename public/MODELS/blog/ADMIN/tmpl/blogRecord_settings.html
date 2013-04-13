@@ -1,0 +1,25 @@
+ <div class='addTOOLSbtn'>".
+     $this->AisEmpty($obj->pubPermss ,
+             ($obj->publishDate
+                  ? "<input type='submit'  class='ATmpl' name='UnPublishRecord' value='UnPublish' />"
+                     .$this->AisEmpty($obj->webmPermss,
+                         "<input type='button' name='priorityBtn' value='Priority'
+                                 onclick='callPopup_priority()'>"
+                     )
+                  : "<input type='submit'  class='ATmpl' name='publishRecord' value='publish' />"
+             )
+     )."
+     <input type='button'  class='ATmpl'   onclick='toggle_otherSettings()' value='Other settings' />
+     <input type='button'  class='ATmpl' id='recordPics'   onclick='toggle_pic()' value='Show Pics' />
+ </div>
+
+
+ ".$this->renderDisplay_fromObj(
+        $this->picManager->SET_managerPics,'',
+        'PLUGINS/picManager/tmpl/picManager.html')."
+
+<small class='muted'>UIDrec {$obj->uidRec} currentUID {$obj->uid} </small> <br>
+".$this->renderDisplay_fromObj(
+    $obj, '',
+   "MODELS/blog/ADMIN/tmpl/blogRecord_otherSett.html")."
+
