@@ -20,10 +20,11 @@ function openKCFinder_comm_popUp(){
         }
     };
 
-    popUpKCF = new popUp_call(
+    var popUpKCF = new popUp_call(
                 { content:
                     "<div id='kcfinder_div'>" +
-                        '<iframe name="kcfinder_iframe" src="/fw/GENERAL/core/js/kcfinder/browse.php?type=images" ' +
+                        '<iframe name="kcfinder_iframe" src="/assets/kcfinder/browse.php?type=images" ' +
+                        //'<iframe name="kcfinder_iframe" src="/fw/GENERAL/core/js/kcfinder/browse.php?type=images" ' +
                                 'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />'+
                     "</div>",
 
