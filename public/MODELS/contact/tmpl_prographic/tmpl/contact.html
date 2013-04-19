@@ -1,0 +1,68 @@
+<div class='container_12 clearfix' >
+ <div class='SING grid_5 alpha contact' id='contact_{$o->idC}_{$o->LG}'>
+   <div class='EDeditor ContactDdetails' >
+
+       ".$this->ctrlDisplay_fromObjRes($o)."
+   </div>
+</div>
+
+<div class='grid_5 push_2 omega'>
+<form action='' method='post' id='form_comp' >
+   {$o->feedback_GOOD}
+    <input type='hidden' name='action' value='contact' />
+
+    <table id='contact_form_table'>
+        <tr>
+            <td colspan='2'>
+                "._('Nume, prenume')."
+                <input type='text' name='name' id='name' value='{$o->name}' />
+			</td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                "._('Email')."
+                <input type='text' name='email' id='email' value='{$o->email}' />
+			</td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                "._('Subiect')."
+                <input type='text' name='subject' id='subject' value='{$o->subject}' />
+			</td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                "._('Mesaj')."
+                <textarea name='message' id='message'></textarea>
+			</td>
+        </tr>
+        <tr>
+            <td>
+                "._('Codul din imagine')."
+                <input type='text' name='captcha_code' size='10' maxlength='6' tabindex='4' />
+                <br />
+                <a href='#' id='captcha_reset'
+                   onclick='document.getElementById(\'captcha\').src = \'fw/PLUGINS/securimage/securimage_show.php?\' + Math.random(); return false'>
+                    "._('Regenerează codul')."
+                 </a>
+            </td>
+            <td>
+                <img id='captcha' src='fw/PLUGINS/securimage/securimage_show.php'
+                     alt='CAPTCHA Image' />
+			</td>
+        </tr>
+        <tr>
+            <td>
+                 <input type='submit' id='submit' name='Submit' value='{$o->sp_submit}' />
+            </td>
+            <td>
+                "._('Atașează fișier')."
+                <input type='file' />
+            </td>
+        </tr>
+    </table>
+
+ </form>
+ 
+<div id='feedback'>{$o->feedback}</div>
+</div></div>
