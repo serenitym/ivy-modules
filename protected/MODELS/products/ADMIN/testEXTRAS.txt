@@ -1,0 +1,1 @@
+UPDATE products SET promo='17', end_promo='2012-09-20T00:00:00+00:00' where id='1731' 

@@ -301,7 +301,7 @@ function callPopup_priority(){
     * opt = {dataSend:{}, completeFunc:'',procesSCRIPT : 'true', headerName:'',widthPop:'', heightPop:''}
     *
     */
-   popUpPriorities = new  popUp_call(
+   var popUpPriorities = new  popUp_call(
                 {
                     dataSend :
                     {

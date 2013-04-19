@@ -391,7 +391,7 @@ function carousel_savePic(Name, id){
 
 /*===================================[Call popUp]=====================================================================*/
 
-function openKCFinder_popUp(){
+function openKCFinder_popUp_picManager(){
     window.KCFinder = {
            callBack: function(url) {
             //field.value = url;
@@ -402,10 +402,10 @@ function openKCFinder_popUp(){
         }
     };
 
-    popUpKCF = new popUp_call(
+    var popUpKCF = new popUp_call(
                 { content:
                     "<div id='kcfinder_div'>" +
-                        '<iframe name="kcfinder_iframe" src="/fw/GENERAL/core/js/kcfinder/browse.php?type=images" ' +
+                        '<iframe name="kcfinder_iframe" src="/assets/js/kcfinder/browse.php?type=images" ' +
                                 'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />'+
                     "</div>",
 
@@ -532,7 +532,7 @@ $(document).ready(function(){
 
     $('button#callKCFinder').live('click',function(){
         //alert('Am apasat callKCFinder');
-        openKCFinder_popUp();
+        openKCFinder_popUp_picManager();
         return false;
     });
 
