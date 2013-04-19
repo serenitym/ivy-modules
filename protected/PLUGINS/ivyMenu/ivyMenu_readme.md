@@ -4,11 +4,11 @@
 //======================================
 
 template Usage
-    - core->ctrlDisplay_fromObjRes($core->menuHorizontal,'resName');
+    - core->ctrlDisplay_fromObjRes($core->ivyMenu,'resName');
             'resName' = orice meniu are propriul lui res
 
     * daca se doreste schimbarea meniului
-     $core->menuHorizontal->current_idMenu = id-ul meniului
+     $core->ivyMenu->current_idMenu = id-ul meniului
 
 .yml - configuration
 
@@ -18,7 +18,7 @@ public
     - creaza templateul dorit
 
 
-CmenuHorizontal
+CivyMenu
     - pentru a crea propriul template de meniu creaza o metoda numita
     iterateMenu_[templateMethod] ($items, $idMenu){}
 

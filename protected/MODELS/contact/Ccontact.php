@@ -1,19 +1,33 @@
 <?php
 class contact {
-    
+
 var $sp_fullname;
-var $sp_address; 
-var $sp_email;   
+var $sp_address;
+var $sp_email;
 var $sp_telephone;
-var $sp_subject; 
-var $sp_message; 
-var $sp_submit;  
+var $sp_subject;
+var $sp_message;
+var $sp_submit;
 var $sp_reset;
 
-var  $strings_ro = array( 'Numele complet' ,'Adresa'         ,'Email'          ,'Telefon' ,
-                             'Subiect'        ,'Mesaj'          ,'Trimite'        ,'Reseteaza' );
-var   $strings_en = array( 'Name',    'Address',    'E-mail',     'Telephone',
-                             'Subject',             'Message',    'Submit',     'Reset'     );
+var $strings_ro = array(  'Numele complet',
+                          'Adresa',
+                          'Email',
+                          'Telefon',
+                          'Subiect',
+                          'Mesaj',
+                          'Trimite',
+                          'Reseteaza'
+                       );
+var $strings_en = array(  'Name',
+                          'Address',
+                          'E-mail',
+                          'Telephone',
+                          'Subject',
+                          'Message',
+                          'Submit',
+                          'Reset'
+                       );
 
 var $name =   '';
 var $address = '';
@@ -80,60 +94,76 @@ class Ccontact extends contact{
 
     public  function set_message()    {
 
-        $name =  $address =   $email =  $phone = $subject=  $message=''  ;  extract($_POST, EXTR_REFS | EXTR_OVERWRITE);
+        $name =  $address =   $email =  $phone = $subject=  $message=''  ;
+        extract($_POST, EXTR_REFS | EXTR_OVERWRITE);
 
         $this->message = "From: <b>{$name}</b>\r\n<br/>
-      	                    <em>Address:</em> {$address} \r\n<br/>
-      	                    <em>Email:</em> <a href='mailto:{$email}'>{$email}</a>\r\n<br/>
-      	                    <em>Phone:</em>{$phone}\r\n<br/><br/>
-      	                    <em>Subject:</em> {$subject}\r\n<br/>
-      	                    \r\n<br/>
-      	                    <em>Message:</em> {$message}\r\n<br/>
-      	                    \r\n<br/>--\r\n<br/>Please do NOT reply to this email";
+                        <em>Address:</em> {$address} \r\n<br/>
+                        <em>Email:</em> <a href='mailto:{$email}'>{$email}</a>
+                            \r\n<br/>
+                        <em>Phone:</em>{$phone}\r\n<br/><br/>
+                        <em>Subject:</em> {$subject}\r\n<br/>
+                        \r\n<br/>
+                        <em>Message:</em> {$message}\r\n<br/>
+                        \r\n<br/>--\r\n<br/>Please do NOT reply to this email";
 
 
 
     }
     private function sendMail()       {
-           $mail = new Mail(smtpServer);
-           $mail->Username = smtpUser;
-           $mail->Password = smtpPass;
+        if (defined('smtpPort'))
+            $mail = new Mail(smtpServer,smtpPort);
+        else
+            $mail = new Mail(smtpServer);
+        $mail->Username = smtpUser;
+        $mail->Password = smtpPass;
 
-           $mail->SetFrom(smtpUser);    // Name is optional
-          
-          // $mail->AddTo('ioana@serenitymedia.ro');       // Name is optional
-         //  $mail->AddTo('ela@graphicartdesign.ro');       // Name is optional
-           $mail->AddTo('ioana@serenitymedia.ro');
+        $mail->SetFrom(smtpUser);    // Name is optional
 
-           $mail->Subject = $_POST['subject'];
-           $mail->Message = $this->message;
+        // $mail->AddTo('ioana@serenitymedia.ro');       // Name is optional
+        $mail->AddTo('vnitu@ceata.org');
 
-           // Chestii optionale
-           $mail->ContentType = "text/html";        		    // Default in "text/plain; charset=iso-8859-1"
-           $mail->Headers['Reply-To']=$_POST['email'];
+        $mail->Subject = $_POST['subject'];
+        $mail->Message = $this->message;
 
-            //  unset ($_POST);
+        // Chestii optionale
+        $mail->ContentType = "text/html";        		    // Default in "text/plain; charset=iso-8859-1"
+        $mail->Headers['Reply-To']=$_POST['email'];
 
-           return $mail->Send();
+        //  unset ($_POST);
+
+        return $mail->Send();
      }
     private function processContact() {
         //envArgs = (' $string,$min,$max ' , '$description')
         $roEnv = array(
-                          'name'     => array('name, 3, 60'              ,'Numele complet (intre 3 si 60 de caractere)'),
-                          'address'  => array('text, 10, n'              ,'Full address  (minim 10 caractere)'),
-                          'email'    => array('email'                    ,'Adresa de email'),
-                          'phone'    => array('numeric_punctuation, 10,n','Numarul de telefon (minim 10 caractere, numere si/sau punctuatie)'),
-                          'subject'  => array('text, 5, 30'              ,'Subiectul (minim 5 caractere)'),
-                          'message'  => array('text, 10, n'              ,'Mesajul (minim 10 caractere)')
+            'name'     => array('name, 3, 60',
+                            'Numele complet (intre 3 si 60 de caractere)'),
+            'address'  => array('text, 10, n',
+                            'Full address  (minim 10 caractere)'),
+            'email'    => array('email'     ,
+                            'Adresa de email'),
+            'phone'    => array('numeric_punctuation, 1',
+                            'Numarul de telefon (minim 10 caractere, numere si/sau punctuatie)'),
+            'subject'  => array('text, 5, 30',
+                            'Subiectul (minim 5 caractere)'),
+            'message'  => array('text, 10, n',
+                            'Mesajul (minim 10 caractere)')
                        );
 
         $enEnv = array(
-                          'name'     => array('name, 3, 60'              ,'Numele complet (intre 3 si 60 de caractere)'),
-                          'address'  => array('text, 10, n'              ,'Full address  (minim 10 caractere)'),
-                          'email'    => array('email'                    ,'Adresa de email'),
-                          'phone'    => array('numeric_punctuation, 10,n','Numarul de telefon (minim 10 caractere, numere si/sau punctuatie)'),
-                          'subject'  => array('text, 5, 30'              ,'Subiectul (minim 5 caractere)'),
-                          'message'  => array('text, 10, n'              ,'Mesajul (minim 10 caractere)')
+            'name'     => array('name, 3, 60',
+                            'Numele complet (intre 3 si 60 de caractere)'),
+            'address'  => array('text, 10, n',
+                            'Full address  (minim 10 caractere)'),
+            'email'    => array('email'     ,
+                            'Adresa de email'),
+            'phone'    => array('numeric_punctuation, 1',
+                            'Numarul de telefon (minim 10 caractere, numere si/sau punctuatie)'),
+            'subject'  => array('text, 5, 30',
+                            'Subiectul (minim 5 caractere)'),
+            'message'  => array('text, 10, n',
+                            'Mesajul (minim 10 caractere)')
                        );
 
 
