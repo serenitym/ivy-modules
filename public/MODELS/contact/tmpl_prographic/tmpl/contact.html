@@ -9,6 +9,7 @@
 <div class='grid_5 push_2 omega'>
 <form action='' method='post' id='form_comp' >
    {$o->feedback_GOOD}
+   ".$this->LANG->DISPLAY()."
     <input type='hidden' name='action' value='contact' />
 
     <table id='contact_form_table'>
@@ -47,7 +48,7 @@
                  </a>
             </td>
             <td>
-                <img id='captcha' src='fw/PLUGINS/securimage/securimage_show.php'
+                <img id='captcha' src='assets/securimage/securimage_show.php'
                      alt='CAPTCHA Image' />
 			</td>
         </tr>
