@@ -1,77 +1,73 @@
 <?php
-class CLANG {
-      var $C;               //main object
-      var $lang;
-      var $lang2;
-      var $tree;
-      var $baseURI;
-      function RESET_TREElang(){
-          if($this->lang!='en')
-                foreach($this->tree AS $id_ch=>$ch_element) $this->tree[$id_ch]->name = $ch_element->{'name_'.$this->lang};
+class CLANG
+{
+    var $lang;
+    var $tree;
+    var $baseURI;
 
+    function resetTree()
+    {/*{{{*/
+        if ($this->lang!='en') {
+            foreach ($this->tree as $id=>$childElement) {
+                $this->tree[$id]->name = $childElement->{'name_'.$this->lang};
+            }
+        }
+    }/*}}}*/
+
+    function setLang()
+    {/*{{{*/
+
+      if (isset($_GET['lang'])) {
+          $this->lang = $_GET['lang'];
       }
 
-      function SET_lang(){
+      $this->C->lang = $this->lang ;
+      $this->resetTree();
+      return true;
+    }/*}}}*/
 
+    function DISPLAY()
+    {/*{{{*/
+        return $this->createSelector();
+    }/*}}}*/
 
+    public function createSelector( $container='', $class='', $separator='')
+    {/*{{{*/
+        $container = $container ?: 'div';
+        $class = $class ?: 'lang_selector';
+        $separator = $separator ?: "<span class='lang_separator'></span>";
+        $this->baseURI = str_replace(
+            publicURL, '',
+            'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+        );
 
+        $markup = "<$container class='$class'>";
+        $template = "<a href='%s'>%s</a>";
 
-          if(isset($_SESSION['lang'])){
-              $this->lang = $_SESSION['lang'];
-              if($this->lang == 'ro') $this->lang2 = 'en';
-                               else   $this->lang2 = 'ro';
+        foreach ($this->C->langs as $lang) {
+            $href = str_replace('/'.$_GET['lang'].'/', '/'.$lang.'/', publicURL)
+                . $this->baseURI;
+            $markup .= sprintf($template, $href, strtoupper($lang));
+            $markup .= $separator;
+        }
 
-          }
-          if(isset($_GET['lang']))
-              if($_GET['lang']!=$this->lang)
-              {
+        $markup = substr($markup, 0, -(strlen($separator)));
+        $markup .= "</$container>";
 
-                  $this->lang =  $_SESSION['lang'] = $_GET['lang'];
-                  if($this->lang == 'ro') $this->lang2 = 'en';
-                  else $this->lang2 = 'ro';
-              }
+        return $markup;
 
-          $this->RESET_TREElang();
+    }/*}}}*/
 
+    public function _init ()
+    {/*{{{*/
+        $this->lang = $this->C->lang;
+        $this->setLang();
+    }/*}}}*/
 
-      }
-
-      function DISPLAY(){
-
-        /*  $path = publicPath.'PLUGINS/LANG/RES/lang.php';
-          if(file_exists($path))
-               $pageContent .= file_get_contents($path);
-          else $pageContent .= 'Nu exista continut la pagina <b>'.$path.'</b>';*/
-
-          #_________________________________________________________________
-          $baseURI = $_SERVER['REQUEST_URI'];
-          //$this->baseURI = str_replace(array("&lang=ro","?lang=ro","&lang=en" ,"?lang=en" ),array('','','',''),$baseURI);
-
-          //$href_ro = ($_SESSION['lang'] == 'ro' ? '' : $this->baseURI."&lang=ro");
-          //$href_en = ($_SESSION['lang'] == 'en' ? '' : $this->baseURI."&lang=en");
-
-
-          //$href_ro = str_replace('index.php&lang','index.php?lang', $href_ro);
-          //$href_en = str_replace('index.php&lang','index.php?lang', $href_en);
-
-
-
-          $href_en = $href_ro = '';
-          if($baseURI == '/')        { $href_ro = "/ro/"; $href_en = "/en/";}
-          elseif($this->lang =='ro') $href_en = str_replace("/ro/",'/en/',$baseURI);
-          elseif($this->lang =='en') $href_ro = str_replace("/en/",'/ro/',$baseURI);
-
-          return  " <a href='{$href_en}'  >En</a> | <a href='{$href_ro}'  >Ro</a>";
-      }
-
-      function __construct($C){
-
-          $this->C = &$C;
-          $this->tree = &$C->tree;
-          $this->lang = &$C->lang;
-          $this->lang2 = &$C->lang2;
-
-          $this->SET_lang();
-      }
+    function __construct($C)
+    {
+    }
 
 }
+
+/* vim: set fdm=marker: */

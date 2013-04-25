@@ -18,11 +18,11 @@ class menuSet{
                          'idT'
                          'href'
     */
-    var $items = array();           
+    var $items = array();
     var $strUl = '';                # stringul HTML cu meniul
 
     function __construct($options){
-        
+
         $this->idMenu         = isset($options['idMenu']) ? $options['idMenu'] : '';
         $this->templateMethod = isset($options['tempalteMethod']) ? $options['templateMethod'] : '';
         $this->levels         = isset($options['levels']) ? $options['levels'] : '';
@@ -51,7 +51,7 @@ class CivyMenu{
 
                 $idC = $idCh;
                 $name = $this->masterTree[$idC]->name;
-                $href = "index.php?idT={$idT}&idC={$idC}";
+                $href = publicURL . "?idT={$idT}&idC={$idC}";
 
                 array_push($item['items'],
                             array('name'=>$name,
@@ -68,7 +68,7 @@ class CivyMenu{
         }
 
     }
-    
+
     /**
      *Seteaza menuSet ->items
                          [0]
@@ -82,7 +82,7 @@ class CivyMenu{
                                      'idC'
                                      'idT'
                                      'href'
-     * 
+     *
      * STEPS
      *  - preia primele elemente ale meniului
      *  - adauga elementele necesare la vectorul items
@@ -117,10 +117,10 @@ class CivyMenu{
                       $name = $row['name_'.$this->LG];
                       $idC   = $row['id'];
                       $idT   = $this->masterTree[$idC]->idT;
-                  
+
                       # atentie ...aici trebuie apelata o metoda statica probabil
-                      # a Ccore 
-                      $href = "index.php?idT={$idT}&idC={$idC}";
+                      # a Ccore
+                      $href = publicURL . "?idT={$idT}&idC={$idC}";
 
                       array_push($currentSet['items'],
                                   array('name'=>$name,
@@ -157,9 +157,9 @@ class CivyMenu{
 
 
     }
-    
 
-    
+
+
      /**
      * Creaza HTML-ul pentru meniu  care va fii restinut in menuSet['strUl']
      *  - bazat pe ->menuSet->items
@@ -191,19 +191,19 @@ class CivyMenu{
 
         }
         $currentSet['strUl'] .='</ul>';
-        
+
     }
 
 
     # magic function -- apelata automata  de TrenderTmpl daca nu gaseste respath
     /**
      * Seteaza res-ul meniului
-     * 
+     *
      * $currentSet   = pointer la setul curent al meniului
      * creaza array-ul multidimensional cu elementele meniului
      * apeleaza functia "templateMethod" aferenta meniului cerut
      * scrie fisierul static pentru meniu
-     * 
+     *
     */
     function _setRes($resPath){
 
@@ -211,7 +211,7 @@ class CivyMenu{
         $currentSet['strUl'] = '';
 
         $this->setMenu_multiLevel($this->current_idMenu);
-        
+
         $this->{'iterateMenu_'.$currentSet['templateMethod']}($currentSet['items'], $this->current_idMenu );
 
         file_put_contents($resPath,$currentSet['strUl']);

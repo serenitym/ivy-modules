@@ -1,8 +1,10 @@
 <?php
 /**
- * Class that deals mainly with email sending, aiming to provide a small API to PEAR's SASL/SMTP monster classes
+ * Class that deals mainly with email sending, aiming to provide a small API
+ * to PEAR's SASL/SMTP monster classes
  * @author Victor Nitu
- * @desc Class that deals mainly with email sending, aiming to provide a small API to PEAR's SASL/SMTP monster classes
+ * @desc Class that deals mainly with email sending, aiming to provide a small
+ * API to PEAR's SASL/SMTP monster classes
  *
  */
 
@@ -11,141 +13,151 @@ class Mail
     const CRLF = "\r\n";
 
       private
-        $Server, $Port, $Localhost,
-        $skt;
+        $_server,
+        $_port,
+        //$_localhost,      // Not sure why I created it, so I commented it out
+        $_skt;
 
       public
-        $Username,
-        $Password,
-        $ConnectTimeout,
-        $ResponseTimeout,
-        $Headers,
-        $ContentType,
-        $From,
-        $To,
-        $Cc,
-        $Subject,
-        $Message,
-        $Log;
+        $username,
+        $password,
+        $connectTimeout,
+        $responseTimeout,
+        $headers,
+        $contentType,
+        $from,
+        $mailTo,
+        $mailCc,
+        $subject,
+        $message,
+        $log;
 
       function __construct($server = "127.0.0.1", $port = 25)
       {
-        $this->Server = $server;
-        $this->Port = $port;
-        $this->Localhost = "localhost";
-        $this->ConnectTimeout = 30;
-        $this->ResponseTimeout = 8;
-        $this->From = array();
-        $this->To = array();
-        $this->Cc = array();
-        $this->Log = array();
-        $this->Headers['MIME-Version'] = "1.0";
-        $this->Headers['Content-type'] = "text/plain; charset=utf-8";
+        $this->_server = $server;
+        $this->_port = $port;
+        //$this->_localhost = "localhost";
+        $this->connectTimeout = 30;
+        $this->responseTimeout = 8;
+        $this->from = array();
+        $this->mailTo = array();
+        $this->mailCc = array();
+        $this->log = array();
+        $this->headers['MIME-Version'] = "1.0";
+        $this->headers['Content-type'] = "text/plain; charset=utf-8";
       }
 
       private function GetResponse()
       {
-        stream_set_timeout($this->skt, $this->ResponseTimeout);
+        stream_set_timeout($this->_skt, $this->responseTimeout);
         $response = '';
-        while (($line = fgets($this->skt, 515)) != false)
-        {
-    	$response .= trim($line) . "\n";
-    	if (substr($line,3,1)==' ') break;
+        while (($line = fgets($this->_skt, 515)) != false) {
+            $response .= trim($line) . "\n";
+            if (substr($line, 3, 1)==' ') break;
         }
         return trim($response);
       }
 
-      private function SendCMD($CMD)
+      private function SendCMD($cmd)
       {
-        fputs($this->skt, $CMD . self::CRLF);
+        fputs($this->_skt, $cmd . self::CRLF);
 
         return $this->GetResponse();
       }
 
       private function FmtAddr(&$addr)
       {
-        if ($addr[1] == "") return $addr[0]; else return "\"{$addr[1]}\" <{$addr[0]}>";
+          if ($addr[1] == "")
+              return $addr[0];
+          else
+              return "\"{$addr[1]}\" <{$addr[0]}>";
       }
 
       private function FmtAddrList(&$addrs)
       {
         $list = "";
-        foreach ($addrs as $addr)
-        {
-          if ($list) $list .= ", ".self::CRLF."\t";
-          $list .= $this->FmtAddr($addr);
+        foreach ($addrs as $addr) {
+            if ($list) $list .= ", ".self::CRLF."\t";
+            $list .= $this->FmtAddr($addr);
         }
         return $list;
       }
 
       function AddTo($addr,$name = "")
       {
-        $this->To[] = array($addr,$name);
+        $this->mailTo[] = array($addr,$name);
       }
 
       function AddCc($addr,$name = "")
       {
-        $this->Cc[] = array($addr,$name);
+        $this->mailCc[] = array($addr,$name);
       }
 
       function SetFrom($addr,$name = "")
       {
-        $this->From = array($addr,$name);
+        $this->from = array($addr,$name);
       }
 
       function Send()
       {
         $newLine = self::CRLF;
 
-        //Connect to the host on the specified port
-        $this->skt = fsockopen($this->Server, $this->Port, $errno, $errstr, $this->ConnectTimeout);
+        $errno = $errstr = NULL;
 
-        if (empty($this->skt))
+        //Connect to the host on the specified port
+        $this->_skt = fsockopen(
+            $this->_server, $this->_port,
+            $errno, $errstr, $this->connectTimeout
+        );
+
+        if (empty($this->_skt))
           return false;
 
-        $this->Log['connection'] = $this->GetResponse();
+        $this->log['connection'] = $this->GetResponse();
 
         //Say Hello to SMTP
-        $this->Log['helo']     = $this->SendCMD("EHLO {$this->Server}");
+        $this->log['helo']     = $this->SendCMD("EHLO {$this->_server}");
 
         //Request Auth Login
-        $this->Log['auth']     = $this->SendCMD("AUTH LOGIN");
-        $this->Log['username'] = $this->SendCMD(base64_encode($this->Username));
-        $this->Log['password'] = $this->SendCMD(base64_encode($this->Password));
+        $this->log['auth']     = $this->SendCMD("AUTH LOGIN");
+        $this->log['username'] = $this->SendCMD(base64_encode($this->username));
+        $this->log['password'] = $this->SendCMD(base64_encode($this->password));
 
-        //Email From
-        $this->Log['mailfrom'] = $this->SendCMD("MAIL FROM:<{$this->From[0]}>");
+        //Email from
+        $this->log['mailfrom'] = $this->SendCMD("MAIL FROM:<{$this->from[0]}>");
 
-        //Email To
-        $i = 1;
-        foreach (array_merge($this->To,$this->Cc) as $addr)
-          $this->Log['rcptto'.$i++] = $this->SendCMD("RCPT TO:<{$addr[0]}>");
+        //Email to
+        $cnt = 1;
+        foreach (array_merge($this->mailTo, $this->mailCc) as $addr)
+          $this->log['rcptto'.$cnt++] = $this->SendCMD("RCPT TO:<{$addr[0]}>");
 
         //The Email
-        $this->Log['data1'] = $this->SendCMD("DATA");
+        $this->log['data1'] = $this->SendCMD("DATA");
 
-        //Construct Headers
-        if (!empty($this->ContentType))
-            $this->Headers['Content-type'] = $this->ContentType;
-        $this->Headers['From'] = $this->FmtAddr($this->From);
-        $this->Headers['To'] = $this->FmtAddrList($this->To);
+        //Construct headers
+        if (!empty($this->contentType))
+            $this->headers['Content-type'] = $this->contentType;
+        $this->headers['From'] = $this->FmtAddr($this->from);
+        $this->headers['To'] = $this->FmtAddrList($this->mailTo);
 
-        if (!empty($this->Cc))
-            $this->Headers['Cc'] = $this->FmtAddrList($this->Cc);
+        if (!empty($this->mailCc))
+            $this->headers['Cc'] = $this->FmtAddrList($this->mailCc);
 
-        $this->Headers['Subject'] = $this->Subject;
-        $this->Headers['Date'] = date('r');
+        $this->headers['Subject'] = $this->subject;
+        $this->headers['Date'] = date('r');
 
         $headers = '';
-        foreach ($this->Headers as $key => $val)
+        foreach ($this->headers as $key => $val)
           $headers .= $key . ': ' . $val . self::CRLF;
 
-        $this->Log['data2'] = $this->SendCMD("{$headers}{$newLine}{$this->Message}{$newLine}.");
+        $this->log['data2'] = $this->SendCMD(
+            "{$headers}{$newLine}{$this->message}{$newLine}."
+        );
 
         // Say Bye to SMTP
-        $this->Log['quit']  = $this->SendCMD("QUIT");
+        $this->log['quit']  = $this->SendCMD("QUIT");
 
-        fclose($this->skt);
+        fclose($this->_skt);
 
-}
+      }
 }

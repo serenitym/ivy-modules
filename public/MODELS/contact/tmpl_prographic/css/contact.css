@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+.contact {width: 500px; position: relative;}
+
+.cke_skin_kama  { width:500px;}
+.ContactDdetails{ width:500px; height: 370px; }
+
+table#contact_form_table {
+    width: 100%;
+}
+
+form#form_comp  { width: 100%;}
+
+
+form#form_comp span               { width:110px;  }
+form#form_comp input[type='text'] { width:100%; border: 1px solid #bbb; display: block;margin-top:5px;}
+form#form_comp textarea           { width:100%; height: 170px; border: 1px solid #bbb;
+                                    display: block;margin-top:5px; overflow: auto; resize: none;}
+
+form#form_comp input[type='submit'],
+form#form_comp input[type='reset']{ margin-right: 10px;}
+
+form#form_comp img {
+    margin: 3px;
+    float: right;
+}
+
+form#form_comp td {
+    padding-top: 8px;
+}
+
+#feedback
+{
+    clear: both;
+    font-size: 11px;
+    color: #8b0000;
+}
+
+#captcha_reset {
+    width: 140px;
+    text-decoration: none;
+    color: inherit;
+    background: #4f4e4e;
+    display: block;
+    border-radius: 5px;
+    padding: 3px 0px;
+    text-align: center;
+    color: #6e6e6e;
+}
+#captcha_reset:hover {
+    color: #eee;
+    cursor: pointer;
+}
+
+#submit {
+    display: block;
+    width: 140px;
+    height: 50px;
+    background: #4f4e4e;
+    color: #6e6e6e;
+    text-transform: uppercase;
+    font-size: 1.3em;
+    border-radius: 5px;
+    box-shadow: 0px;
+    border: 0px solid black;
+}
+#submit:hover {
+    color: #eee;
+    cursor: pointer;
+}
