@@ -17,39 +17,51 @@ class CLANG
     function setLang()
     {/*{{{*/
 
-      if (isset($_SESSION['lang'])) {
-          $this->lang = $_SESSION['lang'];
-      }
-
       if (isset($_GET['lang'])) {
-          if ($_GET['lang']!=$this->lang) {
-              $this->lang =  $_SESSION['lang'] = $_GET['lang'];
-          }
+          $this->lang = $_GET['lang'];
       }
 
+      $this->C->lang = $this->lang ;
       $this->resetTree();
       return true;
     }/*}}}*/
 
     function DISPLAY()
     {/*{{{*/
-        $this->baseURI = str_replace(publicURL, '', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-        $markup = '';
+        return $this->createSelector();
+    }/*}}}*/
+
+    public function createSelector( $container='', $class='', $separator='')
+    {/*{{{*/
+        $container = $container ?: 'div';
+        $class = $class ?: 'lang_selector';
+        $separator = $separator ?: "<span class='lang_separator'></span>";
+        $this->baseURI = str_replace(
+            publicURL, '',
+            'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+        );
+
+        $markup = "<$container class='$class'>";
         $template = "<a href='%s'>%s</a>";
 
         foreach ($this->C->langs as $lang) {
-            $href = str_replace($_GET['lang'], $lang, publicURL)
+            $href = str_replace('/'.$_GET['lang'].'/', '/'.$lang.'/', publicURL)
                 . $this->baseURI;
             $markup .= sprintf($template, $href, strtoupper($lang));
-            $markup .= "<span class='lang_separator'></span>";
+            $markup .= $separator;
         }
 
+        $markup = substr($markup, 0, -(strlen($separator)));
+        $markup .= "</$container>";
+
         return $markup;
+
     }/*}}}*/
 
     public function _init ()
     {/*{{{*/
-        $this->SET_lang();
+        $this->lang = $this->C->lang;
+        $this->setLang();
     }/*}}}*/
 
     function __construct($C)
