@@ -1,15 +1,13 @@
 <?php
 class CLANG
 {
-    var $lang;
-    var $tree;
     var $baseURI;
 
     function resetTree()
     {/*{{{*/
         if ($this->lang!=$this->C->langs[0]) {
-            foreach ($this->tree as $id=>$childElement) {
-                $this->tree[$id]->name = $childElement->{'name_'.$this->lang};
+            foreach ($this->C->tree as $id=>$childElement) {
+                $this->C->tree[$id]->name = $childElement->{'name_'.$this->lang};
             }
         }
     }/*}}}*/
