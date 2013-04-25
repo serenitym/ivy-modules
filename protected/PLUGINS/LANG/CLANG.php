@@ -37,7 +37,7 @@ class CLANG
         $class = $class ?: 'lang_selector';
         $separator = $separator ?: "<span class='lang_separator'></span>";
         $this->baseURI = str_replace(
-            publicURL, '',
+            substr(publicURL, 0, -1), '',
             'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
         );
 
@@ -54,7 +54,7 @@ class CLANG
         $markup = substr($markup, 0, -(strlen($separator)));
         $markup .= "</$container>";
 
-        return $markup;
+        return $markup . publicURL;
 
     }/*}}}*/
 
