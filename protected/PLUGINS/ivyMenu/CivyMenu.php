@@ -207,7 +207,8 @@ class CivyMenu{
     function _setRes($resPath){
 
         $currentSet = &$this->{'menuSet'.$this->current_idMenu};
-        
+        $currentSet['strUl'] = '';
+
         $this->setMenu_multiLevel($this->current_idMenu);
         
         $this->{'iterateMenu_'.$currentSet['templateMethod']}($currentSet['items'], $this->current_idMenu );
