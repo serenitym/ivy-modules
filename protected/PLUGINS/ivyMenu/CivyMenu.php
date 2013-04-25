@@ -177,6 +177,7 @@ class CivyMenu{
        $currentSet =  &$this->{'menuSet'.$idMenu};
 
        $ulClass = isset($currentSet['ulclass'.$ulLevel]) ? $currentSet['ulclass'.$ulLevel]  : '';
+
        $currentSet['strUl'] .="<ul class='{$ulClass}'>";
 
         foreach($items AS $item){

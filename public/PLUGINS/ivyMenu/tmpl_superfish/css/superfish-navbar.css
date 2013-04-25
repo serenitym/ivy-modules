@@ -3,7 +3,7 @@
 .sf-navbar {
     /*background: #BDD2FF;*/
     position: relative;
-    margin-bottom: 5em;
+   /* margin-bottom: 5em;*/
 }
 /* provide background colour for submenu strip */
 /* you should just set the menu's container bg colour rather than use pseudo-elements */

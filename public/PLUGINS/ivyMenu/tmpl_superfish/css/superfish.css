@@ -37,7 +37,7 @@
 /*** DEMO SKIN ***/
 .sf-menu {
     float: right;
-    margin-bottom: 1em;
+   /* margin-bottom: 1em;*/
 }
 
 .sf-menu ul {
@@ -80,8 +80,8 @@
 }
 .sf-menu > li > ul > li > a{
 
-    color: #8f8f8f;
-    color: #333333;
+    color: #aaa;
+   /* color: #333333;*/
     opacity: 1;
     /*text-shadow: 1px 1px 0px #333333;*/
     text-transform: uppercase;
@@ -93,7 +93,7 @@
 }
 
 .sf-menu > li > ul > li > a:hover{
-    color: #000000;
+    color: #666;
 }
 
 .sf-menu li {
@@ -154,5 +154,5 @@ li.sfHover > a .sf-sub-indicator {
     display: block;
 }
 .sf-menu a.current {
-    color: #333333;
+    color: #ccc;
 }
