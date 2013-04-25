@@ -7,7 +7,7 @@ class CLANG
 
     function resetTree()
     {/*{{{*/
-        if ($this->lang!='en') {
+        if ($this->lang!=$this->C->langs[0]) {
             foreach ($this->tree as $id=>$childElement) {
                 $this->tree[$id]->name = $childElement->{'name_'.$this->lang};
             }
@@ -45,7 +45,7 @@ class CLANG
         $template = "<a href='%s'>%s</a>";
 
         foreach ($this->C->langs as $lang) {
-            $href = str_replace('/'.$_GET['lang'].'/', '/'.$lang.'/', publicURL)
+            $href = str_replace('/'.$this->lang.'/', '/'.$lang.'/', publicURL)
                 . $this->baseURI;
             $markup .= sprintf($template, $href, strtoupper($lang));
             $markup .= $separator;
@@ -60,7 +60,6 @@ class CLANG
 
     public function _init ()
     {/*{{{*/
-        $this->lang = $this->C->lang;
         $this->setLang();
     }/*}}}*/
 
