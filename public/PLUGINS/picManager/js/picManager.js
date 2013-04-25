@@ -538,26 +538,53 @@ $(document).ready(function(){
 
     JQcar = $('.uploaded_pics');
     JQcar_picDet = JQcar.find('.pics-Details');
+
+
+
+    //****************ATENTIE INAINTE era in GEN.js
+    // pentru pozele admin de picManager
+        $('.picDetails button[class^=togglePicDetails] ')
+            .live('click',function(){
+                $(this).siblings('.more-picDetails').toggle();
+                 if($(this).hasClass('icon-chevron-down') )
+                 {
+                     $(this).attr('class','togglePicDetails icon-chevron-up');
+                 }
+                 else
+                 {
+                     $(this).attr('class','togglePicDetails icon-chevron-down');
+                 }
+            });
+
+
+
+
+
+    /*===================================[ btt config for editMODE ]=================================================================================*/
+    /*
+    var async_saveBt = new asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : false },
+                                     { callBack_fn : (typeof carousel_savePic == 'function'  ? carousel_savePic : 'altceva')}
+                                    );
+    var async_deleteBt = new asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : false},
+                                       { callBack_fn : (typeof carousel_deletePic == 'function' ? carousel_deletePic : 'altceva')}
+                                     );
+    */
+
+
+     iEdit.add_bttConf('pic-full',
+         {
+            addBt  : { status : false },
+            saveBt : { async :new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : false },
+                                             { callBack_fn : (typeof carousel_savePic == 'function' ? carousel_savePic : 'altceva')}
+                                            ) },
+            deleteBt :{ async :  new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : false},
+                                               { callBack_fn : (typeof carousel_deletePic == 'function' ? carousel_deletePic : 'altceva')}
+                                             ) }
+
+
+        });
+
 });
 
-/*===================================[ btt config for editMODE ]=================================================================================*/
-/*
-var async_saveBt = new asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : false },
-                                 { callBack_fn : (typeof carousel_savePic == 'function'  ? carousel_savePic : 'altceva')}
-                                );
-var async_deleteBt = new asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : false},
-                                   { callBack_fn : (typeof carousel_deletePic == 'function' ? carousel_deletePic : 'altceva')}
-                                 );
-*/
 
 
- iEdit.add_bttConf('pic-full',
-     {
-        addBt  : { status : false },
-        saveBt : { async :new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : false },
-                                         { callBack_fn : (typeof carousel_savePic == 'function' ? carousel_savePic : 'altceva')}
-                                        ) },
-        deleteBt :{ async :  new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : false},
-                                           { callBack_fn : (typeof carousel_deletePic == 'function' ? carousel_deletePic : 'altceva')}
-                                         ) }
-    });
