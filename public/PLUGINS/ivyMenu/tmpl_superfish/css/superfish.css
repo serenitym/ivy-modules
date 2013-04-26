@@ -22,6 +22,7 @@
 .sf-menu li:hover > ul,
 .sf-menu li.sfHover > ul {
     display: block;
+    text-align: right;
 }
 
 .sf-menu a {

@@ -29,6 +29,8 @@
 }
 .sf-navbar > li > ul {
     /*min-width: 36em; /* set this to whatever suits your design */
+    width: 960px;
+    text-align: right;
 }
 .sf-navbar ul li {
     /*background: #BDD2FF;*/
@@ -42,7 +44,7 @@
     width: 100%;
 }
 .sf-navbar > li > ul > li {
-    float: left;
+    display: inline-block;
 }
 .sf-navbar li.current {
     background: gray;
