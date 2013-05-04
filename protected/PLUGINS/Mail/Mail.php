@@ -65,6 +65,38 @@ class Mail
         return $this->GetResponse();
       }
 
+      private function addAttachment($file)
+      {
+        $fileatttype = $file['mime'];
+        $fileattname = $file['name'];
+
+        // File
+        $file = fopen($fileatt, 'rb');
+        $data = fread($file, filesize($fileatt));
+        fclose($file);
+
+        // This attaches the file
+        $semiRand = md5(time());
+        $mimeBoundary = "==Multipart_Boundary_x{$semiRand}x";
+        $this->headers .= "\nMIME-Version: 1.0\n" .
+        "Content-Type: multipart/mixed;\n" .
+        " boundary=\"{$mimeBoundary}\"";
+        $this->message = "-{$mimeBoundary}\n" .
+        "Content-Type: text/plain; charset=\"iso-8859-1\n" .
+        "Content-Transfer-Encoding: 7bit\n\n" .
+        $this->message .= "\n\n";
+
+        $data = chunk_split(base64_encode($data));
+        $this->message .= "--{$mimeBoundary}\n" .
+        "Content-Type: {$fileatttype};\n" .
+        " name=\"{$fileattname}\"\n" .
+        "Content-Disposition: attachment;\n" .
+        " filename=\"{$fileattname}\"\n" .
+        "Content-Transfer-Encoding: base64\n\n" .
+        $data . "\n\n" .
+        "-{$mimeBoundary}-\n";
+      }
+
       private function FmtAddr(&$addr)
       {
           if ($addr[1] == "")

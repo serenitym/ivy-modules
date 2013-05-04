@@ -20,8 +20,23 @@ class CLANG
       }
 
       $this->C->lang = $this->lang ;
+      $langISO = $this->getLanguageCode($this->lang);
+
+      putenv("LC_ALL=" . $langISO);
+      setlocale(LC_ALL, $langISO);
+
       $this->resetTree();
       return true;
+    }/*}}}*/
+
+    private function getLanguageCode($lang)
+    {/*{{{*/
+        $languages = array(
+            'en' => 'en_US',
+            'ro' => 'ro_RO'
+        );
+
+        return $languages["$lang"];
     }/*}}}*/
 
     function DISPLAY()

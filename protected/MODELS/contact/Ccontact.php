@@ -1,6 +1,6 @@
 <?php
 
-class Ccontact extends contact
+class Ccontact
 {
 
     public
@@ -23,7 +23,24 @@ class Ccontact extends contact
 
     public function _init()
     {/*{{{*/
+
+
+        $gettextDir = fw_pubPath . "MODELS/contact/tmpl_". $this->template ."/i18n";
+        $gettextDomain = "messages";
+        $encoding = "UTF-8";
+
+        bindtextdomain($gettextDomain, $gettextDir);
+        bind_textdomain_codeset($gettextDomain, $encoding);
+
+        textdomain($gettextDomain);
+
         $this->resPath = $this->C->get_resPath_forObj($this);
+
+        if (isset($_POST['action']) && $_POST['action'] == 'contact') {
+            $this->processForm();
+        }
+
+        $this->setDisplay();
     }/*}}}*/
 
     private function setDisplay()
@@ -33,11 +50,48 @@ class Ccontact extends contact
              file_put_contents($this->resPath, $content);
         }
 
-        $this->template = file_get_contents($this->resPath);
+
+        foreach ($this->envelopeData as $key => $value) {
+            $this->{$key} = isset($_POST[$key])
+                ? $_POST[$key]
+                : '';
+        }
+
+        //$this->template = file_get_contents($this->resPath);
     }/*}}}*/
 
     private function setFeedback()
     {/*{{{*/
+    }/*}}}*/
+
+    private function buildEmail($type = 'html')
+    {/*{{{*/
+
+        $emailHtmlTemplate = "MODELS/contact/tmpl_" . $this->template
+            ."/tmpl/email.html";
+        $emailTextTemplate = "MODELS/contact/tmpl_" . $this->template
+            ."/tmpl/email.txt";
+
+        switch ($type) {
+            case 'html':
+                $this->emailHtml = $this->_emailBody =
+                    $this->C->renderDisplay_fromObj(
+                        $this, '', $emailHtmlTemplate
+                    );
+                break;
+            default:
+            case 'text':
+                $this->emailText = sprintf(
+                    $emailTextTemplate,
+                    $this->subject,
+                    $this->senderName,
+                    $this->senderMail,
+                    $this->message
+                );
+                break;
+        }
+
+        return true;
     }/*}}}*/
 
     private function sendMail()
@@ -50,11 +104,11 @@ class Ccontact extends contact
         $mail->username = smtpUser;
         $mail->password = smtpPass;
 
-        $mail->SetFrom(smtpUser);    // Name is optional
+        $mail->SetFrom(smtpUser, 'Ivy CMS contact form');    // Name is optional
 
-        $mail->AddTo('vnitu@ceata.org');
+        $mail->AddTo($this->destinationEmail);
 
-        $mail->subject = $_POST['subject'];
+        $mail->subject = 'Subject: ' . $_POST['subject'];
         $mail->message = $this->_emailBody;
 
         // Chestii optionale
@@ -69,45 +123,40 @@ class Ccontact extends contact
 
     public function processForm()
     {/*{{{*/
-        $envelopeData = array(
-            'name'     => array('name, 3, 60',
-                                _('Numele complet (între 3 și 60 caractere')),
-            'subject'  => array('text, 5, 30',
-                            _('Subiectul (minim 5 caractere)')),
-            'message'  => array('text, 10, n',
-                            _('Mesajul (minim 10 caractere)'))
-                       );
 
         $this->feedback = '';
 
         require "./assets/securimage/securimage.php";
         $securimage = new Securimage();
 
-        $this->env = new Envelope($envelopeData);
+        $this->env = new Envelope($this->envelopeData);
         if ($this->env->status == TRUE
             &&  $securimage->check($_POST['captcha_code']) == TRUE) {
+
+                $this->senderName = $this->env->items['name']['content'];
+                $this->senderMail = $this->env->items['email']['content'];
+                $this->subject    = $this->env->items['subject']['content'];
+                $this->message    = $this->env->items['message']['content'];
+
             $this->buildEmail();
             $this->sendMail();
             $this->feedback = "<b style='font-size: 14px;'>"
                 ._('Mesajul a fost trimis!')
                 ."</b>";
+            unset($_POST);
 
         } else {
             $this->feedback .= '<b>'
-                ._('Please correct the following fields:')
+                ._('Corectați următoarele câmpuri:')
                 .'</b><br/>';
 
             if ($securimage->check($_POST['captcha_code']) != TRUE)
-                $this->feedback  .= "<b>Cod gresit</b> <br/>";
+                $this->feedback  .= "<b>"._('Codul CAPTCHA')."</b> <br/>";
 
             foreach ($this->env->errors as $value)
-                $this->feedback .= $value."\n<br/>";
+                $this->feedback .= _($value)."\n<br/>";
 
         }
     }/*}}}*/
 
-    private function buildEmail()
-    {/*{{{*/
-
-    }/*}}}*/
 }
