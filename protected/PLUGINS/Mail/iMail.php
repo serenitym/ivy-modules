@@ -8,7 +8,7 @@
  *
  */
 
-class Mail
+class iMail
 {
     const CRLF = "\r\n";
 
@@ -44,7 +44,7 @@ class Mail
         $this->mailCc = array();
         $this->log = array();
         $this->headers['MIME-Version'] = "1.0";
-        //$this->headers['Content-type'] = "text/plain; charset=utf-8";
+        $this->headers['Content-type'] = "text/plain; charset=utf-8";
       }
 
       private function GetResponse()

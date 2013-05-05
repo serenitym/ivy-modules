@@ -7,7 +7,7 @@
 </div>
 
 <div class='grid_5 push_2 omega'>
-<form action='' method='post' id='form_comp' >
+<form action='' method='post' id='form_comp' enctype='multipart/form-data'>
     <div id='feedback'>{$o->feedback}</div>
     <input type='hidden' name='action' value='contact' />
 
@@ -15,19 +15,19 @@
         <tr>
             <td colspan='2'>
                 "._('Nume, prenume')."
-                <input type='text' name='name' id='name' value='{$o->name}' />
+                <input type='text' name='name' id='name' value='Victor Nitu' />
 			</td>
         </tr>
         <tr>
             <td colspan='2'>
                 "._('Email')."
-                <input type='text' name='email' id='email' value='{$o->email}' />
+                <input type='text' name='email' id='email' value='victor@serenitymedia.ro' />
 			</td>
         </tr>
         <tr>
             <td colspan='2'>
                 "._('Subiect')."
-                <input type='text' name='subject' id='subject' value='{$o->subject}' />
+                <input type='text' name='subject' id='subject' value='Subiect de proba' />
 			</td>
         </tr>
         <tr>
@@ -61,7 +61,7 @@
             </td>
             <td>
                 "._('Atașează fișier')."
-                <input type='file' />
+                <input name='upload' type='file' />
             </td>
         </tr>
     </table>

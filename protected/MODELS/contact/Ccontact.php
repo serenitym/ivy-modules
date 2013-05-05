@@ -109,12 +109,60 @@ class Ccontact
         $mail->AddTo($this->destinationEmail);
 
         $mail->subject = 'Subject: ' . $_POST['subject'];
-        $mail->message = $this->_emailBody;
+        //$mail->message = $this->_emailBody;
+
+        $hash = md5(date('r', time()));
+
+        //read the atachment file contents into a string,
+        //encode it with MIME base64,
+        //and split it into smaller chunks
+
+        //define the body of the message.
+$mail->message = "
+
+--PHP-mixed-{$hash}
+Content-Type: multipart/alternative; boundary=\"PHP-alt-{$hash}\"
+
+--PHP-alt-{$hash}
+Content-Type: text/plain; charset=\"utf-8\"
+Content-Transfer-Encoding: 7bit
+
+Text variant here
+
+--PHP-alt-{$hash}
+Content-Type: text/html; charset=\"utf-8\"
+Content-Transfer-Encoding: 7bit
+
+{$this->_emailBody}
+
+--PHP-alt-{$hash}--
+
+";
+
+        if(isset($_FILES['upload']))
+$mail->message .=
+"
+--PHP-mixed-{$hash}
+Content-Type: {$_FILES['upload']['type']}; name=\"{$_FILES['upload']['name']}\"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment
+
+".
+chunk_split(base64_encode(file_get_contents($_FILES['upload']['tmp_name'])));
+
+$mail->message .= "--PHP-mixed-{$hash}--";
 
         // Chestii optionale
         // Note: contentType defaults to "text/plain; charset=iso-8859-1"
-        $mail->contentType = "text/html";
+        //$mail->contentType = "text/html";
+        //$mail->contentType =
+            //"multipart/mixed; boundary=\"PHP-mixed-".$hash."\"";
         $mail->headers['Reply-To']=$_POST['email'];
+        $mail->headers['Content-Type']=
+            "multipart/mixed; boundary=\"PHP-mixed-".$hash."\"";
+
+        //if(isset($_FILES['upload']))
+            //$mail->addAttachment($_FILES['upload']);
 
         //  unset ($_POST);
 
