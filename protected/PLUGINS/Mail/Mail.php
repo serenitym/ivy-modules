@@ -144,7 +144,7 @@ class Mail
         );
 
         if (empty($this->_skt))
-          return false;
+          return false && error_log('Cannot open SMTP socket', E_USER_WARNING);
 
         $this->log['connection'] = $this->GetResponse();
 

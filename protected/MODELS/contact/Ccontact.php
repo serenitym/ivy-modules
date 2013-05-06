@@ -24,6 +24,7 @@ class Ccontact
     public function _init()
     {/*{{{*/
 
+        $this->_emailBody = array();
 
         $gettextDir = fw_pubPath . "MODELS/contact/tmpl_". $this->template ."/i18n";
         $gettextDomain = "messages";
@@ -74,20 +75,17 @@ class Ccontact
 
         switch ($type) {
             case 'html':
-                $this->emailHtml = $this->_emailBody =
+                $this->_emailBody['html'] =
                     $this->C->renderDisplay_fromObj(
                         $this, '', $emailHtmlTemplate
                     );
                 break;
             default:
             case 'text':
-                $this->emailText = sprintf(
-                    $emailTextTemplate,
-                    $this->subject,
-                    $this->senderName,
-                    $this->senderMail,
-                    $this->message
-                );
+                $this->_emailBody['text'] =
+                    $this->C->renderDisplay_fromObj(
+                        $this, '', $emailTextTemplate
+                    );
                 break;
         }
 
@@ -127,19 +125,20 @@ Content-Type: multipart/alternative; boundary=\"PHP-alt-{$hash}\"
 Content-Type: text/plain; charset=\"utf-8\"
 Content-Transfer-Encoding: 7bit
 
-Text variant here
+{$this->_emailBody['text']}
 
 --PHP-alt-{$hash}
 Content-Type: text/html; charset=\"utf-8\"
 Content-Transfer-Encoding: 7bit
 
-{$this->_emailBody}
+{$this->_emailBody['html']}
 
 --PHP-alt-{$hash}--
 
 ";
 
-        if(isset($_FILES['upload']))
+if (isset($_FILES['upload'])
+    && file_exists($_FILES['upload']['tmp_name'])) {
 $mail->message .=
 "
 --PHP-mixed-{$hash}
@@ -149,6 +148,7 @@ Content-Disposition: attachment
 
 ".
 chunk_split(base64_encode(file_get_contents($_FILES['upload']['tmp_name'])));
+}
 
 $mail->message .= "--PHP-mixed-{$hash}--";
 
@@ -186,7 +186,9 @@ $mail->message .= "--PHP-mixed-{$hash}--";
                 $this->subject    = $this->env->items['subject']['content'];
                 $this->message    = $this->env->items['message']['content'];
 
-            $this->buildEmail();
+            $this->buildEmail('html');
+            $this->buildEmail('text');
+
             $this->sendMail();
             $this->feedback = "<b style='font-size: 14px;'>"
                 ._('Mesajul a fost trimis!')

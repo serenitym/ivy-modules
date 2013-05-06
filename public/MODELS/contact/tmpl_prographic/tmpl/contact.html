@@ -15,19 +15,19 @@
         <tr>
             <td colspan='2'>
                 "._('Nume, prenume')."
-                <input type='text' name='name' id='name' value='Victor Nitu' />
+                <input type='text' name='name' id='name' value='{$o->name}' />
 			</td>
         </tr>
         <tr>
             <td colspan='2'>
                 "._('Email')."
-                <input type='text' name='email' id='email' value='victor@serenitymedia.ro' />
+                <input type='text' name='email' id='email' value='{$o->email}' />
 			</td>
         </tr>
         <tr>
             <td colspan='2'>
                 "._('Subiect')."
-                <input type='text' name='subject' id='subject' value='Subiect de proba' />
+                <input type='text' name='subject' id='subject' value='{$o->subject}' />
 			</td>
         </tr>
         <tr>
@@ -60,8 +60,9 @@
                  <input type='submit' id='submit' name='Submit' value='"._('Trimite')."' />
             </td>
             <td>
-                "._('Atașează fișier')."
-                <input name='upload' type='file' />
+                ".($_GET['idC'] == 7
+                ? _('Atașează fișier')."<input name='upload' type='file' />"
+                : '')."
             </td>
         </tr>
     </table>
