@@ -50,7 +50,7 @@ class CivyMenu{
             foreach($ch as $idCh){
 
                 $idC = $idCh;
-                $name = $this->masterTree[$idC]->name;
+                $name = $this->masterTree[$idC]->{'name_' . $this->lang};
                 $href = publicURL . "?idT={$idT}&idC={$idC}";
 
                 array_push($item['items'],
