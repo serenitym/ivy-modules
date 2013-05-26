@@ -1,0 +1,39 @@
+".($this->admin
+   ? $this->renderDisplay_fromObj($o, '', "{$o->modType}/gallery/tmpl_pro/ADMIN/tmpl/Agallery.html")
+   : "orice"
+)."
+
+<div class='container'>
+
+	<div id='featured'> 
+
+
+       ".$this->renderDisplay_Items_uniDimens(
+            $o->urlImages,
+            "<img src='~i' data-caption='#htmlCaption{~key}' /> ")."
+    </div>
+
+    ".(
+      $o->captions
+         ? $this->renderDisplay_Items_uniDimens(
+                $o->urlImages,
+                "
+                   `.( isset(~o->captions[~key]) && ~o->captions[~key][`title_{~o->lang}`]
+                       ? ` <span class='orbit-caption' id='htmlCaption{~key}'>
+                               <a href='`.~o->captions[~key]['link'].`'>
+                                  `.~o->captions[~key][`title_{~o->lang}`]. `
+                               </a>
+                          </span>`
+                       : ``
+
+                    ).`
+                  ",
+                "", $o)
+         : ""
+
+    )."
+
+
+
+
+</div>
