@@ -50,7 +50,7 @@ class CivyMenu{
             foreach($ch as $idCh){
 
                 $idC = $idCh;
-                $name = $this->masterTree[$idC]->name;
+                $name = $this->masterTree[$idC]->{'name_'.$this->lang};
                 $href = publicURL . "?idT={$idT}&idC={$idC}";
 
                 array_push($item['items'],
@@ -114,7 +114,7 @@ class CivyMenu{
           #   var_dump($this->masterTree);
               while($row  = $res->fetch_assoc())
               {
-                      $name = $row['name_'.$this->LG];
+                      $name = $row['name_'.$this->lang];
                       $idC   = $row['id'];
                       $idT   = $this->masterTree[$idC]->idT;
 
@@ -206,6 +206,7 @@ class CivyMenu{
      *
     */
     function _setRes($resPath){
+
 
         $currentSet = &$this->{'menuSet'.$this->current_idMenu};
         $currentSet['strUl'] = '';

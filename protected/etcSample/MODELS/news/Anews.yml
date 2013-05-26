@@ -1,0 +1,48 @@
+---
+
+# expected post
+prevNews:
+
+  title:
+
+    validRules:
+      string:
+        fbk: {type: "warning", name: "News Title", mess: "Your title should be a string" }
+
+      notEmpty:
+         fbk: {type: "error", name: "News Title", mess: "Your news must have a title" }
+
+  newsDate: ""
+
+  extLink: ""
+
+  lead:
+    fbk: {type: "error", name: "News Lead", mess: "Your news must have a Lead" }
+    varType: "string"
+
+  newsPic: ""
+
+
+# editare news
+
+newsUpdate:
+
+  title:
+
+    pstVal: "newsTitle"
+    validRules:
+      string:
+        fbk: {type: "warning", name: "News Title", mess: "Your title should be a string" }
+
+      notEmpty:
+         fbk: {type: "error", name: "News Title", mess: "Your news must have a title" }
+
+  dateNews: {pstVal: "newsDate"}
+
+  lead:
+    pstVal: "newsLead"
+    fbk: {type: "error", name: "News Lead", mess: "Your news must have a Lead" }
+    varType: "string"
+
+  content: {pstVal: "newsContent"}
+
