@@ -5,7 +5,7 @@ class ACsingle extends Csingle{
          if(isset($_POST['save_single']))
          {
              $content = $_POST['single_'.$this->LG];
-             file_put_contents($this->resPath,$content);
+             file_put_contents($this->resPath,stripslashes($content));
          }
      }
 

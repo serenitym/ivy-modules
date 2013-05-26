@@ -48,7 +48,7 @@ class Ccontact
     {/*{{{*/
         if (isset($_POST['save_contact'])) {
              $content = $_POST['ContactDdetails_'.$this->lang];
-             file_put_contents($this->resPath, $content);
+             file_put_contents($this->resPath, stripslashes($content));
         }
 
 
@@ -189,7 +189,9 @@ $mail->message .= "--PHP-mixed-{$hash}--";
             $this->buildEmail('html');
             $this->buildEmail('text');
 
-            $this->sendMail();
+            $status = $this->sendMail() == true ? 0 : 1;
+
+            error_log('Mail status: ' . $status);
             $this->feedback = "<b style='font-size: 14px;'>"
                 ._('Mesajul a fost trimis!')
                 ."</b>";

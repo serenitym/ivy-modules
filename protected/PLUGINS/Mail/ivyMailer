@@ -6,20 +6,22 @@
  * @desc Class that deals mainly with email sending, aiming to provide a small
  * API to PEAR's SASL/SMTP monster classes
  *
+ * As of May 2013, integrated into Ivy Framework as default mailer and baptised
+ * as ivyMailer / Ivy Mailer
+ *
  */
 
-class iMail
+class ivyMailer
 {
     const CRLF = "\r\n";
 
       private
-        $_server,
+        $_server,/*{{{*/
         $_port,
         //$_localhost,      // Not sure why I created it, so I commented it out
-        $_skt;
-
+        $_skt;/*}}}*/
       public
-        $username,
+        $username,/*{{{*/
         $password,
         $connectTimeout,
         $responseTimeout,
@@ -30,7 +32,7 @@ class iMail
         $mailCc,
         $subject,
         $message,
-        $log;
+        $log;/*}}}*/
 
       function __construct($server = "127.0.0.1", $port = 25)
       {
