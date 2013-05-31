@@ -24,8 +24,8 @@
    ================================================== */
 
 div.orbit-wrapper {
-    width: 960px;
-    height: 303px;
+    width: 960px !important;
+    height: 303px !important;
     position: relative; }
 
 div.orbit {
