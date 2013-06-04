@@ -1,0 +1,43 @@
+<form method = 'post' action = '' id = 'formCaption'>
+<div id='picContainer'>
+
+    <table id='popUp-manCaptions'>
+       <thead>
+           <th></th>
+           <th>Title</th>
+           <th>Link</th>
+       </thead>
+       <tr>
+            <td>
+
+      ".$this->renderDisplay_Items_uniDimens(
+            $o->urlImages,
+            "
+              <div class='img-container'>
+                  <img src='~i' class='small-img'>
+
+              </div>
+              "
+      )."
+            </td>
+           <td>
+               <textarea name='titles' id='cap-title'>
+                   $o->titles
+               </textarea>
+           </td>
+           <td>
+               <textarea name='links'  id='cap-link'>
+                  $o->links
+              </textarea>
+           </td>
+
+      </tr>
+
+
+    </table>
+</div>
+
+    <input type='submit' name='saveCaptions' value='save'>
+    <input type='hidden' name='moduleName' value='gallery'>
+    <input type='hidden' name='methName'  value='saveCaptions'>
+</form>
