@@ -73,12 +73,12 @@ class ivyMailer
         $this->from = array($addr, $name);
     }/*}}}*/
 
-    public function AddCc($addr, $name="")
+    public function addCc($addr, $name="")
     {/*{{{*/
         $this->mailCc[] = array($addr, $name);
     }/*}}}*/
 
-    public function AddTo($addr, $name="")
+    public function addTo($addr, $name="")
     {/*{{{*/
         $this->mailTo[] = array($addr, $name);
     }/*}}}*/
