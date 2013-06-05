@@ -14,26 +14,26 @@
 class ivyMailer
 {
 
-    const CRLF = "\r\n";
+      const CRLF = "\r\n";
 
-     private
-        $_username,
-        $_password,
-        $_server,
+      private
+        $_server,/*{{{*/
         $_port,
         $_connectTimeout,
         $_responseTimeout,
-        $_skt;
+        $_skt;/*}}}*/
 
       public
-        $contentType,
+        $contentType,/*{{{*/
+        $username,
+        $password,
         $headers,
         $body,
         $from,
         $mailTo,
         $mailCc,
         $subject,
-        $log;
+        $log;/*}}}*/
 
       public $message = array();
 
@@ -55,12 +55,12 @@ class ivyMailer
 
     public function defineText($text)
     {/*{{{*/
-        $this->_message['text'] = $text;
+        $this->message['text'] = $text;
     }/*}}}*/
 
     public function defineHtml($html)
     {/*{{{*/
-        $this->_message['html'] = $html;
+        $this->message['html'] = $html;
     }/*}}}*/
 
     public function setSubject($subject)
@@ -71,6 +71,11 @@ class ivyMailer
     public function setFrom($addr, $name="")
     {/*{{{*/
         $this->from = array($addr, $name);
+    }/*}}}*/
+
+    public function AddCc($addr, $name="")
+    {/*{{{*/
+        $this->mailCc[] = array($addr, $name);
     }/*}}}*/
 
     public function AddTo($addr, $name="")
@@ -104,8 +109,8 @@ class ivyMailer
 
         // Request auth login
         $this->log['auth']     = $this->SendCMD("AUTH LOGIN");
-        $this->log['username'] = $this->SendCMD(base64_encode($this->_username));
-        $this->log['password'] = $this->SendCMD(base64_encode($this->_password));
+        $this->log['username'] = $this->SendCMD(base64_encode($this->username));
+        $this->log['password'] = $this->SendCMD(base64_encode($this->password));
 
         //Email from
         $this->log['mailfrom'] = $this->SendCMD("MAIL FROM:<{$this->from[0]}>");
@@ -130,9 +135,16 @@ class ivyMailer
         $this->headers['Subject'] = $this->subject;
         $this->headers['Date'] = date('r');
 
+        $this->generateMultipart();
+
         $headers = '';
         foreach ($this->headers as $key => $val)
           $headers .= $key . ': ' . $val . self::CRLF;
+
+        file_put_contents(
+            logPath . 'mail.log',
+            "{$headers}$newline{$this->body}$newline."
+        );
 
         $this->log['data2'] = $this->SendCMD(
             "{$headers}$newline{$this->body}$newline."
@@ -173,16 +185,49 @@ class ivyMailer
 
     protected function generateMultipart()
     {/*{{{*/
+        $this->hash = md5(date('r', time()));
+        //$this->body = "--PHP-mixed-{$this->hash}
+//Content-Type: multipart/alternative; boundary=\"PHP-alt-{$this->hash}\"
+//";
+        //$this->body .= "--PHP-mixed-{$this->hash}\n";
 
+        //$this->body .= "--PHP-alt-{$this->hash}\n";
+        if (strlen($this->message['text']) > 0)
+            $this->generateText();
+
+        //$this->body .= "--PHP-alt-{$this->hash}\n";
+        if (strlen($this->message['html']) > 0)
+            $this->generateHtml();
+
+        $this->body .= "--PHP-alt-{$this->hash}--\n";
+        //$this->body .= "--PHP-mixed-{$this->hash}--\n";
+
+        //$this->headers['Content-type'] = "multipart/mixed; boundary=\"PHP-mixed-".$this->hash."\"";
+        $this->headers['Content-type'] = "multipart/alternative; boundary=\"PHP-alt-".$this->hash."\"";
     }/*}}}*/
 
     protected function generateText()
     {/*{{{*/
+        $this->body .= "
+--PHP-alt-{$this->hash}
+Content-Type: text/plain; charset=\"utf-8\"
+Content-Transfer-Encoding: 7bit
 
+{$this->message['text']}
+
+";
     }/*}}}*/
 
     protected function generateHtml()
     {/*{{{*/
+        $this->body .= "
+--PHP-alt-{$this->hash}
+Content-Type: text/html; charset=\"utf-8\"
+Content-Transfer-Encoding: 7bit
+
+{$this->message['html']}
+
+";
     }/*}}}*/
 
     protected function setHeaders( &$headers )
