@@ -126,14 +126,14 @@ class ivyMailer
         //Construct headers
         if (!empty($this->contentType))
             $this->headers['Content-type'] = $this->contentType;
-        $this->headers['From'] = $this->formatAddress($this->from);
-        $this->headers['To'] = $this->formatAddressList($this->mailTo);
+        $this->headers['From']     = $this->formatAddress($this->from);
+        $this->headers['To']       = $this->formatAddressList($this->mailTo);
 
         if (!empty($this->mailCc))
-            $this->headers['Cc'] = $this->FmtAddrList($this->mailCc);
+            $this->headers['Cc']   = $this->FmtAddrList($this->mailCc);
 
-        $this->headers['Subject'] = $this->subject;
-        $this->headers['Date'] = date('r');
+        $this->headers['Subject']  = $this->subject;
+        $this->headers['Date']     = date('r');
 
         $this->generateMultipart();
 
@@ -240,9 +240,9 @@ Content-Transfer-Encoding: 7bit
     private function getResponse()
     {/*{{{*/
         stream_set_timeout($this->_skt, $this->_responseTimeout);
-        $response = '';
-        while (($line = fgets($this->_skt, 515)) != false) {
-            $response .= trim($line) . "\n";
+        $response       = '';
+        while (($line   = fgets($this->_skt, 515)) != false) {
+            $response  .= trim($line) . "\n";
             if (substr($line, 3, 1)==' ') break;
         }
         return trim($response);

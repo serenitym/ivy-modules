@@ -1,3 +1,9 @@
+
+# Mail used for contact form as recipient
+# (array is optional, a simple string is enough if only one address is needed)
+#
+#destinationEmail: ['alice@example.com', 'bob@example.com']
+
 ---
 #template: novaContact
 #template_vars:
