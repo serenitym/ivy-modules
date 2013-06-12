@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-.contact        { width: 500px; display: inline-block;}
+.contact        { width: 500px; height: 550px; display: inline-block;}
 
 .cke_skin_kama  { width:500px;}
 .ContactDdetails{ width:500px; height: 370px; }
@@ -31,9 +31,12 @@ form#form_comp input[type='reset']
 
 #feedback
 {
+    font-size: 14px;
+    text-align: center;
     clear: both;
     font-size: 11px;
-    color: #8b0000;
+    color: #8E5F1F;
+    margin: 40px auto;
 }
 
 

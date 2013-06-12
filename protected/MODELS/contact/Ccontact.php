@@ -102,9 +102,14 @@ class Ccontact
         $mail->username = smtpUser;
         $mail->password = smtpPass;
 
-        $mail->SetFrom(smtpUser, 'Ivy CMS contact form');    // Name is optional
+        $mail->SetFrom($_POST['email'], $_POST['name']);    // Name is optional
 
-        $mail->AddTo($this->destinationEmail);
+        if(!is_array($this->destinationEmail))
+            $mail->AddTo($this->destinationEmail);
+        else
+            foreach ($this->destinationEmail as $destination) {
+                $mail->AddTo($destination);
+            }
 
         $mail->subject = 'Subject: ' . $_POST['subject'];
         //$mail->message = $this->_emailBody;
@@ -125,6 +130,7 @@ Content-Type: multipart/alternative; boundary=\"PHP-alt-{$hash}\"
 Content-Type: text/plain; charset=\"utf-8\"
 Content-Transfer-Encoding: 7bit
 
+{$_POST['message']}
 {$this->_emailBody['text']}
 
 --PHP-alt-{$hash}
@@ -174,6 +180,13 @@ $mail->message .= "--PHP-mixed-{$hash}--";
 
         $this->feedback = '';
 
+        $this->name    = $_POST['name'];
+        $this->address = $_POST['address'];
+        $this->phone   = $_POST['phone'];
+        $this->subject = $_POST['subject'];
+        $this->email   = $_POST['email'];
+        $this->message = $_POST['message'];
+
         require "./assets/securimage/securimage.php";
         $securimage = new Securimage();
 
@@ -192,9 +205,16 @@ $mail->message .= "--PHP-mixed-{$hash}--";
             $status = $this->sendMail() == true ? 0 : 1;
 
             error_log('Mail status: ' . $status);
-            $this->feedback = "<b style='font-size: 14px;'>"
-                ._('Mesajul a fost trimis!')
-                ."</b>";
+
+            // Build a reverse compatibility layer for the feedback message
+            if (isset($this->feedbackString))
+                $this->feedback = "<b style='font-size: 14px;'>"
+                    ._($this->feedbackString)
+                    ."</b>";
+            else
+                $this->feedback = "<b style='font-size: 14px;'>"
+                    ._('Mesajul a fost trimis!')
+                    ."</b>";
             unset($_POST);
 
         } else {

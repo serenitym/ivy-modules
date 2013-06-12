@@ -1,9 +1,8 @@
 <div class='cont-mainPage'>
+
+
     {$o->feedback_GOOD}
-    <div id='feedback' class='clearfix'>
-        Any thing <br> This should be a feedback!
-        {$o->feedback}
-    </div>
+    <div id='feedback' class='clearfix'>{$o->feedback}</div>
 
     <div class='SING contact' id='contact_{$o->idC}_{$o->lang}'>
         <div class='EDeditor ContactDdetails' >
@@ -24,7 +23,7 @@
         <!--[if IE]> <span>Phone</span><![endif]--> <input type='text' name='phone'     id='phone'   value='{$o->phone}'     placeholder='Phone' />
         <br/>
         <!--[if IE]><span>Subject</span><![endif]-->   <input type='text' name='subject'   id='subject'  value='{$o->subject}'  placeholder='Subject'/>
-        <!--[if IE]><span>Message</span><![endif]-->   <textarea name='message'            id='message'  placeholder='Message'></textarea>
+        <!--[if IE]><span>Message</span><![endif]-->   <textarea name='message'            id='message'  placeholder='Message'>{$o->message}</textarea>
         <br/>
         <span></span>
         <img id='captcha' src='assets/securimage/securimage_show.php' alt='CAPTCHA Image' /><br />
@@ -40,5 +39,5 @@
     </form>
 
 
-
+<div class='clearfix'></div>
 </div>
