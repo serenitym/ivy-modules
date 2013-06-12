@@ -1,4 +1,9 @@
 <div class='cont-mainPage'>
+    {$o->feedback_GOOD}
+    <div id='feedback' class='clearfix'>
+        Any thing <br> This should be a feedback!
+        {$o->feedback}
+    </div>
 
     <div class='SING contact' id='contact_{$o->idC}_{$o->lang}'>
         <div class='EDeditor ContactDdetails' >
@@ -8,7 +13,7 @@
     </div>
 
     <form action='' method='post' id='form_comp' >
-        {$o->feedback_GOOD}
+
         <input type='hidden' name='action' value='contact' />
 
         <!--[if IE]> <![endif]-->
@@ -34,7 +39,6 @@
         <input type='reset' name='Reset' value='Reset' class='ivy' />
     </form>
 
-    <div id='feedback' class='clearfix'>{$o->feedback}</div>
 
 
 </div>
