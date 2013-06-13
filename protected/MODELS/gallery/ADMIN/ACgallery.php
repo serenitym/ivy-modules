@@ -78,7 +78,8 @@ class ACgallery extends Cgallery{
     function _setINI(){
 
         parent::_setINI();
-        $this->get_manageCaptions();
+        if(isset($this->captions))
+            $this->get_manageCaptions();
 
     }
 }
