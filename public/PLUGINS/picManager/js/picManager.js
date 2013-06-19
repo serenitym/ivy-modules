@@ -574,10 +574,10 @@ $(document).ready(function(){
      iEdit.add_bttConf('pic-full',
          {
             addBt  : { status : false },
-            saveBt : { async :new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : false },
+            saveBt : { async :new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/savePic.php' , restoreCore : 0},
                                              { callBack_fn : (typeof carousel_savePic == 'function' ? carousel_savePic : 'altceva')}
                                             ) },
-            deleteBt :{ async :  new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : false},
+            deleteBt :{ async :  new fmw.asyncConf({ parsePOSTfile : 'PLUGINS/picManager/ADMIN/deletePic.php', restoreCore : 0},
                                                { callBack_fn : (typeof carousel_deletePic == 'function' ? carousel_deletePic : 'altceva')}
                                              ) }
 
