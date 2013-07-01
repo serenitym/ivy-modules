@@ -13,14 +13,14 @@ class Cprofile {
 
         #var_dump($this->C->tree);
         $this->C->historyArgs = array('type'=>'profile');
-        $this->C->SET_HISTORYargs($this->idC);
+        $this->C->SET_HISTORYargs($this->idNode);
 
         $this->uid = &$this->C->user->uid;
 
         #===============================================================================================================
 
-        #echo $this->C->tree[$this->idC]->type;
-        $currType = &$this->C->tree[$this->idC]->type;
+        #echo $this->C->tree[$this->idNode]->type;
+        $currType = &$this->C->tree[$this->idNode]->type;
         if($currType != 'profile')
         {
 

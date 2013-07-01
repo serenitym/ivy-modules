@@ -107,8 +107,8 @@ class CivyMenu{
        {
               if(!isset($this->masterTree))
               {
-                  $this->C->regenerateALLtrees();
-                  $this->masterTree = $this->C->create_masterTREE(false);
+                  $this->C->regenerateAllTrees();
+                  $this->masterTree = $this->C->Build_masterTree(false);
               }
 
           #   echo "<b>getMenu_multilevel - masterTree </b> <br>";
@@ -117,7 +117,7 @@ class CivyMenu{
               {
                       $name = $row['name_'.$this->lang];
                       $idC   = $row['id'];
-                      $idT   = $this->masterTree[$idC]->idT;
+                      $idT   = $this->masterTree[$idC]->idTree;
 
                       # atentie ...aici trebuie apelata o metoda statica probabil
                       # a Ccore

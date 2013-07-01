@@ -138,8 +138,8 @@ class Cproducts extends Product
     function GET_PRODUCT()      {
         $LG = $this->lang;
         $IDpr = $_GET['IDpr'];
-        $Pid  = $idC = $this->C->idC;
-                $idT = $this->C->idT;
+        $Pid  = $idC = $this->C->idNode;
+                $idT = $this->C->idTree;
 
 
 
@@ -211,8 +211,8 @@ class Cproducts extends Product
 
 
         $LG  = $this->lang;
-        $idC = $this->C->idC;
-        $idT = $this->C->idT;
+        $idC = $this->C->idNode;
+        $idT = $this->C->idTree;
 
 
         $priceSTR   = $this->priceSTR;
@@ -276,8 +276,8 @@ class Cproducts extends Product
     function GET_LEVEL()        {
 
                $LG = $this->lang;
-               $idC = $this->C->idC;
-               $idT = $this->C->idT;
+               $idC = $this->C->idNode;
+               $idT = $this->C->idTree;
                $ED  = $this->ED;
 
                $this->level = $level = (isset($_GET['level']) ? $_GET['level'] : 0 );

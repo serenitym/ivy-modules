@@ -60,7 +60,7 @@ class Cnews{
              $row['linkTarget'] = '_black';
         }
         else{
-             $row['linkNews'] = publicURL."?idT={$this->idT}&idC={$this->idC}&idNw=".$row['idNw'];
+             $row['linkNews'] = publicURL."?idT={$this->idTree}&idC={$this->idNode}&idNw=".$row['idNw'];
              $row['linkTarget'] = '';
         }
         return $row;

@@ -28,7 +28,7 @@ class Crating extends ratingSet_user{
     var $ratingTable  = '';
 
     var $setName = '';
-    var $setObj;
+    var $setmod;
     var $onlyUser = false;
 
 
@@ -37,14 +37,14 @@ class Crating extends ratingSet_user{
 
     function getRating(){
 
-        $setObj   = &$this->{$this->setName};
+        $setmod   = &$this->{$this->setName};
 
         $query = "SELECT nrRates, totalRating, CEIL(totalRating / nrRates) AS Rating
                   FROM (
 
                         SELECT COUNT( * ) AS nrRates, SUM( rating ) AS totalRating
-                        FROM  rating_{$setObj->DB_table_postfix}
-                        WHERE {$setObj->DB_extKey_name} = '{$setObj->DB_extKey_value}'
+                        FROM  rating_{$setmod->DB_table_postfix}
+                        WHERE {$setmod->DB_extKey_name} = '{$setmod->DB_extKey_value}'
 
                         ) AS total";
         /**
@@ -57,10 +57,10 @@ class Crating extends ratingSet_user{
         #echo "for setName <b>{$this->setName}</b> ".$query;
 
 
-        $rateRes = $this->C->GET_objProperties($setObj , $query);
+        $rateRes = $this->C->GET_modProperties($setmod , $query);
 
         if(count($rateRes) > 0)
-            for($i=0; $i<$setObj->Rating;$i++)  $setObj->stars[$i] = '';
+            for($i=0; $i<$setmod->Rating;$i++)  $setmod->stars[$i] = '';
 
         #var_dump($this->$setName);
 
@@ -70,21 +70,21 @@ class Crating extends ratingSet_user{
     }
     function getRating_byUid($uid){
 
-        $setObj   = &$this->{$this->setName};
+        $setmod   = &$this->{$this->setName};
 
         $query = "  SELECT rating AS uRating
-                        FROM  rating_{$setObj->DB_table_postfix}
-                        WHERE {$setObj->DB_extKey_name} = '{$setObj->DB_extKey_value}' AND uid = '{$uid}' ";
+                        FROM  rating_{$setmod->DB_table_postfix}
+                        WHERE {$setmod->DB_extKey_name} = '{$setmod->DB_extKey_value}' AND uid = '{$uid}' ";
 
        # echo "for setName <b>{$this->setName}</b> ".$query;
 
-        $rateRes = $this->C->GET_objProperties($setObj , $query);
+        $rateRes = $this->C->GET_modProperties($setmod , $query);
 
         if(count($rateRes) > 0)
-        for($i=0; $i<$setObj->uRating;$i++)
-            $setObj->ustars[$i] = '';
+        for($i=0; $i<$setmod->uRating;$i++)
+            $setmod->ustars[$i] = '';
 
-        #var_dump($setObj->ustars);
+        #var_dump($setmod->ustars);
 
 
     }
@@ -94,7 +94,7 @@ class Crating extends ratingSet_user{
      *   Crating va crea un obiect pt fiecare set cerut de genul $this->[setName] = new ratingSet
      *
      * setul
-     *  -  setObj trebuie sa contina toate var necesare template_vars
+     *  -  setmod trebuie sa contina toate var necesare template_vars
      *  -  variabile sunt utilizate de  javaScript pt a putea  trimite datele necesare pentru procesare DB
      *
      *
@@ -122,17 +122,17 @@ class Crating extends ratingSet_user{
 
 
             /**
-             * SET_tableRelations_settings (&$obj,$extKname, $extKvalue, $tbOrigin, $tbPostfix='', $tbPrefix='', $bond='_')
+             * SET_tableRelations_settings (&$mod,$extKname, $extKvalue, $tbOrigin, $tbPostfix='', $tbPrefix='', $bond='_')
              *
              * SETEAZA
-                  * $obj->DB_table         = prefix + origin + postfix
+                  * $mod->DB_table         = prefix + origin + postfix
                   *
-                  *                           @param        $obj           - obiectul pentru care se fac setarile
-                  * $obj->DB_extKey_name      @param        $extKname      - numele cheii externe
-                  * $obj->DB_extKey_value     @param        $extKvalue     - valoarea cheii externe
-                  * $obj->DB_table_origin     @param        $tbOrigin      - numele tabelului de origine
-                  * $obj->DB_table_Postfix    @param string $tbPostfix
-                  * $obj->DB_table_Prefix     @param string $tbPrefix
+                  *                           @param        $mod           - obiectul pentru care se fac setarile
+                  * $mod->DB_extKey_name      @param        $extKname      - numele cheii externe
+                  * $mod->DB_extKey_value     @param        $extKvalue     - valoarea cheii externe
+                  * $mod->DB_table_origin     @param        $tbOrigin      - numele tabelului de origine
+                  * $mod->DB_table_Postfix    @param string $tbPostfix
+                  * $mod->DB_table_Prefix     @param string $tbPrefix
                   *                           @param string $bond          - concatenare nume DB_table
 
              */

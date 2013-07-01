@@ -14,7 +14,7 @@ class CchildrenDisplay{
                     $name = $this->C->tree[$id_ch]->name;
 
                     //$HTML_string .="<li><a id='$id_ch' href='".fw_pubURL."index.php?idT=$idT&idC=$id_ch'>$name</a></li>";
-                    $currentClass = $this->idC == $id_ch ? 'currentPage' : '';
+                    $currentClass = $this->idNode == $id_ch ? 'currentPage' : '';
                     $HTML_string .="<li class='{$currentClass}'>
                                             <a id='$id_ch' href='".publicURL."?idT={$idT}&idC={$id_ch}"."'>$name</a>
                                     </li>";
@@ -33,14 +33,14 @@ class CchildrenDisplay{
         $p_id = $this->C->p_id;
 
         $children   = $this->C->tree[$p_id]->children;
-        $idT        = $this->C->idT;
+        $idT        = $this->C->idTree;
 
         return $this->DISPLAY_children($children, $idT);
     }
 
     function DISPLAY_mainChildren(){
 
-        $idT = $this->idT;
+        $idT = $this->idTree;
         $children = $this->C->tree[$idT]->children;
 
         return $this->DISPLAY_children($children, $idT);

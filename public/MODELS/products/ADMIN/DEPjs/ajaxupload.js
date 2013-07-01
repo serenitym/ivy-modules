@@ -8,17 +8,17 @@ function remove(theVar){
 	var theParent = theVar.parentNode;
 	theParent.removeChild(theVar);
 }
-function addEvent(obj, evType, fn){
-	if(obj.addEventListener)
-	    obj.addEventListener(evType, fn, true)
-	if(obj.attachEvent)
-	    obj.attachEvent("on"+evType, fn)
+function addEvent(mod, evType, fn){
+	if(mod.addEventListener)
+	    mod.addEventListener(evType, fn, true)
+	if(mod.attachEvent)
+	    mod.attachEvent("on"+evType, fn)
 }
-function removeEvent(obj, type, fn){
-	if(obj.detachEvent){
-		obj.detachEvent('on'+type, fn);
+function removeEvent(mod, type, fn){
+	if(mod.detachEvent){
+		mod.detachEvent('on'+type, fn);
 	}else{
-		obj.removeEventListener(type, fn, false);
+		mod.removeEventListener(type, fn, false);
 	}
 }
 function isWebKit(){

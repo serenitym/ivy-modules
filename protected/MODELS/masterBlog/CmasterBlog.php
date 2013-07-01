@@ -9,7 +9,7 @@ class CmasterBlog {
     function _setINI(){
 
         $this->C->historyArgs = array('type'=>'masterBlog');
-        $this->C->SET_HISTORYargs($this->idC);
+        $this->C->SET_HISTORYargs($this->idNode);
         #===============================================================================================================
 
         if(isset($_GET['recType']))
@@ -23,7 +23,7 @@ class CmasterBlog {
          $this->C->{$this->current_modelBlog}->setINI();
 
 
-        $this->GET_categories($this->idT);      # seteaza categoriesHTML
+        $this->GET_categories($this->idTree);      # seteaza categoriesHTML
 
     }
     public function __construct($C){

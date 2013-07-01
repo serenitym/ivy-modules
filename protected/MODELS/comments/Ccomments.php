@@ -95,8 +95,8 @@ class Ccomments{
 
     function setPagination($queryPagination)  {
 
-        $GET_args = array('idC'=>$this->idC,
-                          'idT'=>$this->idT,
+        $GET_args = array('idC'=>$this->idNode,
+                          'idT'=>$this->idTree,
                           'type'=>$this->type,
                           $this->DB_extKey_name_getArg => $this->DB_extKey_value);
 
@@ -105,7 +105,7 @@ class Ccomments{
                 $this->C->GET_pagination($queryPagination,
                                          $this->nrComm,
                                          $GET_args,
-                                        'comments_'.$this->idC,
+                                        'comments_'.$this->idNode,
                                          $this,
                                          '#addCommAnc'
                                            );

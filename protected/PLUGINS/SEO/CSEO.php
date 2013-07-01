@@ -50,7 +50,7 @@ class CSEO {
     }
     function _setINI()
     {
-        $id = $this->idC;
+        $id = $this->idNode;
         $LG = $this->lang;
 
 
@@ -70,7 +70,7 @@ class CSEO {
 
         $this->C   = &$C;
         $this->lang = &$C->lang;
-        $this->idC = &$C->idC;
+        $this->idNode = &$C->idNode;
         $this->DB  = &$C->DB;
         $this->_setINI();
     }

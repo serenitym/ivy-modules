@@ -1,6 +1,6 @@
 
 
-".($this->idT==$this->idC && !isset($_GET['idRec']) && (!isset($_GET['Pn']) || $_GET['Pn']==1)
+".($this->idTree==$this->idNode && !isset($_GET['idRec']) && (!isset($_GET['Pn']) || $_GET['Pn']==1)
    ? $this->renderDisplay_fromObj($this->{$o->current_modelBlog}->homeSET
                             ,'', "MODELS/blog/tmpl/blogRecords_home.html")
    : ""

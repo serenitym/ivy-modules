@@ -20,7 +20,7 @@ class ACgallery extends Cgallery{
         }
         $this->titles = trim($this->titles);
         $this->links  = trim($this->links);
-        $this->manageCaptions = $this->C->renderDisplay_fromObj($this, '',"/{$this->modType}/gallery/tmpl_pro/ADMIN/tmpl/manageCaptions.html");
+        $this->manageCaptions = $this->C->renderDisplay_frommod($this, '',"/{$this->modType}/gallery/tmpl_pro/ADMIN/tmpl/manageCaptions.html");
         //echo $this->manageCaptions;
         $this->set_manageCaptions_res();
     }
@@ -33,7 +33,7 @@ class ACgallery extends Cgallery{
          * title
          * link
 
-         * obj
+         * mod
          * captions
          */
 

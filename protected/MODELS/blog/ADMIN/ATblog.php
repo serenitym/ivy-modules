@@ -180,7 +180,7 @@ trait ATblog{
 
 
         $query =     "INSERT INTO blogRecords (idCat, entryDate, title, uidRec)
-                                       VALUES ('{$this->idC}' ,NOW(), '{$title}' , '{$this->uid}')";
+                                       VALUES ('{$this->idNode}' ,NOW(), '{$title}' , '{$this->uid}')";
         # blogRecords_view = blogRecords + blogRecords_settings;
         $this->C->DB->query($query);
         $lastID = $this->C->DB->insert_id;
@@ -204,7 +204,7 @@ trait ATblog{
             # recType = tipul de articol inserat
 
             #daca s-a ales un tip de articol!=blog => inseram si in tabelul aferent lui , pt ca mai apoi sa facem update la amandoua
-            $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idT}&idC={$this->idC}&type={$this->type}&idRec={$lastID}";
+            $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idTree}&idC={$this->idNode}&type={$this->type}&idRec={$lastID}";
 
             if($modelBlog_name!='blog'){
 
@@ -501,7 +501,7 @@ trait ATblog{
 
     function GET_record(){
 
-        # C->SET_INC_ext($mod_name,$type_MOD,$extension,$folder='',$template='',$ADMINstr='')
+        # C->Set_incFiles($modName,$modType,$extension,$folder='',$template='',$adminFolder='')
         # adaug js-ul de admin al modelului blog
         $this->C->SET_INC_ext('blog','MODELS','js','js_record','','ADMIN');
         parent::GET_record();

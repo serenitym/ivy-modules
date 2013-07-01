@@ -7,10 +7,10 @@ class Cpage{
     function DISPLAY(){
 
         $LG = $this->LG;
-        $idC = $this->C->idC;
+        $idC = $this->C->idNode;
 
        # $path = publicPath."MODELS/page/RES/{$LG}/".$this->nameF.'.html';
-       # C->GET_resPath($type_MOD='',$resName='', $mod_name='' ,$nameF='', $lang = '')
+       # C->GET_resPath($modType='',$resName='', $modName='' ,$nameF='', $lang = '')
         $path        = $this->C->GET_resPath('','','page',$this->nameF);
         $pageContent = $this->C->GET_resContent($path);
 

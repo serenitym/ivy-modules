@@ -56,7 +56,7 @@ class Cblog extends Cblog_vars{
 
        $currentLayout = $this->C->type;
 
-       return "index.php?idT={$this->idT}".
+       return "index.php?idT={$this->idTree}".
                  "&idC={$row['idCat']}".
                  "&idRec={$row['idRecord']}".
                  "&type={$currentLayout}".
@@ -465,7 +465,7 @@ class Cblog extends Cblog_vars{
          *      GET_priorities($query, $where)    - pointeri = $query & $where deoarece e posibil ca metoda sa produca alterari
          * */
 
-        if($this->idT==$this->idC && (!isset($_GET['Pn']) || $_GET['Pn']==1))
+        if($this->idTree==$this->idNode && (!isset($_GET['Pn']) || $_GET['Pn']==1))
                     $this->GET_priorities($query, $where);
     }
     # CALLED by SET_queryRecords
@@ -480,8 +480,8 @@ class Cblog extends Cblog_vars{
 
 
          #inseamna ca suntem pe o categorie descendenta din blog
-         if($this->idT!=$this->idC)
-             $this->C->ADD_queryWheres($this," idCat = '{$this->idC}' ");
+         if($this->idTree!=$this->idNode)
+             $this->C->ADD_queryWheres($this," idCat = '{$this->idNode}' ");
 
 
          # echo "<b>Query wheres</b> ".$this->C->SET_queryWheres($this)."<br>";
@@ -545,7 +545,7 @@ class Cblog extends Cblog_vars{
          *
          *  (3)
          *  setare ordonare si limite - LimitStart  si Pn vor fii definite de
-         *                              GET_pagination($queryPagination, $this->nrRecords, $GET_args, $this->idC,$this);
+         *                              GET_pagination($queryPagination, $this->nrRecords, $GET_args, $this->idNode,$this);
          *
          *  (4)
          *  - date rezultate in urma queryului vor fii puse in acest array mutidimesional
@@ -765,9 +765,9 @@ class Cblog extends Cblog_vars{
 
 
         #atentie ca s-ar putea sa apara probleme cand vom pune diverse filtre
-        $GET_args = array('idC'=>$this->idC,'idT'=>$this->idT, 'type'=>$this->type);
+        $GET_args = array('idC'=>$this->idNode,'idT'=>$this->idTree, 'type'=>$this->type);
 
-        $this->pagination = $this->C->GET_pagination($queryPagination, $this->nrRecords, $GET_args, $this->idC,$this);
+        $this->pagination = $this->C->GET_pagination($queryPagination, $this->nrRecords, $GET_args, $this->idNode,$this);
 
         #LimitStart, LimitEnd si Pn vor fii definite de GET_pagination
 

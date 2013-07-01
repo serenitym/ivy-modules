@@ -72,7 +72,7 @@ class ACproducts extends Cproducts
         $name        = trim($_POST["name_prod_{$LG}"]);
         $small_desc  = trim($_POST["smallDESC_{$LG}"]);
         $price       = $_POST["price_{$LG}"];
-        $Pid         = $this->C->idC;
+        $Pid         = $this->C->idNode;
 
       //____________________________________________________________
 
@@ -158,7 +158,7 @@ class ACproducts extends Cproducts
 
 
    //_______________________________________________________________________________________________________
-       if(isset($affected)) $this->C->solve_affectedMOD($this->affectedMODULES);
+       if(isset($affected)) $this->C->solveAffectedModules($this->affectedMODULES);
 
        if($myPOST)
         {

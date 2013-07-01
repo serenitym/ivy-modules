@@ -72,7 +72,7 @@ class CmainPOPup
 
 
        #
-        $this->adminSTATUS =($this->C->admin && $this->C->idT==1 && $this->C->type=='products' ? true : false);
+        $this->adminSTATUS =($this->C->admin && $this->C->idTree==1 && $this->C->type=='products' ? true : false);
 
         $this->pathIMG = fw_pubPath.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
         $this->urlIMG = fw_pubURL.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
