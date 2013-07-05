@@ -60,7 +60,9 @@ class CLANG
         foreach ($this->C->langs as $lang) {
             $href = str_replace('/'.$this->lang.'/', '/'.$lang.'/', publicURL)
                 . substr($this->baseURI, 1);
-            $markup .= sprintf($template, $href, strtoupper($lang));
+            $markup .= $lang == $this->lang
+                ? sprintf($template, $href, '<b>' . strtoupper($lang) . '</b>')
+                : sprintf($template, $href, strtoupper($lang));
             $markup .= $separator;
         }
 
