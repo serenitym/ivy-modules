@@ -25,7 +25,7 @@ class Cnews{
                     ORDER BY dateNews desc
                         ";
 
-        #echo "<b>get_ListNews </b> $query";
+        echo "<b>get_ListNews </b> $query";
         $this->news = new stdClass();
         $this->C->GET_objProperties($this->news, $query);
 
@@ -79,7 +79,7 @@ class Cnews{
                     from vw_news_i18n
                     WHERE
                         idLg = '{$this->lang}'
-                    ORDER BY idNw desc";
+                    ORDER BY dateNews desc";
 
         #echo "<b>get_ListNews </b> $query";
         $this->news = $this->C->GET_objProperties($this, $query, 'processNews');
