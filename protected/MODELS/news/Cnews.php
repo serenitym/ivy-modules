@@ -22,7 +22,7 @@ class Cnews{
                     from vw_news_i18n
                     WHERE
                         idLg = '{$this->lang}' AND idNw = {$_GET['idNw']}
-                    ORDER BY idNw desc
+                    ORDER BY dateNews desc
                         ";
 
         #echo "<b>get_ListNews </b> $query";
