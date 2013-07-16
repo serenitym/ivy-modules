@@ -5,7 +5,7 @@
     <hr class='t10 b10' />
     <div class='image_carousel'>
        <div id='kcfinder_div_selPic' class='carousel-content'>
-           ".$this->renderDisplay_Items($o->ITEMS_managerPics,
+           ".$this->Render_items($o->ITEMS_managerPics,'','',
             "<span class='thumbPic-manager' id='pic_{~ao->idPic}'>
                 <img src='{~ao->picUrl}'  />
                 <small class='muted' style='position: absolute;'> idPic = {~ao->idPic}</small>
@@ -21,7 +21,7 @@
     <hr class='t10 b10' />
 
     <div class='allENTS pics-Details ' id='pics_details_en'>
-        ".$this->renderDisplay_Items($o->ITEMS_managerPics,
+        ".$this->Render_items($o->ITEMS_managerPics,$o,'',
             "<div class='ENT pic-full' id='pic-full_{~ao->idPic}_en'>
 
                         <input type='hidden' name='idRecord' value='{~o->DB_extKey_value}'>
@@ -45,6 +45,6 @@
                             <small class='r10' ><b>Date</b>     <span class='EDdate picDate'>{~ao->picDate}</span></small>
                         </p>
             </div>
-            ",'',$o)."
+            ")."
     </div>
 </div>

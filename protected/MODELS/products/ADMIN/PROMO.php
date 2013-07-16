@@ -162,7 +162,7 @@ class PROMO
     }
     function __construct()
     {
-        $this->DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+        $this->DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
         $this->parsePOST();
     }
 }

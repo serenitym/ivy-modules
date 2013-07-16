@@ -98,7 +98,7 @@ class ivyMailer
         if (empty($this->_skt)) {
             return false
                 && error_log(
-                    "Cannot open SMTP socket (error $errno: $errstr)"
+                    "[ ivy ] "."Cannot open SMTP socket (error $errno: $errstr)"
                 );
         }
 
@@ -142,7 +142,7 @@ class ivyMailer
           $headers .= $key . ': ' . $val . self::CRLF;
 
         file_put_contents(
-            logPath . 'mail.log',
+            LOG_PATH . 'mail.log',
             "{$headers}$newline{$this->body}$newline."
         );
 

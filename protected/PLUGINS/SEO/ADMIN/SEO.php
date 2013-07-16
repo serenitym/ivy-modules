@@ -44,7 +44,7 @@ else{
 
     #var_dump($changes->ARRchanges);
 
-    $DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+    $DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
     $query = "SELECT SEO from ITEMS  WHERE id='{$id}' ";
     $res =  $DB->query($query);
     if($res->num_rows > 0)

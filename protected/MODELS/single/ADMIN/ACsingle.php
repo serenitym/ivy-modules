@@ -9,9 +9,9 @@ class ACsingle extends Csingle{
          }
      }
 
-    function _setINI(){
+    function _init_(){
 
-        $this->resPath = $this->C->get_resPath_forObj($this);
+        $this->resPath = $this->C->Module_Get_pathRes($this);
         $this->setDISPLAY();
 
     }

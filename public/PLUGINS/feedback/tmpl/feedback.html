@@ -3,8 +3,7 @@
             <div class='ivy-feedback'>
                 <input type='button' name='toogle-feedback' class='toggleFb' value='hide feedback' >
                 <div class='ivy-feedback-mess'>
-                    ".$this->renderDisplay_Items(
-                        $o->mess,
+                    ".$this->Render_items($o->mess,'','',
                         "
                             <div class='fb fb_{~ao->fbType}'>
                                 <span class='fb_name'>  {~ao->fbName} </span>

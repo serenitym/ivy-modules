@@ -13,10 +13,10 @@ class CchildrenDisplay{
                 {
                     $name = $this->C->tree[$id_ch]->name;
 
-                    //$HTML_string .="<li><a id='$id_ch' href='".fw_pubURL."index.php?idT=$idT&idC=$id_ch'>$name</a></li>";
+                    //$HTML_string .="<li><a id='$id_ch' href='".FW_PUB_URL."index.php?idT=$idT&idC=$id_ch'>$name</a></li>";
                     $currentClass = $this->idNode == $id_ch ? 'currentPage' : '';
                     $HTML_string .="<li class='{$currentClass}'>
-                                            <a id='$id_ch' href='".publicURL."?idT={$idT}&idC={$id_ch}"."'>$name</a>
+                                            <a id='$id_ch' href='".PUBLIC_URL."?idT={$idT}&idC={$id_ch}"."'>$name</a>
                                     </li>";
                 }
 
@@ -30,9 +30,9 @@ class CchildrenDisplay{
     }
     function DISPLAY_siblings(){
 
-        $p_id = $this->C->p_id;
+        $idParent = $this->C->idParent;
 
-        $children   = $this->C->tree[$p_id]->children;
+        $children   = $this->C->tree[$idParent]->children;
         $idT        = $this->C->idTree;
 
         return $this->DISPLAY_children($children, $idT);

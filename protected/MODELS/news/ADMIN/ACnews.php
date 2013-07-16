@@ -29,7 +29,7 @@ class ACnews extends Cnews{
              newsPic: ""
        *
        *
-       * //'/'.str_replace(baseURL,'',$alterPicUrl );
+       * //'/'.str_replace(BASE_URL,'',$alterPicUrl );
        *
        */
       $this->posts = $this->C->processPosts($this->prevNews);
@@ -40,7 +40,7 @@ class ACnews extends Cnews{
           $vars->set_newsPic = '';
           if($vars->newsPic)
           {
-              $vars->newsPic = '/'.str_replace(baseURL,'',$vars->newsPic);
+              $vars->newsPic = '/'.str_replace(BASE_URL,'',$vars->newsPic);
               $vars->set_newsPic = " picUrl = '{$vars->newsPic}' , ";
           }
 
@@ -72,7 +72,7 @@ class ACnews extends Cnews{
                                   values ($idNw, '{$lang}', '{$vars->title}', '{$vars->lead}' )");
 
         }
-        $this->C->DMLsql_bulk($queries, false);
+        $this->C->Db_queryBulk($queries, false);
 
 
     }
@@ -120,7 +120,7 @@ class ACnews extends Cnews{
        # echo "query_update_i18n  ".$queries[1]."<br>";
 
 
-        $this->C->DMLsql_bulk($queries, false);
+        $this->C->Db_queryBulk($queries, false);
 
     }
 
@@ -166,7 +166,7 @@ class ACnews extends Cnews{
        # echo "query_update_i18n  ".$queries[1]."<br>";
 
 
-        $this->C->DMLsql_bulk($queries, false);
+        $this->C->Db_queryBulk($queries, false);
 
     }
 }

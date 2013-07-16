@@ -130,10 +130,10 @@ class Cproducts extends Product
                $res['img_small'] = $this->DEF_img_small;
                $res['img_big']   = $this->DEF_img_big  ;
 
-               if(is_file(fw_pubPath.'MODELS/products/RES/small_img/'.$pic_PATH))
+               if(is_file(FW_PUB_PATH.'MODELS/products/RES/small_img/'.$pic_PATH))
                    $res['img_small'] = $this->basePath.'small_img/'.$pic_PATH;
 
-               if(is_file(fw_pubPath.'MODELS/products/RES/big_img/'.$pic_PATH))
+               if(is_file(FW_PUB_PATH.'MODELS/products/RES/big_img/'.$pic_PATH))
                    $res['img_big']   = $this->basePath.'big_img/'.$pic_PATH;
 
 
@@ -392,7 +392,11 @@ class Cproducts extends Product
        }
 
 
-    function _setINI()           {
+    function _display_() {
+
+        return $this->DISPLAY_page;
+    }
+    function _init_()           {
 
 
         $this->priceSTR     = $this->arr_priceSTR[ $this->lang];
@@ -412,7 +416,7 @@ class Cproducts extends Product
         $this->arr_priceSTR     = array('ro'=>'Pret:', 'en'=>'Price:');
         $this->arr_detailsSTR   = array( 'ro'=>'DETALII' , 'en'=>'DETAILS');
 
-        $this->basePath      =  fw_pubURL.'MODELS/products/RES/';
+        $this->basePath      =  FW_PUB_URL.'MODELS/products/RES/';
         $this->DEF_img_small = $this->img_small =  $this->basePath.'small_img/site_produs_slice_pisici.jpg';
         $this->DEF_img_big   = $this->img_big   =  $this->basePath.'big_img/site_geanta_produs.jpg';
 
@@ -421,7 +425,7 @@ class Cproducts extends Product
         $this->DB = &$C->DB;
         $this->lang = &$C->lang;
 
-        $this->_setINI();*/
+        $this->_init_();*/
 
     }
 }

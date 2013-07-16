@@ -97,7 +97,7 @@ class Ccomments{
 
         $GET_args = array('idC'=>$this->idNode,
                           'idT'=>$this->idTree,
-                          'type'=>$this->type,
+                          'type'=>$this->mgrName,
                           $this->DB_extKey_name_getArg => $this->DB_extKey_value);
 
         //GET_pagination($query,$nrItems,$GETargs,$uniq,&$obj='', $ANCORA='')   {
@@ -371,7 +371,7 @@ class Ccomments{
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         $query = "INSERT into {$this->DB_table_origin} SET ";
-        $query.=   $this->C->DMLsql_setValues_fromArr($sqlV).",entryDate = NOW()  ";
+        $query.=   $this->C->Db_setValsFromArr($sqlV).",entryDate = NOW()  ";
 
         $this->DB->query($query);
        # echo "Ccomments <b>addComment</b> $query <br>";
@@ -388,7 +388,7 @@ class Ccomments{
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         $query  = "INSERT into {$this->DB_table_origin}_text SET  ";
-        $query .=         $this->C->DMLsql_setValues_fromArr($sqlV);
+        $query .=         $this->C->Db_setValsFromArr($sqlV);
 
         $this->DB->query($query);
 

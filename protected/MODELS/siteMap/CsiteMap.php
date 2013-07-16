@@ -2,15 +2,15 @@
 class CsiteMap{
 
     var $C;               //main object
-    var $nameF;
+    var $nodeResFile;
     var $LG;
     var $RESpath;
 
     function setDISPLAY() {
 
-       # $menu1_PATH = publicPath."PLUGINS/MENUhorizontal/RES/".$this->LG."/MENUhorizontal1_class1.html";
-       # $menu2_PATH = publicPath."PLUGINS/MENUhorizontal/RES/".$this->LG."/MENUhorizontal2_class2.html";
-      #  $menu3_PATH = publicPath."PLUGINS/menuPROD/RES/".$this->LG."/menuPROD.html";
+       # $menu1_PATH = PUBLIC_PATH."PLUGINS/MENUhorizontal/RES/".$this->LG."/MENUhorizontal1_class1.html";
+       # $menu2_PATH = PUBLIC_PATH."PLUGINS/MENUhorizontal/RES/".$this->LG."/MENUhorizontal2_class2.html";
+      #  $menu3_PATH = PUBLIC_PATH."PLUGINS/menuPROD/RES/".$this->LG."/menuPROD.html";
 
 
         $menu1_PATH = $this->C->GET_resPath('PLUGINS','MENUhorizontal1_class1');
@@ -26,7 +26,7 @@ class CsiteMap{
         return $siteMap_html;
 
     }
-    function DISPLAY(){
+    function _render_(){
 
 
 
@@ -50,10 +50,10 @@ class CsiteMap{
 
         $this->C = &$C;
         $this->LG = &$C->lang;
-        $this->nameF = $this->C->nameF;
+        $this->nodeResFile = $this->C->nodeResFile;
 
 
-      #  $this->RESpath = publicPath."MODELS/siteMap/RES/".$this->LG."/siteMap.html";
+      #  $this->RESpath = PUBLIC_PATH."MODELS/siteMap/RES/".$this->LG."/siteMap.html";
         $this->RESpath = $this->C->GET_resPath('','siteMap');
         $this->setDISPLAY();
     }

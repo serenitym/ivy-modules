@@ -43,7 +43,7 @@ class CpicManager{
                         FROM  {$setmod->DB_table}
                         WHERE {$setmod->DB_extKey_name} = {$setmod->DB_extKey_value} ORDER BY idPic desc ";
 
-        $setmod->ITEMS_managerPics = $this->C->GET_modProperties($this,$query);
+        $setmod->ITEMS_managerPics = $this->C->Handle_Db_fetch($this,$query);
 
         //TgenTools::info_ech_modMod('ITEMS_managerPics ',$this, 'get_managerPics',$this->SET_managerPics['ITEMS_managerPics']);
         //TgenTools::info_ech("query $query");

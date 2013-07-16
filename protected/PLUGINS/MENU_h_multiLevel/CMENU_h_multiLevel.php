@@ -41,9 +41,9 @@ class CMENU_h_multiLevel
                return $menu;
            }
        }
-       public function DISPLAY()
+       public function _render_()
        {
-           $PATH = resPath.'PLUGINS/'.$this->LG.'/menu_multiLevel.html';
+           $PATH = RES_PATH.'PLUGINS/'.$this->LG.'/menu_multiLevel.html';
            if(file_exists($PATH)) return file_get_contents($PATH);
            else
            {

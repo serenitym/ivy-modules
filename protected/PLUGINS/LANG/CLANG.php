@@ -39,7 +39,7 @@ class CLANG
         return $languages["$lang"];
     }/*}}}*/
 
-    function DISPLAY()
+    function _render_()
     {/*{{{*/
         return $this->createSelector();
     }/*}}}*/
@@ -50,7 +50,7 @@ class CLANG
         $class = $class ?: 'lang_selector';
         $separator = $separator ?: "<span class='lang_separator'></span>";
         $this->baseURI = str_replace(
-            substr(publicURL, 0, -1), '',
+            substr(PUBLIC_URL, 0, -1), '',
             'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
         );
 
@@ -58,7 +58,7 @@ class CLANG
         $template = "<a href='%s'>%s</a>";
 
         foreach ($this->C->langs as $lang) {
-            $href = str_replace('/'.$this->lang.'/', '/'.$lang.'/', publicURL)
+            $href = str_replace('/'.$this->lang.'/', '/'.$lang.'/', PUBLIC_URL)
                 . substr($this->baseURI, 1);
             $markup .= $lang == $this->lang
                 ? sprintf($template, $href, '<b>' . strtoupper($lang) . '</b>')
@@ -73,7 +73,7 @@ class CLANG
 
     }/*}}}*/
 
-    public function _init ()
+    public function _init_ ()
     {/*{{{*/
         $this->setLang();
     }/*}}}*/

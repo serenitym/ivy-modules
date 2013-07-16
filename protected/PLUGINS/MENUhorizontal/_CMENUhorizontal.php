@@ -74,10 +74,10 @@ class CMENUhorizontal
             return $menu;
         }
     }
-    public function DISPLAY($ID=1,$classID=1)
+    public function _render_($ID=1,$classID=1)
     {
         $this->menuName = 'MENUhorizontal_'.$ID.'_class'.$classID.'.html';
-        $this->menuPath = resPath.'PLUGINS/'.$this->LG.'/'.$this->menuName;
+        $this->menuPath = RES_PATH.'PLUGINS/'.$this->LG.'/'.$this->menuName;
 
         if(file_exists($this->menuPath)) return file_get_contents($this->menuPath);
         else return $this->SET_menu($ID,$classID);
