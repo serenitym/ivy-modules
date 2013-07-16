@@ -9,7 +9,7 @@ class Cprofile {
 
     var $uid ;
 
-    function _setINI(){
+    function _init_(){
 
         #var_dump($this->C->tree);
         $this->C->historyArgs = array('type'=>'profile');
@@ -19,7 +19,7 @@ class Cprofile {
 
         #===============================================================================================================
 
-        #echo $this->C->tree[$this->idNode]->type;
+        #echo $this->C->tree[$this->idNode]->mgrName;
         $currType = &$this->C->tree[$this->idNode]->type;
         if($currType != 'profile')
         {

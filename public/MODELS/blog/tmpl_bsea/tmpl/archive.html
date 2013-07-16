@@ -1,0 +1,50 @@
+<div class='block overflow'>
+
+	 <div class='textColumnBig right space'>
+        <p>Our archive contains Lorem Ipsum is simply dummy text of the
+            printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an
+            unknown printer took a galley of type and scrambled it to make
+            a type specimen book.
+        </p>
+
+        <!-- archive Filters -->
+        ".$this->Render_objectFromPath($o,
+            'MODELS/blog/tmpl_bsea/tmpl/archiveFilters.html')."
+
+
+
+	</div> <!-- end description -->
+	<div class='LeftColumnSmall blogsHead space'>Story archive</div>
+</div>
+
+<div class='{$o->ED}allENTS block space overflow allrecords'  id='allrecords_{$o->lang}'>
+    <!-- Pentru add de commmenturi-->
+    ".( !$this->admin ? '' :
+        "
+         <div class='{$o->ED}ENT record' id='record_new_{$o->lang}' style='display: none !important;' >
+              <div style='display: inline-block; vertical-align: top;'>
+                  <p>Post Title</p>
+                  <div class='EDtxt title'>title</div>
+              </div>
+              <div style='display: inline-block;'>
+                  <p>Post Type</p>
+                  <select name='modelBlog_name'>
+                        ".$this->Render_itemsFromStr($o->blogModels, '',
+                            " <option value='{~ao->blogModel_name}'>{~ao->blogModel_name}</option>"
+                      )."
+
+                    </select>
+              </div>
+        </div>
+        {$o->HTMLmessage_Records}
+        "
+    )."
+
+
+   ".$this->Render_itemsFromPath($o->records, $o,
+        "MODELS/blog/tmpl_bsea/tmpl/archivePrevRecord.html"
+   )."
+
+</div>
+    <!-- end archivemain -->

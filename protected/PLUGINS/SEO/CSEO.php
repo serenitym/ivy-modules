@@ -13,10 +13,10 @@ class CSEO {
     var $lang;
 
 
-    function DISPLAY(){
+    function _render_(){
 
           #pasi pentru aceste meta-uri
-          #1.C_setINI va seta bydefault history_TITLE
+          #1.C_init_ va seta bydefault history_TITLE
           #2.Se vor instantia mod-urile default (inclusiv acest SEO)
           #3.La modul curent aceste variabile ale modulului SEO se pot schimba in functie de necesitati
 
@@ -34,7 +34,7 @@ class CSEO {
 
 
     #===================================== [ pentru taguri generale in plus ] ==========================================
-          $extraMetas_path = resPath.'PLUGINS/'.$LG.'/SEO.html';
+          $extraMetas_path = RES_PATH.'PLUGINS/'.$LG.'/SEO.html';
           if(file_exists($extraMetas_path))
                  $disp .= file_get_contents($extraMetas_path);
           else
@@ -48,7 +48,7 @@ class CSEO {
     #===================================================================================================================
         return $disp;
     }
-    function _setINI()
+    function _init_()
     {
         $id = $this->idNode;
         $LG = $this->lang;
@@ -72,7 +72,7 @@ class CSEO {
         $this->lang = &$C->lang;
         $this->idNode = &$C->idNode;
         $this->DB  = &$C->DB;
-        $this->_setINI();
+        $this->_init_();
     }
 
 }

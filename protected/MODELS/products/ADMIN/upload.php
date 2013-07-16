@@ -3,7 +3,7 @@ session_start();
 include './Resize.php';
 
 require_once('../../../fw/GENERAL/core/config.php');
-$DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+$DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
 $poz  = $_REQUEST['p'];
 $size = 'L';//$_REQUEST['size'];
@@ -27,8 +27,8 @@ if($_REQUEST['action'] == 'delete') {
 
 }
 else {
-    $base_img = fw_pubPath.'MODELS/products/RES/';
-    $URLbase_img = fw_pubURL.'MODELS/products/RES/';
+    $base_img = FW_PUB_PATH.'MODELS/products/RES/';
+    $URLbase_img = FW_PUB_URL.'MODELS/products/RES/';
 
 
     $rsL = new Resize($_FILES[$filename], 350, 350, $base_img.'big_img','',$stamp);

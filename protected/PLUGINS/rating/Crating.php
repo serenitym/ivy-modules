@@ -57,7 +57,7 @@ class Crating extends ratingSet_user{
         #echo "for setName <b>{$this->setName}</b> ".$query;
 
 
-        $rateRes = $this->C->GET_modProperties($setmod , $query);
+        $rateRes = $this->C->Handle_Db_fetch($setmod , $query);
 
         if(count($rateRes) > 0)
             for($i=0; $i<$setmod->Rating;$i++)  $setmod->stars[$i] = '';
@@ -78,7 +78,7 @@ class Crating extends ratingSet_user{
 
        # echo "for setName <b>{$this->setName}</b> ".$query;
 
-        $rateRes = $this->C->GET_modProperties($setmod , $query);
+        $rateRes = $this->C->Handle_Db_fetch($setmod , $query);
 
         if(count($rateRes) > 0)
         for($i=0; $i<$setmod->uRating;$i++)

@@ -26,7 +26,7 @@ class Ccontact
 
         $this->_emailBody = array();
 
-        $gettextDir = fw_pubPath . "MODELS/contact/tmpl_". $this->template ."/i18n";
+        $gettextDir = FW_PUB_PATH . "MODELS/contact/tmpl_". $this->template ."/i18n";
         $gettextDomain = "messages";
         $encoding = "UTF-8";
 
@@ -35,7 +35,7 @@ class Ccontact
 
         textdomain($gettextDomain);
 
-        $this->resPath = $this->C->get_resPath_forObj($this);
+        $this->resPath = $this->C->Module_Get_pathRes($this);
 
         if (isset($_POST['action']) && $_POST['action'] == 'contact') {
             $this->processForm();
@@ -76,15 +76,15 @@ class Ccontact
         switch ($type) {
             case 'html':
                 $this->_emailBody['html'] =
-                    $this->C->renderDisplay_fromObj(
-                        $this, '', $emailHtmlTemplate
+                    $this->C->Render_object(
+                        $this, 'path', $emailHtmlTemplate
                     );
                 break;
             default:
             case 'text':
                 $this->_emailBody['text'] =
-                    $this->C->renderDisplay_fromObj(
-                        $this, '', $emailTextTemplate
+                    $this->C->Render_object(
+                        $this, 'path', $emailTextTemplate
                     );
                 break;
         }
@@ -94,13 +94,13 @@ class Ccontact
 
     private function sendMail()
     {/*{{{*/
-        if (defined('smtpPort'))
-            $mail = new Mail(smtpServer, smtpPort);
+        if (defined('SMTP_PORT'))
+            $mail = new Mail(SMTP_SERVER, SMTP_PORT);
         else
-            $mail = new Mail(smtpServer);
+            $mail = new Mail(SMTP_SERVER);
 
-        $mail->username = smtpUser;
-        $mail->password = smtpPass;
+        $mail->username = SMTP_USER;
+        $mail->password = SMTP_PASS;
 
         $mail->SetFrom($_POST['email'], $_POST['name']);    // Name is optional
 
@@ -204,7 +204,7 @@ $mail->message .= "--PHP-mixed-{$hash}--";
 
             $status = $this->sendMail() == true ? 0 : 1;
 
-            error_log('Mail status: ' . $status);
+            error_log("[ ivy ] ".'Mail status: ' . $status);
 
             // Build a reverse compatibility layer for the feedback message
             if (isset($this->feedbackString))

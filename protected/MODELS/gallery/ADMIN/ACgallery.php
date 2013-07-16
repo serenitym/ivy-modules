@@ -4,7 +4,7 @@ class ACgallery extends Cgallery{
 
 
     function set_manageCaptions_res(){
-        file_put_contents(resPath."{$this->modType}/gallery/managePics.html",$this->manageCaptions);
+        file_put_contents(RES_PATH."{$this->modType}/gallery/managePics.html",$this->manageCaptions);
 
     }
     function get_manageCaptions(){
@@ -69,15 +69,15 @@ class ACgallery extends Cgallery{
 
         $captions = array ('captions' => $cap);
         $ymlDump = Spyc::YAMLDump($captions);
-        file_put_contents(etcPath."{$this->modType}/gallery/captions.yml", $ymlDump);
+        file_put_contents(ETC_PATH."{$this->modType}/gallery/captions.yml", $ymlDump);
         //echo $ymlDump;
 
         //var_dump($this->captions);
 
     }
-    function _setINI(){
+    function _init_(){
 
-        parent::_setINI();
+        parent::_init_();
         if(isset($this->captions))
             $this->get_manageCaptions();
 

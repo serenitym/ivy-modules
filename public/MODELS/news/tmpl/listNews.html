@@ -1,9 +1,7 @@
 
 <div class='allENTS listNews' id='listNews_{$o->lang}'>
-    ".$this->renderDisplay_Items(
-          $o->news,
-          "
-        <div class='ENT prevNews' id='prevNews_{~ao->idNw}_{~o->lang}'>
+    ".$this->Render_items($o->news, $o, '',
+        "<div class='ENT prevNews' id='prevNews_{~ao->idNw}_{~o->lang}'>
           <table class='newsItemTable'>
           <tr><td>
                 `.(
@@ -48,6 +46,5 @@
         </div>
         <hr class='hrSeparator'>
     "
-          , '',$o
     )."
 </div>

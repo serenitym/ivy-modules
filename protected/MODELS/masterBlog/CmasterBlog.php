@@ -6,7 +6,7 @@ class CmasterBlog {
     var $current_modelBlog = 'blog';
     var $categoriesHTML='';
 
-    function _setINI(){
+    function _init_(){
 
         $this->C->historyArgs = array('type'=>'masterBlog');
         $this->C->SET_HISTORYargs($this->idNode);

@@ -1,7 +1,7 @@
 <?php
 
 
-    $DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+    $DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
     $DB_table_prefix  = $_POST['DB_table_prefix'];
     $DB_extKey_name   = $_POST['DB_extKey_name'];

@@ -1,7 +1,7 @@
 <?php
 class ACpage extends Cpage
 {
-    function _setINI()
+    function _init_()
     {
         //??? da fuck ???
         if($_POST['save_FULLpage'])

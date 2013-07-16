@@ -1,7 +1,7 @@
 <?php
 class Cnews{
 
-    /*function DISPLAY(){
+    /*function _render_(){
 
         return "
             <div style='min-height: 500px;'>
@@ -60,7 +60,7 @@ class Cnews{
              $row['linkTarget'] = '_black';
         }
         else{
-             $row['linkNews'] = publicURL."?idT={$this->idTree}&idC={$this->idNode}&idNw=".$row['idNw'];
+             $row['linkNews'] = PUBLIC_URL."?idT={$this->idTree}&idC={$this->idNode}&idNw=".$row['idNw'];
              $row['linkTarget'] = '';
         }
         return $row;
@@ -87,7 +87,7 @@ class Cnews{
         $this->template_file = 'listNews';
     }
 
-    function _setINI(){
+    function _init_(){
         if(isset($_GET['idNw'])) $this->get_news();
         elseif($this->level == 0) $this->get_ListNews();
         elseif($this->level == 1) $this->get_ListNews_external();

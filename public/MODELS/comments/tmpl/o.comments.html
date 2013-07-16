@@ -18,12 +18,11 @@
               isset($o->TOPcomment) || isset($o->priorComment)
               ? "<p class='muted b0 b'>Top comments</p>".
 
-                  $this->renderDisplay_Items($o->priorComment,'',
-                            "MODELS/{$o->modName}/tmpl/o.comm_top.html", $o)
-                  .
+                    $this->Render_items($o->priorComment,$o,'path'
+                            "MODELS/{$o->modName}/tmpl/o.comm_top.html")
 
-                  $this->renderDisplay_Items($o->TOPcomment,'',
-                            "MODELS/{$o->modName}/tmpl/o.comm_top.html", $o)
+                  . $this->Render_items($o->TOPcomment,$o, 'path'
+                            "MODELS/{$o->modName}/tmpl/o.comm_top.html")
                   .
                  "<hr class='t5 b5 hr-shadow' />"
 
@@ -31,13 +30,12 @@
          )."
 
 
-         ". $this->renderDisplay_fromObj($o,'',
+         ". $this->Render_object($o,'',
                 "MODELS/{$o->modName}/tmpl/o.comm_add.html")."
 
 
-         ".$this->renderDisplay_Items(
-                $o->comments,'',
-                "MODELS/{$o->modName}/tmpl/o.comm_prev.html", $o)
+         ".$this->Render_items($o->comments,$o, 'path'
+                "MODELS/{$o->modName}/tmpl/o.comm_prev.html")
          ."
 
   </div>

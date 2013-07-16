@@ -2,7 +2,7 @@
 class Csingle{
 
 
-   /* function DISPLAY(){
+   /* function _render_(){
 
         $LG = $this->LG;
         $idC = $this->C->idNode;

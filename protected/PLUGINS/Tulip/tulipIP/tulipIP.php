@@ -63,8 +63,8 @@ class tulipIP {
         if (self::$log) {
             $message1 = "\n" . $type . " [Method : $methodName] " . $message;
             $message2 = " [Method : $methodName] " . $message;
-            @error_log($message2);
-            @error_log($message1, 3, TULIP_LOGGER);
+            @error_log("[ ivy ] ".$message2);
+            @error_log("[ ivy ] ".$message1, 3, TULIP_LOGGER);
         }
     }
 

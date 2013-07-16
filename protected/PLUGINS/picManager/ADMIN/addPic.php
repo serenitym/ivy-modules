@@ -28,7 +28,7 @@ $url          =  $_POST['urlPic'];
 $idRecord_arr =  explode('_',$_POST['idRecord']) ;
 $idRecord     =  $idRecord_arr[1];
 
-$DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+$DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
 $query = "INSERT into blog_picManager
                     (idRecord, picUrl)

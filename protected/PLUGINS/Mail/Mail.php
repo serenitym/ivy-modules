@@ -135,7 +135,7 @@ class Mail
       {
         $newLine = self::CRLF;
 
-        $errno = $errstr = NULL;
+        $errno = $errstr = null;
 
         //Connect to the host on the specified port
         $this->_skt = fsockopen(
@@ -143,8 +143,10 @@ class Mail
             $errno, $errstr, $this->connectTimeout
         );
 
-        if (empty($this->_skt))
-          return false && error_log('Cannot open SMTP socket', E_USER_WARNING);
+        if (empty($this->_skt)) {
+            return false
+                && error_log("[ ivy ] ".'Cannot open SMTP socket', E_USER_WARNING);
+        }
 
         $this->log['connection'] = $this->GetResponse();
 
@@ -161,27 +163,31 @@ class Mail
 
         //Email to
         $cnt = 1;
-        foreach (array_merge($this->mailTo, $this->mailCc) as $addr)
-          $this->log['rcptto'.$cnt++] = $this->SendCMD("RCPT TO:<{$addr[0]}>");
+        foreach (array_merge($this->mailTo, $this->mailCc) as $addr) {
+            $this->log['rcptto'.$cnt++] = $this->SendCMD("RCPT TO:<{$addr[0]}>");
+        }
 
         //The Email
         $this->log['data1'] = $this->SendCMD("DATA");
 
         //Construct headers
-        if (!empty($this->contentType))
+        if (!empty($this->contentType)) {
             $this->headers['Content-type'] = $this->contentType;
+        }
         $this->headers['From'] = $this->FmtAddr($this->from);
         $this->headers['To'] = $this->FmtAddrList($this->mailTo);
 
-        if (!empty($this->mailCc))
+        if (!empty($this->mailCc)) {
             $this->headers['Cc'] = $this->FmtAddrList($this->mailCc);
+        }
 
         $this->headers['Subject'] = $this->subject;
         $this->headers['Date'] = date('r');
 
         $headers = '';
-        foreach ($this->headers as $key => $val)
-          $headers .= $key . ': ' . $val . self::CRLF;
+        foreach ($this->headers as $key => $val) {
+            $headers .= $key . ': ' . $val . self::CRLF;
+        }
 
         $this->log['data2'] = $this->SendCMD(
             "{$headers}{$newLine}{$this->message}{$newLine}."

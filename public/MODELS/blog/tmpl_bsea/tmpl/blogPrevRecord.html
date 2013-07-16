@@ -1,0 +1,57 @@
+<div class='{$ao->EDrecord}ENT block space record'   id='record_{$ao->idRecord}_{$o->lang}' >
+    <!-- start story -->
+	<div class='textColumnBig right'>
+	    <!-- <div class='theStory'>  -->
+        <span> {$ao->lead} </span>
+	    <div class='moreText' id='more1_id_text'>
+            {$ao->content}
+	    </div>
+
+	    <div class='fullwidth'>
+	        <div class='showMore' id='more1_id'>More</div>
+		    <div id='sharepanel'>
+	            <div class='shareText' id='share'>Share this story</div>
+                <ul id='shareicons'>
+                    <li class='shareText' id='social-connect-facebook'></li>
+                    <li class='shareText' id='social-connect-twitter'></li>
+                    <li class='shareText' id='social-connect-vkontakte'></li>
+                </ul>
+	        </div>
+            <div class='shareText' id='geturl'>get permalink</div>
+            <div class='geturl'></div>
+	     </div>
+
+	</div>
+    <!-- end story -->
+
+    <!-- begin left -->
+	<div class='LeftColumnSmall {$ao->catResFile}leftborder'>
+	    <div class='Name {$ao->catResFile} fullwidth'>{$ao->title}</div>
+	    <div class='imageColumnHead'>
+            {$ao->fullName}
+            /
+            {$ao->publishDate}
+        </div>
+	    <div class='imageColumnHead'>
+            Filed under:&nbsp;
+            <span class='{$ao->catResFile}'>
+                 <!--<a href=''>tag1</a>,
+                 <a href=''>tag2</a>,
+                 <a href=''>tag3</a>-->
+                {$ao->tagsName}
+            </span>
+        </div>
+        <div class='fullwidth'>
+            <img class='photoGalleryThumbs' src='foto/16.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/21.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/28.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/16.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/21.jpg'/>
+        </div>
+    </div><!-- end left-->
+
+</div> <!-- end blog post -->
+
+<div class='block space'>
+    <!-- pentru spatiere-->
+</div>
