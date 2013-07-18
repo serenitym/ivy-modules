@@ -4,23 +4,54 @@ class Cblog extends blog_handlers
     var $methodHandle ;
     var $assocTmplFile;
     var $tmplFiles;
+    var $blogModels;
+    var $blogSections;
     var $subtreeIds = array();
+
+    // home vars
+    var $tmpTree ;
+    var $tmpIdTree ;
+    var $filterRecTypes = array();
+
+    // general seters
+    function hrefFilter($filterName, $filterValue)
+    {
+        return "filterName={$filterName}&filterValue={$filterValue}";
+    }
+    function Set_filterRecTypes($baseUrl) {
+
+        foreach ($this->blogModels As $recType) {
+           $this->filterRecTypes[$recType] =$baseUrl
+                                            ."&".$this->hrefFilter('recType', $recType)   ;
+        }
+    }
+
 
     //===============================================[ query Filters ]==========
 
-    function Set_subtreeIds($idNode)
+    function Get_recTypeFilter($recType)
+    {
+        return " modelBlog_name = '{$recType}' ";
+    }
+
+    function Get_tagFilter($filterValue)
+    {
+        return ' tagsName LIKE "%'.$filterValue.'%" ';
+    }
+
+    function Set_subtreeIds($idNode, &$tree)
     {
         array_push($this->subtreeIds, $idNode);
 
-        if (isset($this->tree[$idNode]->children )
-            && count($this->tree[$idNode]->children) > 0
+        if (isset($tree[$idNode]->children )
+            && count($tree[$idNode]->children) > 0
         ) {
-            foreach ($this->tree[$idNode]->children AS $idChild) {
-                $this->Set_subtreeIds($idChild);
+            foreach ($tree[$idNode]->children AS $idChild) {
+                $this->Set_subtreeIds($idChild, $tree);
             }
         }
     }
-    function Get_categoryFilter()
+    function Get_categoryFilter($idNode = '')
     {
         /*
          * categoria ar trebui deja sa fie stiuta este $idNode
@@ -31,14 +62,21 @@ class Cblog extends blog_handlers
          * aici mi se pare ca avem nevoie de o functie de ajutor (recursiva )
          * */
         //var_dump($this->tree[$this->idNode]);
-        $this->Set_subtreeIds($this->idNode);
+        $tree   = $this->tmpTree ? $this->tmpTree : $this->tree;
+        $idNode = $idNode ? $idNode : $this->idNode;
+
+        // clean subTreeIds
+        $this->subtreeIds = array();
+        $this->Set_subtreeIds($idNode, $tree);
         if (!$this->subtreeIds) {
             error_log("[ ivy ] Cblog - Get_categoryFilter : "
-                      ." Nu s-au putut lua nodurile din subtree-ul : $this->idNode"
+                      ." Nu s-au putut lua nodurile din subtree-ul : $idNode"
             );
         } else {
-
-            return " idCat IN (".implode(',', $this->subtreeIds).")";
+            $subTreeIds = implode(',', $this->subtreeIds);
+            error_log("[ ivy ] Cblog - Get_categoryFilter : "
+                      ."  pt  subtree-ul : $idNode avem nodurile : $subTreeIds ");
+            return " idCat IN ( $subTreeIds )";
         }
 
 
@@ -128,7 +166,7 @@ class Cblog extends blog_handlers
 
                               LEFT OUTER JOIN
                               (
-                                SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ', ' ) AS tagsName
+                                SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ',' ) AS tagsName
                               		FROM blogMap_recordsTags
                               		GROUP BY idRecord
                               )AS TBtagsName
@@ -180,14 +218,14 @@ class Cblog extends blog_handlers
      *
      * @return array
      */
-    function Get_queryRecords($filters)
+    function Get_queryRecords($filters, $query = '')
     {
          $sql = new stdClass();
         //$sql->parts['query'];
         //$sql->fullQuery;
 
 
-        $sql->parts['query']  = $this->Get_baseQueryRecords(); // return string
+        $sql->parts['query']  = $query ? $query:  $this->Get_baseQueryRecords(); // return string
         $basicFilters         = $this->Get_basicFilter();  //return array
         $requestFilters       = $this->_handle_requestFilters($filters);
 
@@ -224,7 +262,7 @@ class Cblog extends blog_handlers
     {
         $this->_handle_requests();
 
-        #===============================================================================================================
+        #=======================================================================
         if (!isset($this->uid)) {
             error_log('[ ivy ] Cblog - _init_ : Nici un user nu a fost setat ');
         }

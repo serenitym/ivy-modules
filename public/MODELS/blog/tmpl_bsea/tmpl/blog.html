@@ -1,10 +1,12 @@
 <div class='block space overflow'>
     <!-- begin title section and categories -->
 	<div class='textColumnBig right space'>
-        ".$this->Render_arrayFromStr($this->nodeChildren , '',
+        ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
            "
             <div class='blogSectionColumn blogSection' id='{~this->tree[~i]->resFile}'>
-                {~this->tree[~i]->name}
+                <a href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'>
+                    {~this->tree[~i]->name}
+                </a>
             </div>
            "
         )."
