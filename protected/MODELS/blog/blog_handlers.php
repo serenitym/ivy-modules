@@ -44,7 +44,11 @@ class blog_handlers extends Cblog_vars
     }
     function Set_recordPics(&$row)
     {
-        preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches);
+       // preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches);
+        //preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $row['content'], $matches);
+        preg_match_all('/(?<=\<img).+src=[\'"]([^\'"]+)/i', $row['content'], $matches);
+        //echo "<b>SET_record_mainPic : matches </b>";
+        //var_dump($matches);
         return $matches;
 
     }
@@ -54,8 +58,9 @@ class blog_handlers extends Cblog_vars
                                  ? $matches[1][0]
                                  : "";*/
         $matches = $this->Set_recordPics($row);
+
         if ($matches) {
-            return  $matches[0][0];
+            return  $matches[1][0];
         }
 
         # echo $row['title']."<br>".var_dump($matches)."<br>";
@@ -64,7 +69,8 @@ class blog_handlers extends Cblog_vars
 
        $currentLayout = $this->C->mgrName;
 
-       return "index.php?idT={$this->idTree}".
+       $idTree = !$this->tmpIdTree ? $this->idTree : $this->tmpIdTree;
+       return "index.php?idT={$idTree}".
                  "&idC={$row['idCat']}".
                  "&idRec={$row['idRecord']}".
                  "&type={$currentLayout}".
@@ -144,7 +150,7 @@ class blog_handlers extends Cblog_vars
         $row['record_mainPic']   = $this->SET_record_mainPic($row);
         $row['record_href']      = $this->SET_record_href($row);
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
-       # $row['Rating']           = $this->SET_Rating($row);         #s-ar putea sa nici nu mai am nevoie de asta
+        # $row['Rating']           = $this->SET_Rating($row);         #s-ar putea sa nici nu mai am nevoie de asta
        // $row['total_nrComments'] = $this->SET_total_nrComments($row);
 
 
