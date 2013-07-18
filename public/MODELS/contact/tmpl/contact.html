@@ -23,10 +23,10 @@
      <input type='submit' name='Submit' value='{$o->sp_submit}' /> &nbsp;&nbsp;&nbsp;
      <input type='reset' name='Reset' value='{$o->sp_reset}' />
  </form>
-<div class='SING contact' id='contact_{$o->idC}_{$o->LG}'>
+<div class='SING contact' id='contact_{$o->idNode}_{$o->LG}'>
    <div class='EDeditor ContactDdetails' >
 
-       ".$this->ctrlDisplay_fromObjRes($o)."
+       ".$this->Render_ModulefromRes($o)."
    </div>
 </div>
 <div id='feedback'>{$o->feedback}</div>

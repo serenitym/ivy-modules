@@ -85,7 +85,7 @@ class CMENUhorizontal
 
            $this->items = $this->getItems();
 
-            $menu = $this->C->renderDisplay_fromObj($this,'', 'PLUGINS/MENUhorizontal/tmpl/menu.html');
+            $menu = $this->C->Render_object($this,'path', 'PLUGINS/MENUhorizontal/tmpl/menu.html');
              file_put_contents( $this->menuPath,$menu);
 
             return $menu;
@@ -94,8 +94,8 @@ class CMENUhorizontal
     public function DISPLAY($ID=1,$classID=1)
     {
         $this->menuName = 'MENUhorizontal_'.$ID.'_class'.$classID.'.html';
-        #$this->menuPath = resPath.'PLUGINS/'.$this->LG.'/'.$this->menuName;
-        $this->menuPath = $this->C->get_resPath_forObj($this, $this->menuName);
+        #$this->menuPath = RES_PATH.'PLUGINS/'.$this->LG.'/'.$this->menuName;
+        $this->menuPath = $this->C->Module_Get_pathRes($this, $this->menuName);
 
         $this->tmplRQ['ID']      = $this->ID = $ID;
         $this->tmplRQ['classID'] = $this->classID = $classID;

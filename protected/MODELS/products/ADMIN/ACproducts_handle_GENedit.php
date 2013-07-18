@@ -36,8 +36,8 @@ class ACproducts_handle_GENedit
         while($row = $res->fetch_assoc())
         {
              $pic_PATH = $row[imagine];
-              if(is_file(fw_pubPath.'MODELS/products/RES/small_img/'.$pic_PATH)) unlink(fw_pubPath.'MODELS/products/RES/small_img/'.$pic_PATH);
-              if(is_file(fw_pubPath.'MODELS/products/RES/big_img/'.$pic_PATH)) unlink(fw_pubPath.'MODELS/products/RES/big_img/'.$pic_PATH);
+              if(is_file(FW_PUB_PATH.'MODELS/products/RES/small_img/'.$pic_PATH)) unlink(FW_PUB_PATH.'MODELS/products/RES/small_img/'.$pic_PATH);
+              if(is_file(FW_PUB_PATH.'MODELS/products/RES/big_img/'.$pic_PATH)) unlink(FW_PUB_PATH.'MODELS/products/RES/big_img/'.$pic_PATH);
         }
     }
     function __construct($DB, $change_type, $id, $detail,$typeSTATUS, $masterTREE)
@@ -60,7 +60,7 @@ class ACproducts_handle_GENedit
          */
 
 
-       // file_put_contents(fw_pubPath."MODELS/products/ADMIN/test.txt",'change_type '.$change_type.' id '.$id.' detail '.$detail.' typeSTATUS '.$typeSTATUS."<br />");
+       // file_put_contents(FW_PUB_PATH."MODELS/products/ADMIN/test.txt",'change_type '.$change_type.' id '.$id.' detail '.$detail.' typeSTATUS '.$typeSTATUS."<br />");
 
         $this->id = $id;
         $this->DB = $DB;

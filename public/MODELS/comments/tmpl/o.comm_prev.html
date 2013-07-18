@@ -38,11 +38,11 @@
 
          <span class='userName r5'>{$ao->userName} </span>
          <span class='entryDate'>  {$ao->entryDate} </span>
-         ". $this->renderDisplay_fromObj(
+         ". $this->Render_object(
                           $this->thumbs->{'SET_thComm'.$ao->idComm},'',
                          "PLUGINS/thumbs/tmpl/thumbs.html")."
 
-         ".$this->renderDisplay_fromObj (
+         ".$this->Render_object (
                    $this->rating->{'SET_Comm'.$ao->uidComm},'',
                   'PLUGINS/rating/tmpl/o.ratingUser.html')."
 

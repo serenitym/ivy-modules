@@ -46,7 +46,7 @@ trait ATblog{
 
 
         $valid_records = array();
-       // $DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+       // $DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
         $query_prior  = "SELECT blogRecords.idRecord, title,  DATEDIFF(NOW(), endDate ) AS validPriority, endDate
                             FROM blogRecords_prior, blogRecords
@@ -135,7 +135,7 @@ trait ATblog{
     function get_recordPrior(){
 
         $records = $this->get_validRecords();
-        $priorSettings = TgenTools::READyml(incPath.'etc/MODELS/blog/blog_HomePriorities.yml');
+        $priorSettings = TgenTools::readYml(INC_PATH.'etc/MODELS/blog/blog_HomePriorities.yml');
 
         echo
                 $this->get_displayPopup_recordPrior($records,$priorSettings);
@@ -180,7 +180,7 @@ trait ATblog{
 
 
         $query =     "INSERT INTO blogRecords (idCat, entryDate, title, uidRec)
-                                       VALUES ('{$this->idC}' ,NOW(), '{$title}' , '{$this->uid}')";
+                                       VALUES ('{$this->idNode}' ,NOW(), '{$title}' , '{$this->uid}')";
         # blogRecords_view = blogRecords + blogRecords_settings;
         $this->C->DB->query($query);
         $lastID = $this->C->DB->insert_id;
@@ -204,13 +204,13 @@ trait ATblog{
             # recType = tipul de articol inserat
 
             #daca s-a ales un tip de articol!=blog => inseram si in tabelul aferent lui , pt ca mai apoi sa facem update la amandoua
-            $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idT}&idC={$this->idC}&type={$this->type}&idRec={$lastID}";
+            $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idTree}&idC={$this->idNode}&type={$this->mgrName}&idRec={$lastID}";
 
             if($modelBlog_name!='blog'){
 
                 $location               .= "&recType={$modelBlog_name}";
                 $modelBlog_tableRecords  =  'blog'.$modelBlog_name.'_records';
-                 $this->C->DMLsql("INSERT INTO $modelBlog_tableRecords (idRecord) VALUES ('{$lastID}')", true,'',$location);
+                 $this->C->Db_query("INSERT INTO $modelBlog_tableRecords (idRecord) VALUES ('{$lastID}')", true,'',$location);
 
                 # echo "<b>modelBlog_tableRecords </b>".$query."</br>";
             }
@@ -249,9 +249,9 @@ trait ATblog{
         $error_message = "<p class='text-error b'> You might not have permission to delete this record ({$idRecord})  </p>";
 
         $query = "DELETE FROM blogRecords WHERE idRecord = '{$idRecord}' {$where} ";
-        # DMLsql($query,$reset=true,$ANCORA='',$location='',$paramAdd='', $errorMessage='')
+        # Db_query($query,$reset=true,$ANCORA='',$location='',$paramAdd='', $errorMessage='')
         $this->HTMLmessage_Records =
-                $this->C->DMLsql($query, true, '','',"&succDeleteRecord={$idRecord}",$error_message);
+                $this->C->Db_query($query, true, '','',"&succDeleteRecord={$idRecord}",$error_message);
 
         # daca deleteul a reusit atunci trimitem o variabila de succes - seccDeleteRecord
         # daca nu vom avea un mesaj de eroare
@@ -275,7 +275,7 @@ trait ATblog{
          #var_dump($this->modelBlog_vars);
          $set_blogModel_records = $this->C->DMLsql_setValues($this->modelBlog_vars);
          $query = "UPDATE {$this->modelBlog_tableRecords} SET {$set_blogModel_records} WHERE idRecord = '{$idRecord}' ";
-         $this->C->DMLsql($query, false);
+         $this->C->Db_query($query, false);
 
         # echo '</br></br>'.$query.'</br>';
     }
@@ -285,7 +285,7 @@ trait ATblog{
         $query = "UPDATE blogRecords_settings
                         SET {$set_blogRecords_settings}
                         WHERE idRecord = '{$idRecord}' ";
-        $this->C->DMLsql($query, false);
+        $this->C->Db_query($query, false);
 
         #echo '</br><b> blogRecords_settings </b>'.$query.'</br>';
 
@@ -454,7 +454,7 @@ trait ATblog{
             $set_blogRecords            = $this->C->DMLsql_setValues($this->blogRecords_vars);
             $query = "UPDATE blogRecords SET {$set_blogRecords}   WHERE idRecord = '{$idRecord}' ";
 
-            $this->C->DMLsql($query, true, '','',$reLocate_mssTags_fail);
+            $this->C->Db_query($query, true, '','',$reLocate_mssTags_fail);
 
             //echo '</br><b> blogRecords </b>'.$query.'</br>';
 
@@ -479,7 +479,7 @@ trait ATblog{
         $idRecord      =   $_POST['BLOCK_id'];
 
         $query = "UPDATE blogRecords SET publishDate = NOW() WHERE idRecord = '{$idRecord}' ";
-        $this->C->DMLsql($query);
+        $this->C->Db_query($query);
 
 
 
@@ -488,7 +488,7 @@ trait ATblog{
         $idRecord      =   $_POST['BLOCK_id'];
 
         $query = "UPDATE blogRecords SET publishDate = NULL WHERE idRecord = '{$idRecord}' ";
-        $this->C->DMLsql($query);
+        $this->C->Db_query($query);
         #echo $query;
     }
 
@@ -499,13 +499,13 @@ trait ATblog{
     }
     #===============================================[ overwrited methods for ADMIN]=====================================
 
-    function GET_record(){
+    /*function GET_record(){
 
-        # C->SET_INC_ext($mod_name,$type_MOD,$extension,$folder='',$template='',$ADMINstr='')
+        # C->Set_incFiles($modName,$modType,$extension,$folder='',$template='',$adminFolder='')
         # adaug js-ul de admin al modelului blog
-        $this->C->SET_INC_ext('blog','MODELS','js','js_record','','ADMIN');
+        $this->C->SET_incFiles('blog','MODELS','js','js_record','','ADMIN');
         parent::GET_record();
-    }
+    }*/
 
     #===============================================[ CONTROLING methods ]==============================================
 
@@ -565,7 +565,7 @@ trait ATblog{
 
     }
 
-    function set_picManager(){
+   /* function set_picManager(){
 
         $core = &$this->C;
 
@@ -584,17 +584,17 @@ trait ATblog{
             #setINI($DB_extKey_name,$DB_extKey_value, $DB_table_prefix, $getAction='')
         }
 
-    }
+    }*/
     function setINI(){
 
         # echo 'S-a activat partea de admin ATblog';
 
         #plus variabialele pt templateul de admin
         #atentie ca asta ar trenuii sa se intample si in cazul unui blogModel in cadrul lui
-        $this->template_vars = array_merge($this->template_vars, $this->Atemplate_vars);
+       // $this->template_vars = array_merge($this->template_vars, $this->Atemplate_vars);
 
 
-        if(isset($_GET['idRec']))  $this->set_picManager();
+       // if(isset($_GET['idRec']))  $this->set_picManager();
 
         /**
          * inainte de interogare DB pentru ca avem nevoie de conditii

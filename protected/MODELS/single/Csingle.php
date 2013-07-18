@@ -2,10 +2,10 @@
 class Csingle{
 
 
-   /* function DISPLAY(){
+   /* function _render_(){
 
         $LG = $this->LG;
-        $idC = $this->C->idC;
+        $idC = $this->C->idNode;
 
         if(file_exists($this->RESpath))
              $pageContent = file_get_contents($this->RESpath);

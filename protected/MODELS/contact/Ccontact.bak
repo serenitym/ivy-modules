@@ -82,9 +82,9 @@ class Ccontact extends contact{
 
         $this->setcontact($this->LG,$this->resPath);
     }
-    public  function _setINI()     {
+    public  function _init_()     {
 
-           $this->resPath = $this->C->get_resPath_forObj($this);
+           $this->resPath = $this->C->Module_Get_pathRes($this);
            $this->setDISPLAY();
 
            if(isset($_POST['action']))    $this->processContact();
@@ -111,14 +111,14 @@ class Ccontact extends contact{
 
     }
     private function sendMail()       {
-        if (defined('smtpPort'))
-            $mail = new Mail(smtpServer,smtpPort);
+        if (defined('SMTP_PORT'))
+            $mail = new Mail(SMTP_SERVER,SMTP_PORT);
         else
-            $mail = new Mail(smtpServer);
-        $mail->Username = smtpUser;
-        $mail->Password = smtpPass;
+            $mail = new Mail(SMTP_SERVER);
+        $mail->Username = SMTP_USER;
+        $mail->Password = SMTP_PASS;
 
-        $mail->SetFrom(smtpUser);    // Name is optional
+        $mail->SetFrom(SMTP_USER);    // Name is optional
 
         // $mail->AddTo('ioana@serenitymedia.ro');       // Name is optional
         $mail->AddTo('vnitu@ceata.org');
@@ -202,7 +202,7 @@ class Ccontact extends contact{
 
     function __construct(&$C){
 
-        #deci ideea este ca _setINI poate fi creat aici dar trebuie preluate manual chestii precum lang , DB sau altele
+        #deci ideea este ca _init_ poate fi creat aici dar trebuie preluate manual chestii precum lang , DB sau altele
 
     }
 

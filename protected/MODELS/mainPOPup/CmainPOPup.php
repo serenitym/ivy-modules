@@ -16,7 +16,7 @@ class CmainPOPup
         if(isset($_POST['save_contPOP']))
         {
             $LG = $this->LG;
-            $base_img=fw_pubPath.'GENERAL/css/img/';
+            $base_img=FW_PUB_PATH.'GENERAL/css/img/';
             if($_FILES['filename_picPOP_'.$LG]['name'])
             {
                 $promo1 = new Resize($_FILES['filename_picPOP_'.$LG], 450, 337, $base_img,'','','jpg','mainPOPup_'.$this->LG);
@@ -72,10 +72,10 @@ class CmainPOPup
 
 
        #
-        $this->adminSTATUS =($this->C->admin && $this->C->idT==1 && $this->C->type=='products' ? true : false);
+        $this->adminSTATUS =($this->C->admin && $this->C->idTree==1 && $this->C->mgrName=='products' ? true : false);
 
-        $this->pathIMG = fw_pubPath.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
-        $this->urlIMG = fw_pubURL.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
+        $this->pathIMG = FW_PUB_PATH.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
+        $this->urlIMG = FW_PUB_URL.'GENERAL/css/img/mainPOPup_'.$this->LG.'.jpg';
 
         $this->set_DISPLAY();
     }

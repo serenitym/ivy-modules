@@ -1,0 +1,67 @@
+
+".$this->Render_objectFromPath($o,'MODELS/blog/tmpl_bsea/tmpl/homeMap.html')."
+
+<div class='fullwidth lightblue shadow space'>
+    <div class='block'>
+		<div class='blogmain'>
+
+			<div class='blogmainContainer'>
+
+
+                <div class='smallUpper red home-latestIn'>
+                    latest in:
+                </div>
+                ".$this->Render_ItemsFromPath($o->homeBlogRecords, $o,
+                    'MODELS/blog/tmpl_bsea/tmpl/homeLatestInCat.html')."
+
+			</div>
+		</div><!-- end blogmain -->
+	</div>
+</div>
+
+
+
+
+<div class='block space overflow'>
+	<div class='archivemain'>
+        <div class='NameCentered'>
+            Explore the archive
+        </div>
+        <div class='fullwidth space'>
+            <div class='formatIcons'>
+
+                ".$this->Render_arrayFromStr($o->blogModels, $o, "
+                    <div class='recType-container'>
+                        <a href='`.~o->filterRecTypes[~i].`' class='recTypeIcon {~i}Icon'>
+
+                        </a>
+                        <span class='recTypeDesc'>
+                            <span class='arrow red'> &nbsp;&gt;&gt;&nbsp; </span>
+                              {~i}
+                        </span>
+
+                    </div>
+
+                ")."
+               <!-- <div class='recType-container'>
+                    <div class='recTypeIcon videoIcon'></div>
+                    <span class='recTypeDesc'>
+                        <span class='arrow red'> &nbsp;&gt;&gt;&nbsp; </span>
+                        video
+                    </span>
+
+                </div>-->
+
+            </div>
+        </div>
+	</div>
+	<div class='divider'></div>
+</div><!-- end archivemain -->
+
+ <div class='block space overflow' >
+    ".$this->Render_itemsFromPath($o->records, $o,
+     "MODELS/blog/tmpl_bsea/tmpl/archivePrevRecord.html"
+    )."
+ </div>
+
+

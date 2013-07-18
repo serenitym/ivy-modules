@@ -1,0 +1,67 @@
+<div class='{$o->ED}SING SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+    <div class='block space'>
+        {$o->HTMLmessage_record}
+        <!-- start story -->
+        <div class='textColumnBig right'>
+            <!-- <div class='theStory'>  -->
+            <div class='EDeditor lead'>
+               {$o->lead}
+            </div>
+
+            <div class='fullwidth'>
+                <!--<div class='showMore'>More</div>-->
+                <div id='sharepanel'>
+                    <div class='shareText' id='share'>Share this story</div>
+                    <ul id='shareicons'>
+                        <li class='shareText' id='social-connect-facebook'></li>
+                        <li class='shareText' id='social-connect-twitter'></li>
+                        <li class='shareText' id='social-connect-vkontakte'></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    <!-- end story -->
+        <div class='LeftColumnSmall orangeleftborder'> <!-- begin left -->
+            <div class='EDtxt Name orange title'>
+                {$o->title}
+            </div>
+            <div class='imageColumnHead orange space authName'>
+                {$o->fullName}
+            </div>
+            <!-- <div class='textContainer orange'>@bradutz</div> -->
+            <div class='fullwidth space thumbRecordPics'>
+                <!--<img class='photoGalleryThumbs' src='foto/16.jpg'/>
+                <img class='photoGalleryThumbs' src='foto/21.jpg'/>
+                <img class='photoGalleryThumbs' src='foto/28.jpg'/>
+                <img class='photoGalleryThumbs' src='foto/16.jpg'/>
+                <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->
+            </div>
+            <div class='fullwidth'>
+                <div class='imageColumnHead'>Related </div>
+                <ul>
+                    <li class='relatedContent'><a href=''>Story headline goes here</a></li>
+
+                </ul>
+            </div>
+
+        </div><!-- end left-->
+    </div>
+    <div class='block space overflow'>
+        <span class='ATmpl-inline'> Tags </span>
+        <span class='EDtags ATmpl-inline recordTags'>
+            {$o->tagsName}
+        </span>
+
+    </div>
+
+
+    <div class='block center space'>
+        <div class='divider'></div>
+        <p class='ATmpl b t10'>Continut Articol</p>
+        <div class='EDeditor content'>
+            {$o->content}
+        </div>
+
+    </div><!-- end block -->
+</div>

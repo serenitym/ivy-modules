@@ -2,22 +2,21 @@
 class Cpage{
 
     var $C;               //main object
-    var $nameF;
+    var $nodeResFile;
     var $LG;
-    function DISPLAY(){
+    function _render_(){
 
         $LG = $this->LG;
-        $idC = $this->C->idC;
+        $idC = $this->C->idNode;
 
-       # $path = publicPath."MODELS/page/RES/{$LG}/".$this->nameF.'.html';
-       # C->GET_resPath($type_MOD='',$resName='', $mod_name='' ,$nameF='', $lang = '')
-        $path        = $this->C->GET_resPath('','','page',$this->nameF);
+       # $path = PUBLIC_PATH."MODELS/page/RES/{$LG}/".$this->nodeResFile.'.html';
+       # C->GET_resPath($modType='',$resName='', $modName='' ,$nodeResFile='', $lang = '')
+        $path        = $this->C->GET_resPath('','','page',$this->nodeResFile);
         $pageContent = $this->C->GET_resContent($path);
 
 
         #_________________________________________________________________
-        $display = $this->C->CHILDREN_display->DISPLAY();
-        $display .="<div class='pageCont'>
+        $display ="<div class='pageCont'>
                          <div class='SING FULLpage' id='FULLpage_{$idC}_{$LG}'>
                              <div class='EDeditor page'>   $pageContent </div>
                          </div>
@@ -26,15 +25,15 @@ class Cpage{
         return  $display;
     }
 
-    function _setINI(){ }
+    function _init_(){ }
     function __construct($C){
 
         /*$this->C = &$C;
         $this->LG = &$C->lang;
-        $this->nameF = $this->C->nameF;*/
+        $this->nodeResFile = $this->C->nodeResFile;*/
 
         $C->GET_objREQ($this);
-        $this->_setINI();
+        $this->_init_();
 
     }
 }

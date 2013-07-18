@@ -22,7 +22,7 @@ class ACproducts extends Cproducts
             $id   = $_REQUEST['id'];
             $stamp = time();
 
-            $base_img = fw_pubPath.'MODELS/products/RES/';
+            $base_img = FW_PUB_PATH.'MODELS/products/RES/';
 
 
         //($sPhotoFileName, $width, $height, $path='.', $prefix='', $suffix='',$extension='jpg')
@@ -50,15 +50,15 @@ class ACproducts extends Cproducts
     function delete_product()   {
 
           $IDpr = $_POST['BLOCK_id'];
-          $basePath_local = fw_pubPath.'MODELS/products/RES/';
+          $basePath_local = FW_PUB_PATH.'MODELS/products/RES/';
 
         //_____________________________________________[ get  picutere ]___________________________________________________________
           $RES_pic = $this->DB->query("SELECT imagine FROM imagini where id_produs='".$IDpr."' ")->fetch_assoc();
           $pic_PATH = $RES_pic['imagine'];
 
         //______________________________________________________________________________________________________________
-          if(is_file(fw_pubPath.'MODELS/products/RES/small_img/'.$pic_PATH))  unlink($basePath_local."small_img/".$pic_PATH);
-          if(is_file(fw_pubPath.'MODELS/products/RES/big_img/'.$pic_PATH))    unlink($basePath_local."big_img/".$pic_PATH );
+          if(is_file(FW_PUB_PATH.'MODELS/products/RES/small_img/'.$pic_PATH))  unlink($basePath_local."small_img/".$pic_PATH);
+          if(is_file(FW_PUB_PATH.'MODELS/products/RES/big_img/'.$pic_PATH))    unlink($basePath_local."big_img/".$pic_PATH );
 
         //______________________________________________________________________________________________________________
 
@@ -72,7 +72,7 @@ class ACproducts extends Cproducts
         $name        = trim($_POST["name_prod_{$LG}"]);
         $small_desc  = trim($_POST["smallDESC_{$LG}"]);
         $price       = $_POST["price_{$LG}"];
-        $Pid         = $this->C->idC;
+        $Pid         = $this->C->idNode;
 
       //____________________________________________________________
 
@@ -144,9 +144,9 @@ class ACproducts extends Cproducts
     }
 
 
-    function _setINI()           {
+    function _init_()           {
 
-        parent::_setINI();
+        parent::_init_();
         $myPOST = false;
 
         if(isset($_POST['save_addproduct']))    { $this->save_addProduct();    $myPOST=true; $affected=true;}
@@ -158,7 +158,7 @@ class ACproducts extends Cproducts
 
 
    //_______________________________________________________________________________________________________
-       if(isset($affected)) $this->C->solve_affectedMOD($this->affectedMODULES);
+       if(isset($affected)) $this->C->solveAffectedModules($this->affectedMODULES);
 
        if($myPOST)
         {

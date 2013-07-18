@@ -1,7 +1,7 @@
 <?php
 class Cgallery{
 
-   /* function DISPLAY(){
+   /* function _render_(){
 
         return 'Acesta ar trebui sa fie un sample gallery';
     }*/
@@ -13,7 +13,7 @@ class Cgallery{
         $this->urlImages = $this->C->get_resImages_urls($this->modName);
         sort($this->urlImages);
     }
-    function _setINI(){
+    function _init_(){
        # var_dump($this);
         //var_dump($this->captions);
         $this->get_images();

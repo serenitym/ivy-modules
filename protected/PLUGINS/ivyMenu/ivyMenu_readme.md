@@ -4,7 +4,7 @@
 //======================================
 
 template Usage
-    - core->ctrlDisplay_fromObjRes($core->ivyMenu,'resName');
+    - core->Render_ModulefromRes($core->ivyMenu,'resName');
             'resName' = orice meniu are propriul lui res
 
     * daca se doreste schimbarea meniului
@@ -82,14 +82,14 @@ poz               # pozitie in cadrul tree-ului
 » $C->tree[id] = (item - Object)
 
      $id;              # id curent
-     $p_id;            # id parinte;
+     $idParent;            # id parinte;
      $children;        # array( poz=>id_child )
 
 
      $name_ro;          # corespondent din BD (titlu[LG])
      $name_en;
      $name;             # name of the current language    RULE:  name    = name[LG]
-     $nameF;            # numele fisierului din RES ;     RULE:  nameF  = str_replace(' ', '_' , name)
+     $resFile;            # numele fisierului din RES ;     RULE:  resFile  = str_replace(' ', '_' , name)
 
      $type;             #  tipul modelului / modulului  determina ->   mod.-ul  instantiat
                         #                                         -> js/ csss

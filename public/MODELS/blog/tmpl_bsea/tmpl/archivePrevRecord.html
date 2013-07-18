@@ -1,0 +1,26 @@
+<div class='{$ao->EDrecord}ENT imageColumn record'  id='record_{$ao->idRecord}_{$o->lang}' >
+       <div class='mainFeaturedImg' id='Main{$ao->idRecord}'>
+
+           ".( $ao->record_mainPic
+                ? "<img src='{$ao->record_mainPic}' />"
+                : "<img style='width:100%' src='RES/uploads/foto/16.jpg'/>"
+           )."
+
+           <div class='fullwidth iconsThumb' id='Main{$ao->idRecord}_Thumb'>
+               <div class='{$ao->modelBlog_name}IconThumb'></div>
+           </div>
+       </div>
+       <div class='imageColumnMeta'>
+           <div class='imageColumnHead fullwidth'>
+               <a href='{$ao->record_href}'>
+                   {$ao->title}
+               </a>
+           </div>
+           {$ao->leadSec}
+           <div class='imageColumnLocation blue'>
+               ".($ao->city ? $ao->city : 'town')."
+               ,
+               ".($ao->country ? $ao->country : 'country')."
+           </div>
+       </div>
+   </div>

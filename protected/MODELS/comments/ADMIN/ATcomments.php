@@ -10,7 +10,7 @@ trait ATcomments{
         $query  = "UPDATE {$this->DB_table_origin} SET approved='1'
                           WHERE idComm = '{$idComm}'  ";
 
-        $this->C->DMLsql($query,true,'#addCommAnc');
+        $this->C->Db_query($query,true,'#addCommAnc');
 
         #echo $query."<br>";
 
@@ -21,7 +21,7 @@ trait ATcomments{
         $query  = "UPDATE {$this->DB_table_origin} SET approved='0'
                           WHERE idComm = '{$idComm}'  ";
 
-        $this->C->DMLsql($query,true,'#addCommAnc');
+        $this->C->Db_query($query,true,'#addCommAnc');
 
         #echo $query."<br>";
     }
@@ -30,7 +30,7 @@ trait ATcomments{
 
         $query  = "DELETE from {$this->DB_table_origin}   WHERE idComm = '{$idComm}'  ";
 
-        $this->C->DMLsql($query,true,'#addCommAnc');
+        $this->C->Db_query($query,true,'#addCommAnc');
 
         #echo $query."<br>";
     }
@@ -47,7 +47,7 @@ trait ATcomments{
          $idComm  = $_POST['BLOCK_id'];
 
          $query   = " DELETE from blogComments_prior WHERE idComm = $idComm ";
-         $this->C->DMLsql($query,true,'#addCommAnc');
+         $this->C->Db_query($query,true,'#addCommAnc');
 
 
     }
@@ -67,10 +67,10 @@ trait ATcomments{
             $idComm   = $_POST['BLOCK_id'];
 
             $query    = " DELETE from blogComments_prior WHERE idRecord = $idRecord ";
-            $this->C->DMLsql($query,false);
+            $this->C->Db_query($query,false);
 
             $query    = " INSERT INTO blogComments_prior ( idComm, idRecord, priorityLevel ) values ($idComm, $idRecord, 1)";
-            $this->C->DMLsql($query,true,'#addCommAnc');
+            $this->C->Db_query($query,true,'#addCommAnc');
         }
 
     }

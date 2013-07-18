@@ -33,9 +33,9 @@
 
     ".(
         $o->current_model!='profile' ?
-            $this->ctrlDisplay_fromObj($ol)
+            $this->Render_Module($ol)
             :
-            $this->renderDisplay_fromObj($o,'','MODELS/profile/tmpl/profilePage.html')
+            $this->Render_object($o,'','MODELS/profile/tmpl/profilePage.html')
     )."
 
 

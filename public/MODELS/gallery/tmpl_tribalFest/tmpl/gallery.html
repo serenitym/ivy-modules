@@ -1,5 +1,5 @@
 ".($this->admin
-   ? $this->renderDisplay_fromObj($o, '', "{$o->modType}/gallery/tmpl_pro/ADMIN/tmpl/Agallery.html")
+   ? $this->Render_object($o, '', "{$o->modType}/gallery/tmpl_pro/ADMIN/tmpl/Agallery.html")
    : "orice"
 )."
 
@@ -8,15 +8,13 @@
 	<div id='featured'> 
 
 
-       ".$this->renderDisplay_Items_uniDimens(
-            $o->urlImages,
+       ".$this->Render_array($o->urlImages,'','',
             "<img src='~i' data-caption='#htmlCaption{~key}' /> ")."
     </div>
 
-    ".(
-      $o->captions
-         ? $this->renderDisplay_Items_uniDimens(
-                $o->urlImages,
+    ".(!$o->captions ? ""
+         : $this->Render_array(
+                $o->urlImages, $o, '',
                 "
                    `.( isset(~o->captions[~key]) && ~o->captions[~key][`title_{~o->lang}`]
                        ? ` <span class='orbit-caption' id='htmlCaption{~key}'>
@@ -25,12 +23,9 @@
                                </a>
                           </span>`
                        : ``
-
-                    ).`
-                  ",
-                "", $o)
-         : ""
-
+                   ).`
+                "
+         )
     )."
 
 

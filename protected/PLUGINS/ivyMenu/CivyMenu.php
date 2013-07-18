@@ -52,7 +52,7 @@ class CivyMenu{
                 $idC = $idCh;
 
                 $name = $this->masterTree[$idC]->{'name_' . $this->lang};
-                $href = publicURL . "?idT={$idT}&idC={$idC}";
+                $href = PUBLIC_URL . "?idT={$idT}&idC={$idC}";
 
                 array_push($item['items'],
                             array('name'=>$name,
@@ -107,21 +107,21 @@ class CivyMenu{
        {
               if(!isset($this->masterTree))
               {
-                  $this->C->regenerateALLtrees();
-                  $this->masterTree = $this->C->create_masterTREE(false);
+                  $this->C->regenerateAllTrees();
+                  $this->masterTree = $this->C->Build_masterTree(false);
               }
 
           #   echo "<b>getMenu_multilevel - masterTree </b> <br>";
           #   var_dump($this->masterTree);
               while($row  = $res->fetch_assoc())
               {
-                      $name = $row['name_'.$this->lang];
+                      $name  = $row['name_'.$this->lang];
                       $idC   = $row['id'];
-                      $idT   = $this->masterTree[$idC]->idT;
+                      $idT   = $this->masterTree[$idC]->idTree;
 
                       # atentie ...aici trebuie apelata o metoda statica probabil
                       # a Ccore
-                      $href = publicURL . "?idT={$idT}&idC={$idC}";
+                      $href = PUBLIC_URL . "?idT={$idT}&idC={$idC}";
 
                       array_push($currentSet['items'],
                                   array('name'=>$name,
@@ -206,7 +206,7 @@ class CivyMenu{
      * scrie fisierul static pentru meniu
      *
     */
-    function _setRes($resPath){
+    function _setRes_($resPath){
 
 
         $currentSet = &$this->{'menuSet'.$this->current_idMenu};
@@ -234,7 +234,7 @@ class CivyMenu{
         $this->current_idMenu = $idMenu;
     }
 
-    function _setINI(){
+    function _init_(){
         # var_dump($this->menuSet1);
     }
 

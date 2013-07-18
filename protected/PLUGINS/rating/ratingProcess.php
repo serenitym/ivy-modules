@@ -29,7 +29,7 @@
  *
  */
 
-$DB = new mysqli(dbHost,dbUser,dbPass,dbName);
+$DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
 
 
@@ -98,7 +98,7 @@ $_POST['totalRating'] = $totalRating ;*/
 #=================================================================================
 
 
-$tmpl_content = file_get_contents(fw_pubPath.'PLUGINS/rating/tmpl/ratingRecord_bigStar.html');
+$tmpl_content = file_get_contents(FW_PUB_PATH.'PLUGINS/rating/tmpl/ratingRecord_bigStar.html');
 
 $display ='';
 eval("\$display = \"$tmpl_content\";");

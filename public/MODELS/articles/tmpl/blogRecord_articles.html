@@ -1,7 +1,7 @@
 <div class='historySimple'>{$o->simpleHref_history}</div>
    ".(
        $this->admin
-        ? $this->renderDisplay_fromObj($this->articles,'', "MODELS/blog/ADMIN/tmpl/blogRecord_settings.html")
+        ? $this->Render_object($this->articles,'', "MODELS/blog/ADMIN/tmpl/blogRecord_settings.html")
         : ""
     )."
 
@@ -58,7 +58,7 @@
 
             <div class='pull-right span4' id='ratingRecord'>
 
-                ".$this->renderDisplay_fromObj (
+                ".$this->Render_object (
                              $this->rating->SET_recordRating,'',
                             'PLUGINS/rating/tmpl/o.ratingRecord_bigStar.html')."
 
@@ -78,13 +78,13 @@
 
         ".(
             isset($o->commentsView) && $o->commentsView==1
-                ?  $this->renderDisplay_fromObj(
+                ?  $this->Render_object(
                           $this->{$o->modelComm_name},'',
                           "MODELS/comments/tmpl/o.comments.html")
 
                 : "<p class='text-warning'>Cmments are not allowed</p>".
                    ( $pubPermss
-                       ? $this->renderDisplay_fromObj(
+                       ? $this->Render_object(
                                $this->{$o->modelComm_name},'',
                                "MODELS/comments/tmpl/o.comments.html")
                         :'' )

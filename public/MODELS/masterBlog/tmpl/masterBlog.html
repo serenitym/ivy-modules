@@ -1,7 +1,7 @@
 
 
-".($this->idT==$this->idC && !isset($_GET['idRec']) && (!isset($_GET['Pn']) || $_GET['Pn']==1)
-   ? $this->renderDisplay_fromObj($this->{$o->current_modelBlog}->homeSET
+".($this->idTree==$this->idNode && !isset($_GET['idRec']) && (!isset($_GET['Pn']) || $_GET['Pn']==1)
+   ? $this->Render_object($this->{$o->current_modelBlog}->homeSET
                             ,'', "MODELS/blog/tmpl/blogRecords_home.html")
    : ""
 )."
@@ -19,6 +19,6 @@
 
 <div id='page' class='span9'>
   <div class='container-fluid'>
-    ".$this->ctrlDisplay_fromObj($this->{$o->current_modelBlog})."
+    ".$this->Render_Module($this->{$o->current_modelBlog})."
   </div>
 </div>
