@@ -2,7 +2,7 @@
        <div class='mainFeaturedImg' id='Main{$ao->idRecord}'>
 
            ".( $ao->record_mainPic
-                ? $ao->record_mainPic
+                ? "<img src='{$ao->record_mainPic}' />"
                 : "<img style='width:100%' src='RES/uploads/foto/16.jpg'/>"
            )."
 
