@@ -13,11 +13,15 @@
 	    <div class='fullwidth overflow'><!-- begin filter panels -->
 		<div class='fullwidth filter_panel space' id='filter2_panel'>
 			<ul class>
-				<li><div class='filter_label'>Video stories</div></li>
-				<li><div class='filter_label'>Photo stories</div></li>
-				<li><div class='filter_label'>Infographics</div></li>
-				<li><div class='filter_label'>Text stories</div></li>
-				<li><div class='filter_label' id='clear_formats'>Clear all formats</div></li>
+
+                ".$this->Render_arrayFromStr($o->blogModels, $o, "
+                    <li>
+                        <a href='`.~o->filterRecTypes[~i].`' class='filter_label'>
+                            {~i} stories
+                        </a>
+                    </li>
+                ")."
+				<!--<li><div class='filter_label'>Video stories</div></li>-->
 
 			</ul>
 		</div>

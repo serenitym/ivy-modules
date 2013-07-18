@@ -1,1 +1,7 @@
 @charset "UTF-8";
+
+.authName { clear: both;}
+
+/* blogPrevRecord.html */
+.blogPrev-lead {margin-bottom: 20px;}
+.blogPrev-content {margin-bottom: 20px;}
