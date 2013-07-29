@@ -1,4 +1,4 @@
-<div class='{$ao->EDrecord}ENT imageColumn record'  id='record_{$ao->idRecord}_{$o->lang}' >
+<div class='{$ao->EDrecord}ENT  archivePrevRec record'  id='record_{$ao->idRecord}_{$o->lang}' >
        <div class='mainFeaturedImg' id='Main{$ao->idRecord}'>
 
            ".( $ao->record_mainPic
@@ -12,7 +12,7 @@
        </div>
        <div class='imageColumnMeta'>
            <div class='imageColumnHead fullwidth'>
-               <a href='{$ao->record_href}'>
+               <a href='{$ao->record_href}' class='{$ao->statusPublish}'>
                    {$ao->title}
                </a>
            </div>

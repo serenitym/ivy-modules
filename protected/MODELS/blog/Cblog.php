@@ -18,14 +18,64 @@ class Cblog extends blog_handlers
     {
         return "filterName={$filterName}&filterValue={$filterValue}";
     }
-    function Set_filterRecTypes($baseUrl) {
-
+    // Set_filterRecTypes
+    function Get_hrefFilterRecTypes($baseUrl)
+    {
+        //$this->filterRecTypes=
+        $filters = array();
         foreach ($this->blogModels As $recType) {
-           $this->filterRecTypes[$recType] =$baseUrl
-                                            ."&".$this->hrefFilter('recType', $recType)   ;
-        }
-    }
 
+            array_push($filters,array(
+                    'filterName' => $recType,
+                    'filterHref' => $baseUrl."&"
+                                    .$this->hrefFilter('recType', $recType)
+                )
+            );
+        }
+        return $filters;
+    }
+    function Get_hrefFilterTags($baseUrl, $nrFilters)
+    {
+        $filters = array();
+        $query = "SELECT COUNT(*) AS nrRows, tagName
+                  FROM blogMap_recordsTags
+                  GROUP BY tagName
+                  ORDER By nrRows
+                  DESC LIMIT 0, $nrFilters";
+        $res = $this->DB->query($query);
+        if($res) {
+            while($row = $res->fetch_assoc()) {
+
+                array_push($filters,array(
+                        'filterName' => $row['tagName'],
+                        'filterHref' => $baseUrl. "&"
+                            . $this->hrefFilter('tag', $row['tagName'])
+                        )
+                );
+            }
+        }
+        return $filters;
+
+    }
+    function Get_hrefFilterCountry($baseUrl)
+    {
+        $filters = array();
+        $query = "SELECT DISTINCT country FROM `blogRecords` WHERE country IS NOT NULL";
+        $res = $this->DB->query($query);
+        if ($res) {
+            while($row = $res->fetch_assoc()) {
+
+                array_push($filters,array(
+                        'filterName' => $row['country'],
+                        'filterHref' => $baseUrl. "&"
+                            . $this->hrefFilter('country', $row['country'])
+                    )
+                );
+            }
+        }
+        return $filters;
+
+    }
 
     //===============================================[ query Filters ]==========
 
@@ -39,6 +89,10 @@ class Cblog extends blog_handlers
         return ' tagsName LIKE "%'.$filterValue.'%" ';
     }
 
+    function Get_countryFilter($filterValue)
+    {
+        return " country = '{$filterValue}' ";
+    }
     function Set_subtreeIds($idNode, &$tree)
     {
         array_push($this->subtreeIds, $idNode);
@@ -64,11 +118,12 @@ class Cblog extends blog_handlers
         //var_dump($this->tree[$this->idNode]);
         $tree   = $this->tmpTree ? $this->tmpTree : $this->tree;
         $idNode = $idNode ? $idNode : $this->idNode;
+        //echo "<b>Get_categoryFilter $idNode</b> <br >";
 
         // clean subTreeIds
         $this->subtreeIds = array();
         $this->Set_subtreeIds($idNode, $tree);
-        if (!$this->subtreeIds) {
+        if (!$this->subtreeIds || count($this->subtreeIds) == 0 ) {
             error_log("[ ivy ] Cblog - Get_categoryFilter : "
                       ." Nu s-au putut lua nodurile din subtree-ul : $idNode"
             );
@@ -145,32 +200,32 @@ class Cblog extends blog_handlers
          *
         */
 
+        //modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+        //nrRates,ratingTotal,
          $query = "SELECT
-                            blogRecords_view.idRecord,
-                            idCat,uidRec,entryDate,publishDate,nrRates,ratingTotal,
-                            title,content,lead,leadSec, country, city,
-                            modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+                      blogRecords_view.idRecord,
+                      idCat,uidRec,entryDate,publishDate,
+                      title,content,lead,leadSec, country, city,
+                      modelBlog_name,
 
-                            uid_Rec, fullName,
+                      uid_Rec, fullName,
+                      tagsName
 
-                            tagsName
+                      FROM blogRecords_view
+                      JOIN
+                      (
+                          SELECT uid AS uid_Rec, CONCAT(first_name,'  ',last_name) AS fullName
+                          from auth_user_details
+                      ) AS TBuserName
+                      ON (blogRecords_view.uidRec = TBuserName.uid_Rec)
 
-                             FROM blogRecords_view
-                             JOIN
-                              (
-                                 SELECT uid AS uid_Rec, CONCAT(first_name,'  ',last_name) AS fullName
-                                 from auth_user_details
-
-                              ) AS TBuserName
-                              ON (blogRecords_view.uidRec = TBuserName.uid_Rec)
-
-                              LEFT OUTER JOIN
-                              (
-                                SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ',' ) AS tagsName
-                              		FROM blogMap_recordsTags
-                              		GROUP BY idRecord
-                              )AS TBtagsName
-                              ON (blogRecords_view.idRecord = TBtagsName.idRecord)
+                      LEFT OUTER JOIN
+                      (
+                          SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ', ' ) AS tagsName
+                  		  FROM blogMap_recordsTags
+                          GROUP BY idRecord
+                      ) AS TBtagsName
+                      ON (blogRecords_view.idRecord = TBtagsName.idRecord)
 
                                            ";
 
@@ -181,14 +236,15 @@ class Cblog extends blog_handlers
     function Get_baseQueryRecords()
     {
 
+        //modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+        // nrRates,ratingTotal,
         $query = "SELECT
                     blogRecords_view.idRecord,
-                    idCat,uidRec,entryDate,publishDate,nrRates,ratingTotal,
+                    idCat,uidRec,entryDate,publishDate,
                     title,content,lead,leadSec, country, city,
-                    modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+                    modelBlog_name,
 
                     uid_Rec, fullName,
-
                     tagsName
 
                     FROM blogRecords_view
@@ -230,13 +286,16 @@ class Cblog extends blog_handlers
         $requestFilters       = $this->_handle_requestFilters($filters);
 
         $sql->parts['wheres'] = array_merge($basicFilters, $requestFilters);
-        $sql->fullQuery       = $sql->parts['query'].
-                                 (count($sql->parts['wheres']) == 0
+        $sql->parts['where'] =  (count($sql->parts['wheres']) == 0
                                   ? ''
                                   : ' WHERE '.implode(' AND ', $sql->parts['wheres'])
                                  );
+        $sql->fullQuery       = $sql->parts['query'].
+                                    $sql->parts['where'];
 
-        error_log("[ ivy ] Cblog - Get_queryRecords : {$sql->fullQuery}");
+        error_log("[ ivy ] Cblog - Get_queryRecords : "
+                  .preg_replace('/\s+/', ' ', $sql->fullQuery)
+        );
 
         return $sql;
     }
@@ -251,7 +310,9 @@ class Cblog extends blog_handlers
         $sql->parts['where'] = " WHERE blogRecords_view.idRecord = '{$_GET['idRec']}'" ;
 
         $sql->fullQuery = implode(' ', $sql->parts);
-        error_log("[ ivy ] Cblog - Get_queryRecords : {$sql->fullQuery}");
+        error_log("[ ivy ] Cblog - Get_queryRecords : "
+                .preg_replace('/\s+/', ' ', $sql->fullQuery)
+        );
 
         return $sql;
 

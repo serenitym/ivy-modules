@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.well,
+.admin-extras{
+    border: 1px solid #ddd;
+    border-radius: 0px 0px 3px 3px;
+    padding: 20px;
+    /*margin: 0px 7px 20px 7px;*/
+    margin-bottom: 40px;
+    background: rgba(210,210,210,0.3);
+    box-shadow: 2px 1px 4px rgba(255,255,255,0.5);
+}
+    .admin-extra{
+        vertical-align: top;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+
+
+/*===================[ blogRecord.html ]===================*/
+#admin-leadSec{
+    width: 190px;
+}
+    .btt-leadSec{ width: 180px;}
+    .leadSec{ height: 70px; width: 180px;}
+
+.SGrecord {/*width: 1000px;*/ position: relative;}
+.SGrecord .title{width: 300px;}
+.SGrecord .lead{min-height: 90px;}
+.SGrecord .content{min-height: 500px;}
+.SGrecord .recordTags{width: 220px;}
+
+/*==================[ archive ]===========================*/
+.addRec-title {width: 250px;}
+.addRec {text-align: right;}
+input.addArticle {width: 350px;}
+
+

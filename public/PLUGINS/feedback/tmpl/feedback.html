@@ -1,9 +1,9 @@
-".( count($o->mess) > 0
+".( count($o->fbkMess) > 0
         ? "
             <div class='ivy-feedback'>
-                <input type='button' name='toogle-feedback' class='toggleFb' value='hide feedback' >
+                <input type='button' name='toogle-feedback' class='toggleFb ivy' value='hide feedback' >
                 <div class='ivy-feedback-mess'>
-                    ".$this->Render_items($o->mess,'','',
+                    ".$this->Render_itemsFromStr($o->fbkMess,'',
                         "
                             <div class='fb fb_{~ao->fbType}'>
                                 <span class='fb_name'>  {~ao->fbName} </span>

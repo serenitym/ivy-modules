@@ -1,9 +1,9 @@
 <div class='historySimple'>{$o->simpleHref_history}</div>
-   ".(
-       $this->admin
-        ? $this->Render_object($this->blog,'', "MODELS/blog/ADMIN/tmpl/blogRecord_settings.html")
-        : ""
-    )."
+".(
+   $this->admin
+    ? $this->Render_object($this->blog,'', "MODELS/blog/ADMIN/tmpl/blogRecord_settings.html")
+    : ""
+)."
 
 <div class='{$o->ED}SING container-fluid SGrecord' id='SGrecord_{$o->idRecord}_{$o->LG}' >
 

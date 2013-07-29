@@ -1,0 +1,39 @@
+<!-- Extras:
+leadSec
+tags
+country
+city
+category - poate daca vrei sa il muti in alta categorie
+-->
+<div class='ATmpl  block'>
+    <div class='hidden admin-extras'>
+
+        <div class='admin-extra' id='admin-leadSec'>
+            <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
+                Preview Lead
+            </button>
+            <div class='EDtxa  hidden admin-leadSec leadSec'>
+                {$o->leadSec}
+            </div>
+        </div>
+        <div class='admin-extra' >
+            <div> Tags </div>
+            <div class='EDtags  recordTags'>
+                {$o->tagsName}
+            </div>
+        </div>
+        <div class='admin-extra' >
+            <div> Country </div>
+            <div class='EDtxt  country'>
+                {$o->country}
+            </div>
+        </div>
+        <div class='admin-extra' >
+            <div> City </div>
+            <div class='EDtxt  city'>
+                {$o->city}
+            </div>
+        </div>
+    </div>
+
+</div>

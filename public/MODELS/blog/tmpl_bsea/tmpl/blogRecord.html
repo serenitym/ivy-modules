@@ -1,12 +1,22 @@
+".(!$this->admin ? '' :
+     $this->Render_object($this->blog,'',
+        "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraBtns.html")
+)."
 <div class='{$o->ED}SING SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+    ".(!$this->admin ? '' :
+         $this->Render_object($this->blog,'',
+            "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraSettings.html")
+    )."
     <div class='block space'>
         {$o->HTMLmessage_record}
         <!-- start story -->
         <div class='textColumnBig right'>
             <!-- <div class='theStory'>  -->
+            <div class='ATmpl'> Lead </div>
             <div class='EDeditor lead'>
                {$o->lead}
             </div>
+
 
             <div class='fullwidth'>
                 <!--<div class='showMore'>More</div>-->
@@ -40,7 +50,11 @@
             <div class='fullwidth'>
                 <div class='imageColumnHead'>Related </div>
                 <ul>
-                    <li class='relatedContent'><a href=''>Story headline goes here</a></li>
+                    ".$this->Render_itemsFromStr($o->recordsRelated, '', "
+                        <li class='relatedContent'>
+                            <a href='{~ao->record_href}'>{~ao->title}</a>
+                        </li>
+                    ")."
 
                 </ul>
             </div>
@@ -48,10 +62,6 @@
         </div><!-- end left-->
     </div>
     <div class='block space overflow'>
-        <span class='ATmpl-inline'> Tags </span>
-        <span class='EDtags ATmpl-inline recordTags'>
-            {$o->tagsName}
-        </span>
 
     </div>
 

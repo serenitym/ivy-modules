@@ -1,4 +1,4 @@
-<div class='{$ao->EDrecord}ENT block space blogPrevRec record'   id='record_{$ao->idRecord}_{$o->lang}' >
+<div class='{$ao->EDrecord}ENT space blogPrevRec record'   id='record_{$ao->idRecord}_{$o->lang}' >
     <!-- start story -->
 	<div class='textColumnBig right'>
 	    <!-- <div class='theStory'>  -->
@@ -27,7 +27,7 @@
     <!-- begin left -->
 	<div class='LeftColumnSmall {$ao->catResFile}leftborder'>
 	    <div class='Name {$ao->catResFile} fullwidth'>
-            <a href='{$ao->record_href}' target='_blank' class='noBorder'>
+            <a href='{$ao->record_href}' target='_blank' class='noBorder {$ao->statusPublish}'>
                 {$ao->title}
             </a>
         </div>

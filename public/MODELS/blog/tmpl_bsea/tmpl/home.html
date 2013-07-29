@@ -30,14 +30,14 @@
         <div class='fullwidth space'>
             <div class='formatIcons'>
 
-                ".$this->Render_arrayFromStr($o->blogModels, $o, "
+                ".$this->Render_itemsFromStr($o->filterRecTypes, '', "
                     <div class='recType-container'>
-                        <a href='`.~o->filterRecTypes[~i].`' class='recTypeIcon {~i}Icon'>
+                        <a href='{~ao->filterHref}' class='recTypeIcon {~ao->filterName}Icon'>
 
                         </a>
                         <span class='recTypeDesc'>
                             <span class='arrow red'> &nbsp;&gt;&gt;&nbsp; </span>
-                              {~i}
+                            {~ao->filterName}
                         </span>
 
                     </div>

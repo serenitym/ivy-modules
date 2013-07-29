@@ -1,4 +1,4 @@
-// ACEST js ar trebui encapsulat
+// ACEST js ar trebui adaugat doar daca suntem pe admin
 
 
 

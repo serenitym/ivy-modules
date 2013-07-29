@@ -5,3 +5,10 @@
 /* blogPrevRecord.html */
 .blogPrev-lead {margin-bottom: 20px;}
 .blogPrev-content {margin-bottom: 20px;}
+
+.fullImage,
+.blogRecords .record .blogPrev-content img{
+    width: 100% !important;
+    height: initial !important;
+}
+

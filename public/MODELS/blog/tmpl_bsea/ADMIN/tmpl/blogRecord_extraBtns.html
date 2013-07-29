@@ -1,0 +1,19 @@
+<form action='' method='post' id='publishRecord'>
+    <input type='hidden' name='idRecord' value='{$o->idRecord}'>
+    <input type='hidden' name='modName' value='blog'>
+</form>
+
+ <div class='addTOOLSbtn'>
+     <input type='button' class='ATmpl' value='more settings' onclick='fmw.toggle(\"form[id^=EDITform] .admin-extras\"); return false;' />
+
+     ".(!$o->user->rights['article_pub'] ? '' :
+         $o->publishDate
+             ? "<input type='submit'  class='ATmpl'
+                       name='methName' value='unpublish'
+                       form='publishRecord'  />"
+
+             : "<input type='submit'  class='ATmpl'
+                       name='methName' value='publish'
+                       form='publishRecord' />"
+     )."
+ </div>
