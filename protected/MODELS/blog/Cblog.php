@@ -12,6 +12,7 @@ class Cblog extends blog_handlers
     var $tmpTree ;
     var $tmpIdTree ;
     var $filterRecTypes = array();
+    var $uid = 0;
 
     // general seters
     function hrefFilter($filterName, $filterValue)
@@ -174,14 +175,12 @@ class Cblog extends blog_handlers
     function Get_basicFilter()
     {
         $wheres = array();
-        if(!$this->editRecords_Permss )
-        {
-           if (!$this->admin) {
-               array_push($wheres, " publishDate is not NULL ");
-           } else {
-               array_push($wheres, " (uidRec='{$this->uid}' OR publishDate is not NULL) ");
 
-           }
+        if (!$this->admin || !isset($this->user)) {
+            array_push($wheres, " publishDate is not NULL ");
+        } else {
+            array_push($wheres, " (uidRec='{$this->user->uid}' OR publishDate is not NULL) ");
+
         }
 
         return  $wheres;
