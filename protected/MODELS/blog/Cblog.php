@@ -93,6 +93,11 @@ class Cblog extends blog_handlers
     {
         return " country = '{$filterValue}' ";
     }
+    function Get_uidFilter($filterValue)
+    {
+        return " uidRec = '{$filterValue}' ";
+    }
+
     function Set_subtreeIds($idNode, &$tree)
     {
         array_push($this->subtreeIds, $idNode);
@@ -136,6 +141,7 @@ class Cblog extends blog_handlers
 
 
     }
+
     function _handle_requestFilters($filters = array())
     {
         //filterList
@@ -274,7 +280,7 @@ class Cblog extends blog_handlers
      *
      * @return array
      */
-    function Get_queryRecords($filters, $query = '')
+    function Get_queryRecords($filters = array(), $query = '')
     {
          $sql = new stdClass();
         //$sql->parts['query'];
@@ -318,7 +324,6 @@ class Cblog extends blog_handlers
 
     }
 
-
     function _init_()
     {
         $this->_handle_requests();
@@ -331,8 +336,8 @@ class Cblog extends blog_handlers
 
     }
 
+    function __construct()
+    {
 
-
-
-    function __construct($C){  }
+    }
 }

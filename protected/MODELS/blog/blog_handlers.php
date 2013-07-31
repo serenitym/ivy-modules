@@ -72,8 +72,15 @@ class blog_handlers extends Cblog_vars
        return "index.php?idT={$idTree}".
                  "&idC={$row['idCat']}".
                  "&idRec={$row['idRecord']}".
-                 "&type={$currentLayout}".
+                 //"&type={$currentLayout}".
                   ($row['modelBlog_name'] && $row['modelBlog_name']!='blog' ? "&recType={$row['modelBlog_name']}" : '');
+
+    }
+    function Get_record_authorHref($uid)           {
+
+        return "index.php?idT=3".
+                         "&idC=3".
+                         "&uid={$uid}";
 
     }
     function Set_recordHrefHome($row)               {
@@ -252,10 +259,17 @@ class blog_handlers extends Cblog_vars
         #$this->C->rating->template_file = 'ratingRecord_bigStar';
         #===============================================================================================================
         $row['tags']        = $this->Get_tagsArray($row['tagsName']);
+        $row['authorHref']  = $this->Get_record_authorHref($row['uidRec']);
 
         return $row;
 
      }
+    // for external use CblogSite - profile.html
+    function _hookRow_profile($row)
+    {
+        $row['record_href']      = $this->SET_record_href($row);
+        return $row;
+    }
 
     function _hookRow_recordsPrior($row) {
 
@@ -438,7 +452,7 @@ class blog_handlers extends Cblog_vars
         foreach($filtres AS $filterName => $filterValue) {
             $query = "(".$fullQuery
                         .$this->{'Get_'.$filterName.'Filter'}($filterValue)
-                                    ." LIMIT 0,1 )";
+                                    ."ORDER BY RAND( ) LIMIT 0,1 )";
             array_push($queries, $query);
             //echo $query."<br><br>";
         }
@@ -461,6 +475,25 @@ class blog_handlers extends Cblog_vars
 
         //echo "<b>blog_handlers - record_setData()</b><br>";
         //var_dump($this->record);
+    }
+
+    function profile_getData($idTree, $uid)
+    {
+        $this->tmpIdTree = $idTree;
+        $this->tmpTree    = $this->C->Get_tree($this->tmplIdTree);
+        $sql   = $this->Get_queryRecords(array('category' => $this->tmpIdTree, 'uid'=>$uid));
+        $query = $sql->fullQuery.' ORDER BY entryDate DESC';
+
+        return $this->C->Db_Get_procRows($this, '_hookRow_profile', $query);
+
+    }
+    function profile_setData($uid)
+    {
+        // archive records writen by author
+        $this->recordsArchive = $this->profile_getData('88', $uid );
+
+        // blog records writen by author
+        $this->recordsBlog = $this->profile_getData('86', $uid);
     }
 
     function _handle_requests()
