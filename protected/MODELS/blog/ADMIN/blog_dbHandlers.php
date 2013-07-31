@@ -120,8 +120,7 @@ class blog_dbHandlers extends Cblog
         $records = $this->get_validRecords();
         $priorSettings = TgenTools::readYml(INC_PATH.'etc/MODELS/blog/blog_HomePriorities.yml');
 
-        echo
-                $this->get_displayPopup_recordPrior($records,$priorSettings);
+            $this->get_displayPopup_recordPrior($records,$priorSettings);
     }
     function save_recordPrior()
     {
@@ -147,7 +146,7 @@ class blog_dbHandlers extends Cblog
 
         }
 
-        echo $test."Prioritatile au fost salvate!!";
+        $test."Prioritatile au fost salvate!!";
     }
     function controlREQ_async()
     {

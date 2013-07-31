@@ -274,7 +274,7 @@ class Cblog extends blog_handlers
      *
      * @return array
      */
-    function Get_queryRecords($filters, $query = '')
+    function Get_queryRecords($filters = array(), $query = '')
     {
          $sql = new stdClass();
         //$sql->parts['query'];
