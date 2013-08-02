@@ -9,6 +9,7 @@ ivyMods.blog = {
 
         var recordPics = new Array();
         var src = '';
+        var alt = '';
 
 
         for (var key in this.containersPics) {
@@ -19,7 +20,9 @@ ivyMods.blog = {
                 src = $(this)
                         .attr('src')
                         .replace(ivyMods.blog.basePathPic,ivyMods.blog.thumbPathPic);
-                recordPics.push( src );
+                alt = $(this).attr('alt');
+
+                recordPics.push( {src: src, alt: alt} );
             });
         }
         /*var test = '';
@@ -36,12 +39,12 @@ ivyMods.blog = {
         var htmlPics = '';
         for( var key in recordPics) {
             htmlPics += "<a class='container-photoThumbs fancybox' " +
-                                "data-fancybox-group='button'  href='"+
-                                recordPics[key].replace('.thumbs/','') +
-                                "'>" +
-                                "<img class='photoThumbs' src='"+recordPics[key]+"'/>" +
-                            "</a>" +
-                        "</div>" ;
+                            "data-fancybox-group='button' " +
+                            "href='" + recordPics[key].src.replace('.thumbs/','') + "'>" +
+                                "<img class='photoThumbs' " +
+                                    "src='" + recordPics[key].src + "'" +
+                                    "alt='" + recordPics[key].alt + "' />" +
+                        "</a>" ;
         }
         //alert(htmlPics);
         return htmlPics;
