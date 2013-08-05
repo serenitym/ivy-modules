@@ -182,7 +182,9 @@ class blog_handlers extends Cblog_vars
          */
         $row['record_href'] = $this->SET_record_href($row);
         $row['tags']        = $this->Get_tagsArray($row['tagsName']);
-        $row['catResFile'] = $this->tree[$row['idCat']]->resFile;
+        if(isset($this->tree[$row['idCat']])) {
+            $row['catResFile']  = $this->tree[$row['idCat']]->resFile;
+        }
 
         #var_dump($row);
 
@@ -228,7 +230,8 @@ class blog_handlers extends Cblog_vars
         //'SET_record'.$row['idRecord']);
 
         //=======================================================================
-        $row['catResFile'] = $this->tree[$row['idCat']]->resFile;
+        // este folosit pentru display-ul culorilor
+        /*$row['catResFile'] = $this->tree[$row['idCat']]->resFile;*/
 
         #var_dump($row);
 
