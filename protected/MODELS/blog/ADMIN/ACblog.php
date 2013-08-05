@@ -58,6 +58,12 @@ class ACblog extends blog_dbHandlers
 
         return '';
     }
+    function Get_blogCategories(){
+        $query = "SELECT id AS idCat , name_en AS catName FROM ITEMS where type='blog' ";
+        $blogCategories = $this->C->Db_Get_rows($query);
+
+        return $blogCategories;
+    }
 
    function _hookRow_archive($row)
    {
@@ -85,7 +91,10 @@ class ACblog extends blog_dbHandlers
        if(!$row['commentsApprov']) {$row['commApprov_true'] = ''; $row['commApprov_false'] = 'checked'; }
 
        $row = parent::_hookRow_record($row);
+       $row['blogCategories'] = $this->Get_blogCategories();
+
        $this->ED = $this->Get_recordED($row['uidRec']);
+
 
        return $row;
    }

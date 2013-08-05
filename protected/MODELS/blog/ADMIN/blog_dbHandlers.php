@@ -180,7 +180,7 @@ class blog_dbHandlers extends Cblog
 
 
     }
-    function  addRecord()
+    function addRecord()
     {
         $query =     "INSERT INTO blogRecords
                                     (idCat, entryDate, title, uidRec)
@@ -192,8 +192,8 @@ class blog_dbHandlers extends Cblog
                              )";
         # blogRecords_view = blogRecords + blogRecords_settings;
         # echo "<b>blogRecords </b>".$query."</br>";
-        $this->C->DB->query($query);
-        $lastID = $this->C->DB->insert_id;
+        $this->DB->query($query);
+        $lastID = $this->DB->insert_id;
 
 
         if(isset($lastID)) {
@@ -207,11 +207,14 @@ class blog_dbHandlers extends Cblog
             $this->C->DB->query($query);
             $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idTree}&idC={$this->idNode}&idRec={$lastID}";
             $this->C->reLocate($location);
+        } else {
+            error_log("[ ivy ] addRecord : atentie lastId nu a fost recuperat");
         }
+
     }
 
     // not used yest
-    function  update_blogSettings($idRecord)
+    function update_blogSettings($idRecord)
     {
         $set_blogRecords_settings   = $this->C->DMLsql_setValues($this->blogRecords_settings_vars);
         $query = "UPDATE blogRecords_settings
@@ -319,7 +322,7 @@ class blog_dbHandlers extends Cblog
         return $validStat;
         //return false;
     }
-    function  update_blogTags($idRecord)
+    function update_blogTags($idRecord)
     {
 
         /*
@@ -351,26 +354,47 @@ class blog_dbHandlers extends Cblog
         }
 
     }
-    function  updateRecord()
+    function update_category()
+    {
+
+    }
+    function update_recordType()
+    {
+        $query = "UPDATE blogRecords_settings
+                     SET modelBlog_name = {$this->posts->modelBlog_name}
+                     WHERE idRecord = {$this->posts->idRecord}";
+        //echo "blog_dbHandlers - update_recordType query = $query <br>";
+        $this->DB->query($query);
+    }
+    function updateRecord()
     {
         /*use from yml: blogPests_updateRecord */
-
         // $this->update_blogSettings($idRecord);
 
         $posts = &$this->posts;
-
+        // update tags
         if(isset($posts->recordTags) && is_array($posts->recordTags)) {
             $this->update_blogTags($posts->idRecord);
         }
 
+        // update blogSettings
+        if($this->modelBlog_name != $posts->modelBlog_name) {
+            $this->update_recordType();
+        }
+
+        // update main blogRecords;
         $query = "UPDATE blogRecords
                   SET
+                     idCat = '{$posts->idCat}',
                      title = '{$posts->title}',
                      content = '".addslashes($posts->content)."',
                      lead = '{$posts->lead}',
                      leadSec = '{$posts->leadSec}',
                      city = '{$posts->city}',
                      country = '{$posts->country}'
+                     ".(!$posts->publishDate ? '' : "
+                        ,publishDate = '{$posts->publishDate}'
+                     " )."
 
                   WHERE idRecord = '{$posts->idRecord}' ";
 
