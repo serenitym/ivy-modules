@@ -37,6 +37,7 @@ ivyMods.blog = {
     get_tmplThumbPics : function(recordPics) {
 
         var htmlPics = '';
+        var i = 1;
         for( var key in recordPics) {
             htmlPics += "<a class='container-photoThumbs fancybox' " +
                             "data-fancybox-group='button' " +
