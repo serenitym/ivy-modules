@@ -19,6 +19,7 @@ ivyMods.blog = {
                 src = $(this)
                         .attr('src')
                         .replace(ivyMods.blog.basePathPic,ivyMods.blog.thumbPathPic);
+
                 recordPics.push( src );
             });
         }

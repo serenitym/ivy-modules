@@ -176,6 +176,7 @@ class Cblog extends blog_handlers
     {
         $wheres = array();
 
+        // sau userul are permisiuni
         if (!$this->admin || !isset($this->user)) {
             array_push($wheres, " publishDate is not NULL ");
         } else {

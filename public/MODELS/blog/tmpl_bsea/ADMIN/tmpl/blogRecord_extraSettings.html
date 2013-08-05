@@ -1,4 +1,4 @@
-<!-- Extras:
+<!-- Extra fields:
 leadSec
 tags
 country
@@ -6,7 +6,7 @@ city
 category - poate daca vrei sa il muti in alta categorie
 -->
 <div class='ATmpl  block'>
-    <div class='hidden admin-extras'>
+    <div class='hidden admin-extras admin-extraFields'>
 
         <div class='admin-extra' id='admin-leadSec'>
             <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
@@ -34,6 +34,48 @@ category - poate daca vrei sa il muti in alta categorie
                 {$o->city}
             </div>
         </div>
+
+        ".(!$o->publishDate ? '' : "
+            <div class='admin-extra' >
+                <div> Publish Date </div>
+                <div class='EDdate  publishDate'>
+                    {$o->publishDate}
+                </div>
+            </div>
+        ")."
+
+
     </div>
 
+</div>
+<!-- Extra settings
+    modelBlog_name
+    idCat
+-->
+<div class='ATmpl  block'>
+    <div class='hidden admin-extras admin-extraSettings'>
+        <div class='admin-extra' >
+              <div> Category </div>
+              <select name='idCat'>
+                  ".$this->Render_itemsFromStr($o->blogCategories, $o, "
+                        <option value='{~ao->idCat}'
+                                `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
+                            {~ao->catName}
+                        </option>
+                  ")."
+              </select>
+        </div>
+        <div class='admin-extra' >
+              <div> Article Type </div>
+              <select name='modelBlog_name'>
+                  ".$this->Render_arrayFromStr($o->blogModels, $o, "
+                        <option value='{~i}'
+                            `.(~i != ~o->modelBlog_name ? '' :  'selected' ).` >
+                               {~i}
+                        </option>
+                  ")."
+              </select>
+        </div>
+
+    </div>
 </div>

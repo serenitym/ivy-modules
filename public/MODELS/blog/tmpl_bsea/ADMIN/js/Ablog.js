@@ -1,10 +1,25 @@
 ivyMods.set_iEdit.blog = function(){
 
+
     iEdit.add_bttsConf({
         'SGrecord': {
             modName: 'blog',
-            edit: {atrValue : 'edit Record'  },
+            edit: {atrValue : 'edit article'  },
             saveBt: {atrValue : 'save', methName: 'updateRecord'}
+           ,extraHtml:[
+                "<span>" +
+                    "<input type='button' value='more fields'  class='editModeBTT' " +
+                    " onclick='fmw.toggle(\"form[id^=EDITform] .admin-extraFields\"); return false;' />" +
+                "</span>"
+                ,"<span>" +
+                    "<input type='button' value='settings' class='editModeBTT' " +
+                    " onclick='fmw.toggle(\"form[id^=EDITform] .admin-extraSettings\"); return false;' />" +
+                "</span>"
+                ,"<span>" +
+                    "<input type='hidden' name = 'action_methName'  value='deleteRecord' />" +
+                    "<input type='submit' name = 'deleteRecord'  value='delete article' class='editModeBTT'/>" +
+                "</span>"
+            ]
         },
         'record' : {
            modName: 'blog',
@@ -28,3 +43,15 @@ ivyMods.set_iEdit.blog = function(){
         }
     });
 };
+
+/*
+ivyMods.Ablog = {
+
+    init: function(){
+
+    }
+};
+
+$(document).ready(function(){
+    ivyMods.Ablog.init();
+});*/

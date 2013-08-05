@@ -319,7 +319,7 @@ class blog_handlers extends Cblog_vars
     {
          // echo "home_setData()";
         $this->tmpIdTree = 86;
-        $this->tmpTree    = $this->C->Get_tree($this->tmplIdTree);
+        $this->tmpTree    = $this->C->Get_tree($this->tmpIdTree);
         $homeBlogRecords  = array();
 
         $queryBase = "SELECT
@@ -470,6 +470,7 @@ class blog_handlers extends Cblog_vars
         $sql = $this->Get_queryRecord();
         $this->record         = $this->C->Db_Set_procModProps($this, '_hookRow_record', $sql->fullQuery);
         $this->recordsRelated = $this->record_GetDataRelated();
+        //var_dump($this);
         //var_dump($this->recordsRelated);
 
 
