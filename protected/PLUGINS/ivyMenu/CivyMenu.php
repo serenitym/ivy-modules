@@ -111,8 +111,8 @@ class CivyMenu{
                   $this->masterTree = $this->C->Build_masterTree(false);
               }
 
-             echo "<br><b>getMenu_multilevel - masterTree </b> <br>";
-             var_dump($this->masterTree);
+             //echo "<br><b>getMenu_multilevel - masterTree </b> <br>";
+             //var_dump($this->masterTree);
               while($row  = $res->fetch_assoc())
               {
                       $name  = $row['name_'.$this->lang];

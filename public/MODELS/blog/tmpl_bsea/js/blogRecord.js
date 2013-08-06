@@ -108,6 +108,9 @@ ivyMods.blog = {
 				}
         });
     },
+    styleSocialButtons: function(){
+    	jQuery('[class^="at15t"]').css('background-position', '0px 0px');
+    },
     init: function(){
         this.set_thumbPics($('*[class$=SGrecord]'));
         $('*[class~=blogPrevRec]').map(function()
