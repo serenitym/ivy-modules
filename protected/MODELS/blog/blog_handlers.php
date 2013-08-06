@@ -3,7 +3,7 @@ class blog_handlers extends Cblog_vars
 {
     //===============================================[ data filters ]===========
     // processors
-    #=======================================================[PROCESS - ENTRY's]=
+    //======================================================[PROCESS - ENTRY's]=
 
 
     function SET_content(&$row, $lenght = 100)      {
@@ -17,7 +17,7 @@ class blog_handlers extends Cblog_vars
     }
     function SET_content_noPic(&$row, $lenght = 100){
 
-        if(preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches))
+        if (preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches))
         foreach($matches[0] AS $match)
             $row['content'] = str_replace($match,'',$row['content']);
 
@@ -58,15 +58,13 @@ class blog_handlers extends Cblog_vars
                                  : "";*/
         $matches = $this->Set_recordPics($row);
 
-        if ($matches) {
+        if ($matches[1]) {
             return  $matches[1][0];
         }
 
         # echo $row['title']."<br>".var_dump($matches)."<br>";
     }
     function SET_record_href(&$row)                 {
-
-       $currentLayout = $this->C->mgrName;
 
        $idTree = !$this->tmpIdTree ? $this->idTree : $this->tmpIdTree;
        return "index.php?idT={$idTree}".
@@ -95,9 +93,11 @@ class blog_handlers extends Cblog_vars
         return  isset($row['ratingTotal']) ?  $row['ratingTotal'] / $row['nrRates'] : '0';
 
     }
+
+/*
     function SET_total_nrComments(&$row)            {
 
-        # daca vizibilitatea commenturilor este disable
+        // daca vizibilitatea commenturilor este disable
         if($row['commentsView'])
         {
             $query_total_nrComments = "SELECT idComm  from blogComments WHERE idExt = '{$row['idRecord']}'  AND approved='1' ";
@@ -108,6 +108,7 @@ class blog_handlers extends Cblog_vars
             return 0;
 
     }
+ */
 
     function Get_tagsArray($tagsName)               {
         $tags = str_getcsv($tagsName, ',');
