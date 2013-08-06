@@ -26,15 +26,17 @@ ivyMods.set_iEdit.blog = function(){
            addBt : { status : false,  methName: 'addRecord', atrValue: 'add Record', style :" background-color: #D9E9F1;'  "},
            saveBt: { status : false},
            deleteBt:{atrValue: 'delete', methName: 'deleteRecord'},
-           edit: {atrValue: 'edit Record'},
-           extraBts: {
+           edit: {atrValue: 'edit Record'}
+        },
+        'allrecords': {
+            extraButtons: {
                addRecord : {
                    callBack : "fmw.toggle('#form-addRecord'); return false;",
                    attrValue : 'add article',
                    attrName: 'addRecord',
                    attrType:  'button'
                }
-           }
+            }
         },
 
         'recordHome' :{

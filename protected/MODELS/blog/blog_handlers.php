@@ -74,7 +74,7 @@ class blog_handlers extends Cblog_vars
                   ($row['modelBlog_name'] && $row['modelBlog_name']!='blog' ? "&recType={$row['modelBlog_name']}" : '');
 
     }
-    function Get_record_authorHref($uid)           {
+    function Get_record_authorHref($uid)            {
 
         return "index.php?idT=3".
                          "&idC=3".
@@ -212,27 +212,11 @@ class blog_handlers extends Cblog_vars
            tagsName
         */
 
-
         $row['leadSec']          = $this->SET_leadSec($row, 80);
         $row['record_mainPic']   = $this->SET_record_mainPic($row);
         $row['record_href']      = $this->SET_record_href($row);
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
-        # $row['Rating']           = $this->SET_Rating($row);         #s-ar putea sa nici nu mai am nevoie de asta
-       // $row['total_nrComments'] = $this->SET_total_nrComments($row);
 
-        /**
-         * ATENTIE
-         * if( $row['EDrecord'] == '') $row['total_nrComments_anAppr'] = si aici ca mai sus;
-         */
-
-        //=======================================================================
-
-       // $this->C->rating->setINI('blog','idRecord',$row['idRecord'],
-        //'SET_record'.$row['idRecord']);
-
-        //=======================================================================
-        // este folosit pentru display-ul culorilor
-        /*$row['catResFile'] = $this->tree[$row['idCat']]->resFile;*/
 
         #var_dump($row);
 
@@ -364,6 +348,10 @@ class blog_handlers extends Cblog_vars
     }
     function home_setData()
     {
+        // harta cu blacksea
+        $this->C->cssInc .= $this->assetsExternal_home;
+        $this->C->Module_Set_incFiles($this, 'js', 'js_home' );
+
         //====================================[get latest in blog categories]===
         $this->homeBlogRecords = $this->home_GetDataBlogLatest();
         //====================================[get latest in archive categories]=

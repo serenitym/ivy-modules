@@ -18,8 +18,8 @@
 	<div class='LeftColumnSmall blogsHead space'>Story archive</div>
 </div>
 
-<div class='{$o->ED}allENTS block space overflow allrecords'  id='allrecords_{$o->lang}'>
-    ".(!$this->admin ? '' :
+<div class='allENTS block space overflow allrecords'  id='allrecords_{$o->lang}'>
+    ".(!$this->admin ? "" :
          $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_addForm.html")
     )."
