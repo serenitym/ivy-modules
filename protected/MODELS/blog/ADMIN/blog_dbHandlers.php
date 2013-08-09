@@ -280,12 +280,13 @@ class blog_dbHandlers extends Cblog
     function _hook_updateRecord()
     {
         /*use from yml: blogPests_updateRecord */
-        if (!$this->user->rights['article_edit']) {
+        if ($this->user->uid != $this->uidRec  && !$this->user->rights['article_edit']) {
 
-            return $this->fbk->Set_badmess(
+            return $this->fbk->SetGet_badmess(
                         'error',
                         'Not allowed to edit',
-                        'your are not the author of this article!!!');
+                        'your are not the author of this article!!! ');
+                        //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
         }
         $postsConf =&$this->posts_updateRecord;
         $this->posts = handlePosts::Get_postsFlexy($postsConf);
