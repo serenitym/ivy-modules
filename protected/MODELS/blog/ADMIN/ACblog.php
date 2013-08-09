@@ -34,6 +34,17 @@ class ACblog extends blog_dbHandlers
      *
      */
 
+    function Get_basicFilter()
+    {
+        $wheres = array();
+
+        if(!$this->user->rights['article_edit']) {
+            array_push($wheres, " (uidRec='{$this->user->uid}' OR publishDate is not NULL) ");
+        }
+
+        return  $wheres;
+    }
+
     /**
      * Daca este un user logat
      *      - daca are permisiuni de master poate edita
@@ -43,8 +54,7 @@ class ACblog extends blog_dbHandlers
      */
     function Get_recordED($uidRec)
     {
-        $editRight =( ($this->user->rights['article_edit']
-                   && $this->user->rights['article_rm'] )
+        $editRight =( ($this->user->rights['article_edit'] )
                    ||  $uidRec == $this->uid )
                     ? true
                     : false;

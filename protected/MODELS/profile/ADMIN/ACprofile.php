@@ -270,12 +270,11 @@ class ACprofile extends Cprofile
         $this->Set_classes();
         parent::Set_userData($uid);
         $this->C->jsTalk .="
-            <script  type='text/javascript'>
                    ivyMods.profileConf = {
                         editStatusAdmin : ".$this->profile->editStatusAdmin.",
                         activeStatus: ".$this->profile->active."
                    };
-            </script>";
+            ";
 
     }
 

@@ -348,10 +348,6 @@ class blog_handlers extends Cblog_vars
     }
     function home_setData()
     {
-        // harta cu blacksea
-        $this->C->cssInc .= $this->assetsExternal_home;
-        $this->C->Module_Set_incFiles($this, 'js', 'js_home' );
-
         //====================================[get latest in blog categories]===
         $this->homeBlogRecords = $this->home_GetDataBlogLatest();
         //====================================[get latest in archive categories]=

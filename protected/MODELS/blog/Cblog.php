@@ -176,13 +176,7 @@ class Cblog extends blog_handlers
     {
         $wheres = array();
 
-        // sau userul are permisiuni
-        if (!$this->admin || !isset($this->user)) {
-            array_push($wheres, " publishDate is not NULL ");
-        } else {
-            array_push($wheres, " (uidRec='{$this->user->uid}' OR publishDate is not NULL) ");
-
-        }
+        array_push($wheres, " publishDate is not NULL ");
 
         return  $wheres;
     }
