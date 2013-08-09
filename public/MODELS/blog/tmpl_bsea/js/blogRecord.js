@@ -34,14 +34,19 @@ ivyMods.blog = {
         return recordPics;
 
     },
-    get_tmplThumbPics : function(recordPics) {
+    get_tmplThumbPics : function(recordPics, group) {
 
+    	if (typeof group == undefined) {
+    		var group = 'fancybox';
+        	console.log('group: ' + group);
+    	} 
+    	
         var htmlPics = '';
         var i = 1;
         for( var key in recordPics) {
             htmlPics += "<a class='container-photoThumbs fancybox' " +
-                            "data-fancybox-group='button' " +
-                            "href='" + recordPics[key].src.replace('.thumbs/','') + "'>" +
+                            "data-fancybox-group='" + group + 
+                            "' href='" + recordPics[key].src.replace('.thumbs/','') + "'>" +
                                 "<img class='photoThumbs' " +
                                     "src='" + recordPics[key].src + "'" +
                                     "alt='" + recordPics[key].alt + "' />" +
@@ -50,10 +55,10 @@ ivyMods.blog = {
         //alert(htmlPics);
         return htmlPics;
     },
-    set_thumbPics: function(jqObj){
+    set_thumbPics: function(jqObj, group){
 
         var recordPics    = this.get_RecordPics(jqObj);
-        var htmlThumbPics = this.get_tmplThumbPics(recordPics);
+        var htmlThumbPics = this.get_tmplThumbPics(recordPics, group);
 
         jqObj.find(this.colectorPics).append(htmlThumbPics);
 
@@ -112,10 +117,14 @@ ivyMods.blog = {
     	jQuery('[class^="at15t"]').css('background-position', '0px 0px');
     },
     init: function(){
+    	var fancyboxGroup = 1;
+    	
         this.set_thumbPics($('*[class$=SGrecord]'));
+        
         $('*[class~=blogPrevRec]').map(function()
         {
-            ivyMods.blog.set_thumbPics($(this));
+            ivyMods.blog.set_thumbPics($(this), fancyboxGroup);
+            fancyboxGroup++;
         });
 
         this.createFancybox($('div.thumbRecordPics'));
