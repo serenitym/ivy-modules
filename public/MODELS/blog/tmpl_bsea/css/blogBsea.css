@@ -6,9 +6,15 @@
 .blogPrev-lead {margin-bottom: 20px;}
 .blogPrev-content {margin-bottom: 20px;}
 
+/*  blogPrevRecord.html, blogRecord.html */
 .fullImage,
-.blogRecords .record .blogPrev-content img{
-    max-width: 100% !important;
+.blogRecords .record .blogPrev-lead img,
+.blogRecords .record .blogPrev-content img,
+.SGrecord .lead img,
+.SGrecord .content img
+{
+    width: 100% !important;
     height: initial !important;
 }
 
+.notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}

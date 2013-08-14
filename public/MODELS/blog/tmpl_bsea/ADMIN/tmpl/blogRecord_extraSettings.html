@@ -35,7 +35,7 @@ category - poate daca vrei sa il muti in alta categorie
             </div>
         </div>
 
-        ".(!$o->publishDate ? '' : "
+        ".(!$o->publishDate || !$o->user->rights['article_edit'] ? '' : "
             <div class='admin-extra' >
                 <div> Publish Date </div>
                 <div class='EDdate  publishDate'>
@@ -54,17 +54,20 @@ category - poate daca vrei sa il muti in alta categorie
 -->
 <div class='ATmpl  block'>
     <div class='hidden admin-extras admin-extraSettings'>
-        <div class='admin-extra' >
-              <div> Category </div>
-              <select name='idCat'>
-                  ".$this->Render_itemsFromStr($o->blogCategories, $o, "
-                        <option value='{~ao->idCat}'
-                                `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
-                            {~ao->catName}
-                        </option>
-                  ")."
-              </select>
-        </div>
+            ".(  !$o->user->rights['article_edit'] ? '' : "
+                <!--Doar moderatorii pot schimba categoria unui articol-->
+                <div class='admin-extra' >
+                      <div> Category </div>
+                      <select name='idCat'>
+                          ".$this->Render_itemsFromStr($o->blogCategories, $o, "
+                                <option value='{~ao->idCat}'
+                                        `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
+                                    {~ao->catName}
+                                </option>
+                          ")."
+                      </select>
+                </div>
+            ")."
         <div class='admin-extra' >
               <div> Article Type </div>
               <select name='modelBlog_name'>

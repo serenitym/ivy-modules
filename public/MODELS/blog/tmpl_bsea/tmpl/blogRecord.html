@@ -51,6 +51,8 @@
             </div>
             <div class='imageColumnHead orange space authName'>
                 <a href='$o->authorHref'>{$o->fullName}</a>
+                / ".($o->publishDate ?: "<p class='notPublished'>not yet published<p>")."
+
             </div>
             <!-- <div class='textContainer orange'>@bradutz</div> -->
             <div class='fullwidth space thumbRecordPics'>

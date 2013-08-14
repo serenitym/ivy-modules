@@ -200,13 +200,26 @@ class Cblog extends blog_handlers
          *
         */
 
-        //modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
-        //nrRates,ratingTotal,
          $query = "SELECT
-                      blogRecords_view.idRecord,
-                      idCat,uidRec,entryDate,publishDate,
-                      title,content,lead,leadSec, country, city,
-                      modelBlog_name,
+                     blogRecords_view. idRecord,
+                     idCat,
+                     uidRec,
+                     title,
+                     content,
+                     lead,
+                     leadSec,
+                     country,
+                     city,
+                     entryDate,
+                     publishDate,
+                     republish,
+                     modelBlog_name,
+                     relatedStory,
+                     css,
+                     js,
+                     SEO,
+                     folderName,
+                     idFolder,
 
                       uid_Rec, fullName,
                       tagsName
@@ -238,13 +251,28 @@ class Cblog extends blog_handlers
 
         //modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
         // nrRates,ratingTotal,
+
+        
         $query = "SELECT
                     blogRecords_view.idRecord,
-                    idCat,uidRec,entryDate,publishDate,
-                    title,content,lead,leadSec, country, city,
+                    idCat,
+                    uidRec,
+                    title,
+                    content,
+                    lead,
+                    leadSec,
+                    country,
+                    city,
+                    entryDate,
+                    publishDate,
+                    republish,
                     modelBlog_name,
+                    relatedStory,
+                    folderName,
+                    idFolder,
 
-                    uid_Rec, fullName,
+                    uid_Rec,
+                    fullName,
                     tagsName
 
                     FROM blogRecords_view

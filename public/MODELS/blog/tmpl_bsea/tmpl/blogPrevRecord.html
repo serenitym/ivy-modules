@@ -33,8 +33,8 @@
         </div>
 	    <div class='imageColumnHead'>
             {$ao->fullName}
-            /
-            {$ao->publishDate}
+            / ".($ao->publishDate ?: 'not yet published')."
+
         </div>
 	    <div class='imageColumnHead'>
             ".(!$ao->tagsName ? '' :
