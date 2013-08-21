@@ -13,9 +13,9 @@
               </div>
               <div style='display: inline-block;'>
                   <p>Post Type</p>
-                  <select name='modelBlog_name'>
-                        ".$this->Render_items($o->blogModels, '','',
-                            " <option value='{~ao->blogModel_name}'>{~ao->blogModel_name}</option>"
+                  <select name='idFolder'>
+                        ".$this->Render_itemsFromStr($o->formats, '',
+                            " <option value='{~ao->idFormat}'>{~ao->format}</option>"
                       )."
 
                     </select>

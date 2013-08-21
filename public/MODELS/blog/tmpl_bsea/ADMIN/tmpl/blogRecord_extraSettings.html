@@ -5,17 +5,33 @@ country
 city
 category - poate daca vrei sa il muti in alta categorie
 -->
-<div class='ATmpl  block'>
+<div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraFields'>
 
-        <div class='admin-extra' id='admin-leadSec'>
-            <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
-                Preview Lead
-            </button>
-            <div class='EDtxa  hidden admin-leadSec leadSec'>
-                {$o->leadSec}
-            </div>
-        </div>
+       <div class='admin-extra admin-authors-container'>
+
+               <button class='ivy btt-authors' onclick='fmw.toggle(\"form[id^=EDITform] .admin-authors\"); return false;'>
+                   Other Authors
+               </button>
+               <div class='hidden admin-authors'>
+
+                   <input name='authors' id='adminAuthors' >
+               </div>
+
+       </div>
+
+        <div class='admin-extra'   id='admin-leadSec'>
+
+               <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
+                   Preview Lead
+               </button>
+               <div class='EDtxa  hidden admin-leadSec leadSec'>
+                   {$o->leadSec}
+               </div>
+
+       </div>
+
+
         <div class='admin-extra' >
             <div> Tags </div>
             <div class='EDtags  recordTags'>
@@ -45,14 +61,16 @@ category - poate daca vrei sa il muti in alta categorie
         ")."
 
 
+
+
     </div>
 
 </div>
 <!-- Extra settings
-    modelBlog_name
+    format
     idCat
 -->
-<div class='ATmpl  block'>
+<div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraSettings'>
             ".(  !$o->user->rights['article_edit'] ? '' : "
                 <!--Doar moderatorii pot schimba categoria unui articol-->
@@ -70,11 +88,11 @@ category - poate daca vrei sa il muti in alta categorie
             ")."
         <div class='admin-extra' >
               <div> Article Type </div>
-              <select name='modelBlog_name'>
-                  ".$this->Render_arrayFromStr($o->blogModels, $o, "
-                        <option value='{~i}'
-                            `.(~i != ~o->modelBlog_name ? '' :  'selected' ).` >
-                               {~i}
+              <select name='idFormat'>
+                  ".$this->Render_itemsFromStr($o->formats, $o, "
+                        <option value='{~ao->idFormat}'
+                            `.(~ao->format != ~o->format ? '' :  'selected' ).` >
+                               {~ao->format}
                         </option>
                   ")."
               </select>

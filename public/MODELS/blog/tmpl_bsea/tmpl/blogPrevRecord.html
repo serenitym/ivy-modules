@@ -32,8 +32,15 @@
             </a>
         </div>
 	    <div class='imageColumnHead'>
-            {$ao->fullName}
-            / ".($ao->publishDate ?: 'not yet published')."
+            <a href='$ao->authorHref'>{$ao->fullName}</a>
+            ".(count($ao->authors) == 0 ? '' :
+              $this->Render_itemsFromStr($ao->authors,'', "
+                 , <a href='~ao->authorHref'>{~ao->fullName}</a>
+
+            "))."
+            <span class='ib'>
+                / ".($ao->publishDate ?: 'not yet published')."
+            </span>
 
         </div>
 	    <div class='imageColumnHead'>

@@ -56,8 +56,8 @@ ivyMods.set_iEdit.sampleMod = function(){
     {
         'sgProfile':{
             modName: 'profile',
-            edit: {atrValue: 'edit profile'},
-            saveBt: {methName: 'saveProfile'+ extraSaveMeth, atrValue: 'save profile'}
+            edit: {attrValue: 'edit profile'},
+            saveBt: {methName: 'saveProfile'+ extraSaveMeth, attrValue: 'save profile'}
             /*,extraButtons:{
                 extraBt : { attrValue : 'delete profile',attrName: 'deleteProfile'
                     , attrType:  'submit', methName: 'deleteProfile'}

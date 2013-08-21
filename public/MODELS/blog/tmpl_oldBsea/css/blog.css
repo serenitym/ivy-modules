@@ -51,7 +51,7 @@
 
 form[id^="new_record"] {background-color: #E8EDF0;}
 form[id^="new_record"] .title {width: 500px !important;}
-form[id^="new_record"] select[name="modelBlog_name"] {width: 100px !important;}
+form[id^="new_record"] select[name="format"] {width: 100px !important;}
 
 .SGrecord
 {

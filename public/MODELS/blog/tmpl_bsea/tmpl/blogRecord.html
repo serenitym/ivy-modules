@@ -1,92 +1,121 @@
+<!--<form action='' method='post'>
+    <input type='hidden' name='methName' value='updateRecord'>
+    <input type='hidden' name='modName' value='blog'>
+    <div class='admin-extra '>
+        <div> Other Authors </div>
+        <input type='text' name='authors' id='adminAuthors' >
+    </div>
+    <input type='submit' name='subAuth' value='subAuth'>
+
+</form>-->
+
+
 ".(!$this->admin ? '' :
      $this->Render_object($this->blog,'',
         "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraBtns.html")
 )."
-<div class='{$o->ED}SING SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+<div class='{$o->ED}SING block SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
     ".(!$this->admin ? '' :
          $this->Render_object($this->blog,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraSettings.html")
     )."
-    <div class='block space'>
-        {$o->HTMLmessage_record}
-        <!-- start story -->
-        <div class='textColumnBig right'>
-            <!-- <div class='theStory'>  -->
-            <div class='ATmpl'> Lead </div>
-            <div class='EDeditor lead'>
-               {$o->lead}
-            </div>
+    <!-- start story -->
+	<div class='textColumnBig right'>
+	    <!-- <div class='theStory'>  -->
+        <div class='EDeditor space lead'>
+            {$o->lead}
+        </div>
+        <div class='fullwidth'>
 
-
-            <div class='fullwidth'>
-                <!--<div class='showMore'>More</div>-->
-                <div id='sharepanel'>
-                    <div class='shareText' id='share'>Share this story</div>
-                    <!-- 
-                    <ul id='shareicons'>
-						<li class='addthis_button_facebook'></li>
-						<li class='addthis_button_twitter'></li>
-						<li class='addthis_button_vk'></li>
-                        <li class='shareText' id='social-connect-facebook'></li>
-                        <li class='shareText' id='social-connect-twitter'></li>
-                        <li class='shareText' id='social-connect-vkontakte'></li>
-                    </ul>
-                    -->
-                    <!-- AddThis Button BEGIN -->
-					<div class='addthis_toolbox addthis_default_style addthis_32x32_style' style='display: inline-block;'>
-						<a class='addthis_button_facebook'></a>
-						<a class='addthis_button_twitter'></a>
-						<a class='addthis_button_vk'></a>
-					</div>
-					<script type='text/javascript' src='/assets/addthis/addthis.js'></script>
-					<!-- AddThis Button END -->
+        <div id='sharepanel'>
+            <div class='shareText' id='share'>Share this story</div>
+                <!--
+                   <ul id='shareicons'>
+                       <li class='shareText' id='social-connect-facebook'></li>
+                       <li class='shareText' id='social-connect-twitter'></li>
+                       <li class='shareText' id='social-connect-vkontakte'></li>
+                   </ul>
+                -->
+                <div class='addthis_toolbox addthis_default_style addthis_32x32_style' style='display: inline-block;'>
+                    <a class='addthis_button_facebook'></a>
+                    <a class='addthis_button_twitter'></a>
+                    <a class='addthis_button_vk'></a>
                 </div>
-            </div>
 
+            </div>
+            <div class='shareText' id='geturl'>get permalink</div>
+            <div class='geturl'></div>
         </div>
-    <!-- end story -->
-        <div class='LeftColumnSmall orangeleftborder'> <!-- begin left -->
-            <div class='EDtxt Name orange title'>
-                {$o->title}
-            </div>
-            <div class='imageColumnHead orange space authName'>
-                <a href='$o->authorHref'>{$o->fullName}</a>
-                / ".($o->publishDate ?: "<p class='notPublished'>not yet published<p>")."
 
-            </div>
-            <!-- <div class='textContainer orange'>@bradutz</div> -->
-            <div class='fullwidth space thumbRecordPics'>
-                <!--<img class='photoGalleryThumbs' src='foto/16.jpg'/>
-                <img class='photoGalleryThumbs' src='foto/21.jpg'/>
-                <img class='photoGalleryThumbs' src='foto/28.jpg'/>
-                <img class='photoGalleryThumbs' src='foto/16.jpg'/>
-                <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->
-            </div>
-            <div class='fullwidth'>
-                <div class='imageColumnHead'>Related </div>
-                <ul>
-                    ".$this->Render_itemsFromStr($o->recordsRelated, '', "
-                        <li class='relatedContent'>
-                            <a href='{~ao->record_href}'>{~ao->title}</a>
-                        </li>
-                    ")."
-
-                </ul>
-            </div>
-
-        </div><!-- end left-->
-    </div>
-    <div class='block space overflow'>
-
-    </div>
-
-
-    <div class='block center space'>
-        <div class='divider'></div>
-        <p class='ATmpl b t10'>Continut Articol</p>
-        <div class='EDeditor content'>
+	    <div class='EDeditor space content'>
             {$o->content}
+	    </div>
+
+
+
+	</div>
+    <!-- end story -->
+
+    <!-- begin left -->
+	<div class='LeftColumnSmall {$o->catResFile}leftborder'>
+	    <div class='Name {$o->catResFile} fullwidth'>
+            <span class='EDtxt noBorder {$o->statusPublish} title'>
+                {$o->title}
+            </span>
+        </div>
+	    <div class='imageColumnHead'>
+            <a href='$o->authorHref'>{$o->fullName}</a>
+            ".(count($o->authors) == 0 ? '' :
+             $this->Render_itemsFromStr($o->authors,'', "
+                , <a href='~ao->authorHref' >{~ao->fullName}</a>
+
+           "))."
+
+            <span class='ib'>
+                / ".($o->publishDate ?: 'not yet published')."
+            </span>
+
+        </div>
+	    <div class='imageColumnHead'>
+            ".(!$o->tagsName ? '' :
+               "
+                    Filed under:&nbsp;
+                    <span class='{$o->catResFile}'>
+                         <!--<a href=''>tag1</a>,
+                         <a href=''>tag2</a>,
+                         <a href=''>tag3</a>-->
+                        <!--{$o->tagsName}-->
+                        ".substr(
+                        $this->Render_arrayFromStr($o->tags, $o,
+                            "<a href='?idT={~o->idTree}&idC={~o->idNode}&filterName=tag&filterValue={~i}'>
+                                {~i}
+                            </a>, "
+                        ), 0, -2)."
+                    </span>
+               "
+            )."
+
+        </div>
+        <div class='fullwidth space thumbRecordPics'>
+            <!--<img class='photoGalleryThumbs' src='foto/16.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/16.jpg'/>
+            <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->
         </div>
 
-    </div><!-- end block -->
+        <!--Related stories-->
+        <div class='fullwidth'>
+            <div class='imageColumnHead'>Related </div>
+            <ul>
+                ".$this->Render_itemsFromStr($o->recordsRelated, '', "
+                    <li class = 'relatedContent' >
+                        <a href='{~ao->record_href}'>{~ao->title}</a>
+                    </li>
+                ")."
+
+            </ul>
+        </div>
+
+
+    </div><!-- end left-->
 </div>
+

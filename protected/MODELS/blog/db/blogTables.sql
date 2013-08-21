@@ -36,7 +36,7 @@ ALTER TABLE `blogRecords`
 
 CREATE TABLE IF NOT EXISTS `blogRecords_settings` (
   `idRecord` int(5) NOT NULL COMMENT 'ext blogRecords',
-  `modelBlog_name` varchar(50) DEFAULT NULL COMMENT 'template pt acest record',
+  `format` varchar(50) DEFAULT NULL COMMENT 'template pt acest record',
   `modelComm_name` varchar(50) DEFAULT NULL COMMENT 'modelul Commenturilor',
   `commentsView` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'se vad sau nu',
   `commentsApprov` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'commenturile trebuie aprobate inainte de publicare',
@@ -146,13 +146,14 @@ AS select
 `blogRecords_stats`.`nrRates` AS `nrRates`,
 `blogRecords_stats`.`ratingTotal` AS `ratingTotal`,
 `blogRecords_stats`.`republish` AS `republish`,
-`blogRecords_settings`.`modelBlog_name` AS `modelBlog_name`,
 `blogRecords_settings`.`relatedStory` AS `relatedStory`,
 `blogRecords_settings`.`css` AS `css`,
 `blogRecords_settings`.`js` AS `js`,
 `blogRecords_settings`.`SEO` AS `SEO`,
 blogRecord_folders.folderName AS folderName,
-blogRecord_folders.idFolder AS idFolder
+blogRecord_folders.idFolder AS idFolder,
+blogRecord_formats.format AS format,
+blogRecord_formats.idFormat AS idFormat
 
 
 from
@@ -167,5 +168,8 @@ from
 
   LEFT OUTER JOIN blogRecord_folders
   ON ( blogRecords_settings.idFolder = blogRecord_folders.idFolder )
+
+  LEFT OUTER JOIN blogRecord_formats
+  ON ( blogRecords_settings.idFormat = blogRecord_formats.idFormat )
   ;
 

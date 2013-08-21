@@ -14,6 +14,19 @@ class Cblog extends blog_handlers
     var $filterRecTypes = array();
     var $uid = 0;
 
+    // blog settings
+    /**
+     * array( 'value' => idFolder, 'name' => folderName ) ;
+     * utilizat pt autocomplete pt liveEdit  ( EDsel )
+     * @var
+     */
+    var $folders;
+    /**
+     * array('idFormat' => '', 'format' => '') ;
+     * @var
+     */
+    var $formats;   //
+
     // general seters
     function hrefFilter($filterName, $filterValue)
     {
@@ -22,14 +35,13 @@ class Cblog extends blog_handlers
     // Set_filterRecTypes
     function Get_hrefFilterRecTypes($baseUrl)
     {
-        //$this->filterRecTypes=
         $filters = array();
-        foreach ($this->blogModels As $recType) {
+        foreach ($this->formats As $format) {
 
             array_push($filters,array(
-                    'filterName' => $recType,
+                    'filterName' => $format['format'] ,
                     'filterHref' => $baseUrl."&"
-                                    .$this->hrefFilter('recType', $recType)
+                                    .$this->hrefFilter('format', $format['format'])
                 )
             );
         }
@@ -77,28 +89,53 @@ class Cblog extends blog_handlers
         return $filters;
 
     }
-
-    //===============================================[ query Filters ]==========
-
-    function Get_recTypeFilter($recType)
+    function Get_hrefFilterFolders($baseUrl)
     {
-        return " modelBlog_name = '{$recType}' ";
+        $filters = array();
+        $query = "SELECT  idFolder, folderName FROM `blogRecord_folders`";
+        $res = $this->DB->query($query);
+        if ($res) {
+            while($row = $res->fetch_assoc()) {
+
+                array_push($filters,array(
+                        'filterName' => $row['folderName'],
+                        'filterHref' => $baseUrl. "&"
+                            . $this->hrefFilter('idFolder', $row['idFolder'])
+                    )
+                );
+            }
+        }
+        return $filters;
+
     }
 
+    //===============================================[ query Filters ]==========
+    //#1
+    function Get_idFolderFilter($idFolder)
+    {
+        return " idFolder = {$idFolder} ";
+    }
+    //#1
+    function Get_formatFilter($format)
+    {
+        return " format = '{$format}' ";
+    }
+    //#1
     function Get_tagFilter($filterValue)
     {
         return ' tagsName LIKE "%'.$filterValue.'%" ';
     }
-
+    //#1
     function Get_countryFilter($filterValue)
     {
         return " country = '{$filterValue}' ";
     }
+    //#1
     function Get_uidFilter($filterValue)
     {
         return " uidRec = '{$filterValue}' ";
     }
-
+    //#1.1
     function Set_subtreeIds($idNode, &$tree)
     {
         array_push($this->subtreeIds, $idNode);
@@ -111,6 +148,7 @@ class Cblog extends blog_handlers
             }
         }
     }
+    //#1.2
     function Get_categoryFilter($idNode = '')
     {
         /*
@@ -142,7 +180,7 @@ class Cblog extends blog_handlers
 
 
     }
-
+    //#2
     function _handle_requestFilters($filters = array())
     {
         //filterList
@@ -171,7 +209,7 @@ class Cblog extends blog_handlers
 
         return $filtersStrs;
     }
-
+    //#1
     function Get_basicFilter()
     {
         $wheres = array();
@@ -180,7 +218,6 @@ class Cblog extends blog_handlers
 
         return  $wheres;
     }
-
 
     //===============================================[ query builders ]=========
     function Get_baseQueryRecord()
@@ -213,16 +250,23 @@ class Cblog extends blog_handlers
                      entryDate,
                      publishDate,
                      republish,
-                     modelBlog_name,
                      relatedStory,
                      css,
                      js,
                      SEO,
+
+                     idFormat,
+                     format,
+
                      folderName,
                      idFolder,
 
                       uid_Rec, fullName,
-                      tagsName
+                      tagsName,
+
+                      uidsCSV,
+                      fullNamesCSV,
+                      unamesCSV
 
                       FROM blogRecords_view
                       JOIN
@@ -239,6 +283,32 @@ class Cblog extends blog_handlers
                           GROUP BY idRecord
                       ) AS TBtagsName
                       ON (blogRecords_view.idRecord = TBtagsName.idRecord)
+
+                      LEFT OUTER JOIN
+                      (
+                          SELECT
+                            idRecord,
+                            GROUP_CONCAT( blogRecords_authors.uid SEPARATOR ', ' )
+                              AS uidsCSV ,
+                            GROUP_CONCAT(
+                             CONCAT (first_name, ' ', last_name )  SEPARATOR ', '
+                            ) AS fullNamesCSV ,
+
+                            GROUP_CONCAT( auth_users.name SEpARATOR ', ')
+                              AS unamesCSV
+
+                          FROM blogRecords_authors
+                          JOIN auth_user_details
+                              ON (blogRecords_authors.uid = auth_user_details.uid)
+
+                          JOIN auth_users
+                              ON (blogRecords_authors.uid = auth_users.uid)
+
+                          GROUP BY idRecord
+                      ) AS TBauthors
+                      ON (blogRecords_view.idRecord = TBauthors.idRecord)
+
+
 
                                            ";
 
@@ -266,14 +336,19 @@ class Cblog extends blog_handlers
                     entryDate,
                     publishDate,
                     republish,
-                    modelBlog_name,
+                    format,
                     relatedStory,
                     folderName,
                     idFolder,
 
                     uid_Rec,
                     fullName,
-                    tagsName
+                    tagsName,
+
+                    uidsCSV,
+                    fullNamesCSV,
+                    unamesCSV
+
 
                     FROM blogRecords_view
                          JOIN
@@ -290,6 +365,30 @@ class Cblog extends blog_handlers
                                 GROUP BY idRecord
                          ) AS TBtagsName
                           ON (blogRecords_view.idRecord = TBtagsName.idRecord)
+
+                          LEFT OUTER JOIN
+                          (
+                              SELECT
+                                idRecord,
+                                GROUP_CONCAT( blogRecords_authors.uid SEPARATOR ', ' )
+                                  AS uidsCSV ,
+                                GROUP_CONCAT(
+                                 CONCAT (first_name, ' ', last_name )  SEPARATOR ', '
+                                ) AS fullNamesCSV ,
+
+                                GROUP_CONCAT( auth_users.name SEpARATOR ', ')
+                                  AS unamesCSV
+
+                              FROM blogRecords_authors
+                              JOIN auth_user_details
+                                  ON (blogRecords_authors.uid = auth_user_details.uid)
+
+                              JOIN auth_users
+                                  ON (blogRecords_authors.uid = auth_users.uid)
+
+                              GROUP BY idRecord
+                          ) AS TBauthors
+                          ON (blogRecords_view.idRecord = TBauthors.idRecord)
 
                           ";
 
@@ -346,8 +445,56 @@ class Cblog extends blog_handlers
 
     }
 
+    /**
+     *
+     * table - blogRecord_tmplFiles
+     * --------------------------
+     * **tmplFiles** = [ {idTmpl: '', tmplFile: ''} ]
+     *
+     * table - blogRecord_types
+     * ----------------------
+     * **types**     = [ {idType: '', type: '', idTmpl:'', tmplFile: '' } ]
+     *
+     * table -  blogRecord_folder
+     * -----------------------
+     * **folders**   = [ {idFolder: '',parentFolder: '', folderName:'', idTmpl: '',
+                        tmplFile: ''  } ]
+     *
+     * table - blogTags_banned
+     *----------------------------------
+     * **bannedTags** = [{idTag: '', tagName: ''}]
+     *
+     *
+     */
+    protected function Get_blogSettings()
+    {
+        //=============================================[ folders ]==============
+        $query = "SELECT idFolder AS value, folderName AS name
+                  FROM blogRecord_folders";
+        $this->folders = $this->C->Db_Get_rows($query);
+
+        $emptySelect = array(
+                            array('value' => 0, 'name' => 'none' )
+                       );
+        $folders = array_merge($emptySelect, $this->folders);
+
+        $this->jsonFolders = json_encode($folders);
+
+       // echo "Get_blogSettings - jsonFolders = ".$this->jsonFolders;
+
+        //=============================================[ formats ]==============
+        $query = "SELECT idFormat , format
+                  FROM blogRecord_formats";
+        $this->formats =     $this->C->Db_Get_rows($query);
+
+
+    }
+
+
     function _init_()
     {
+
+        $this->Get_blogSettings();
         $this->_handle_requests();
 
         #=======================================================================

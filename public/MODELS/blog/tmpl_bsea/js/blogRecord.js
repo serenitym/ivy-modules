@@ -1,4 +1,9 @@
-ivyMods.blog = {
+if( typeof ivyMods.blog == 'undefined'  ) {
+    ivyMods.blog = {};
+}
+
+$.extend (
+    ivyMods.blog , {
 
     sel: {
         basePathPic : "/RES/uploads/images/",
@@ -8,7 +13,8 @@ ivyMods.blog = {
         article:       'div[class$=SGrecord]',
         articlesBlog:  'div[class~=blogPrevRec]',
         gallery :      '*[class$=thumbRecordPics] a.fancybox',
-        liveEdit:      '.ELMcontent'
+        liveEdit:      '.ELMcontent',
+        adminAuthors: 'form #adminAuthors'
 
     },
     jqCont: {
@@ -154,7 +160,7 @@ ivyMods.blog = {
         if(jqCont.liveEditStat == 0) {
             jqCont.imgs.map(function(){
                 var caption = $(this).attr('alt');
-                $(this).after("<p>"+caption+"</p>");
+                $(this).after("<div class='storyCaption'>"+caption+"</div>");
             });
         }
     },
@@ -233,7 +239,8 @@ ivyMods.blog = {
         }
 
     }
-};
+}
+);
 
 $(document).ready(function(){
     ivyMods.blog.init();

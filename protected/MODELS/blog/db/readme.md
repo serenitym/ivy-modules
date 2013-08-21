@@ -26,3 +26,16 @@
 
 *diferenta dintr insert si Update sunt acele tabele care
 se vor joinui cu LEFT OUTER JOIN defapt*
+
+#Blog settings
+
+* **tmplFiles** = [ {idTmpl: '', tmplFile: ''} ]
+* **types**     = [ {idType: '', type: '', idTmpl:'', tmplFile: '' } ]
+* **folders**   = [ {idFolder: '',parentFolder: '', folderName:'', idTmpl: '',
+                   tmplFile: ''  } ]
+* **bannedTags** = [{idTag: '', tagName: ''}]
+
+
+
+
+

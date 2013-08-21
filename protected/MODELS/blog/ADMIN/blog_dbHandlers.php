@@ -161,7 +161,7 @@ class blog_dbHandlers extends Cblog
         /**
          * aspect:
          *  - title
-         *  - modelBlog_name
+         *  - format
          */
         $postsConf = &$this->posts_addRecord;
         //var_dump($postsConf);
@@ -210,10 +210,10 @@ class blog_dbHandlers extends Cblog
 
 
             // insert in blogRecords_settings
-            $query =     "INSERT INTO blogRecords_settings (idRecord, modelBlog_name)
+            $query =     "INSERT INTO blogRecords_settings (idRecord, idFormat)
                                  VALUES (
                                  '{$lastID}' ,
-                                 '{$this->posts->modelBlog_name}'
+                                 '{$this->posts->idFormat}'
                                  )";
             //echo "<b>blogRecords_settings </b>".$query."</br>";
             array_push($queries, $query);
@@ -278,6 +278,8 @@ class blog_dbHandlers extends Cblog
     }
     function _hook_updateRecord()
     {
+       // echo "<b>blog_dbHandlers</b>  _POST";
+       //var_dump($_POST);
         //=====================================[ preValidate data ]=============
         /**
          * Rules:
@@ -290,8 +292,8 @@ class blog_dbHandlers extends Cblog
          * 3. daca userul nu are drepturi de publicare atunci nu poate sa isi schimbe
          * data publicarii
          */
-        if($this->modelBlog_name == $_POST['modelBlog_name']) {
-            unset($_POST['modelBlog_name']);
+        if($this->format == $_POST['idFormat']) {
+            unset($_POST['idFormat']);
         }
 
         if(!$this->user->rights['article_edit']) {
@@ -309,9 +311,7 @@ class blog_dbHandlers extends Cblog
         //=====================================[ validate data ]=================
 
         /*use from yml: blogPests_updateRecord */
-        if ($this->user->uid != $this->uidRec
-        && !$this->user->rights['article_edit']
-        ) {
+        if (!$this->Get_rights_articleEdit($this->uidRec, $this->uids)) {
             return $this->fbk->SetGet_badmess(
                         'error',
                         'Not allowed to edit',
@@ -353,9 +353,13 @@ class blog_dbHandlers extends Cblog
             $this->posts->recordTags = $this->Get_validTags($this->posts->recordTags);
         }
 
+        if($this->posts->authors){
+            $this->posts->authors = explode(',', $this->posts->authors);
+        }
         //echo "_hook_updateRecord() ";
         //echo "validation = ".($validStat ? "true" : "false");
-        //var_dump($_POST);
+
+        // echo "<b>blog_dbHandlers</b> this->posts";
         //var_dump($this->posts);
 
         //$this->C->reLocate();
@@ -364,6 +368,24 @@ class blog_dbHandlers extends Cblog
         //return false;
     }
 
+    /**
+     * updateaza autorii pentru un articol
+     *
+     * 1. inaini ii delelteaza pe toti
+     * 2. apoi ii adaugat din nou
+     * @param $idRecord
+     */
+    function update_authors($idRecord){
+
+        $query_delete = "DELETE FROM blogRecords_authors WHERE idRecord = '{$idRecord}' ";
+        $this->DB->query($query_delete);
+
+        foreach($this->posts->authors AS $authId) {
+            $query_insert = "INSERT INTO blogRecords_authors (idRecord, uid ) VALUES ('{$idRecord}','{$authId}')  ";
+            $this->DB->query($query_insert);
+        }
+
+    }
     function update_blogTags($idRecord)
     {
 
@@ -387,9 +409,13 @@ class blog_dbHandlers extends Cblog
     {
 
         $posts = &$this->posts;
-        // update tags
-        if(isset($posts->recordTags) && is_array($posts->recordTags)) {
+        //=================================[ update tags ]======================
+        if (isset($posts->recordTags) && is_array($posts->recordTags)) {
             $this->update_blogTags($posts->idRecord);
+        }
+        //================================[  update authors ]===================
+        if (count($posts->authors) > 0) {
+           $this->update_authors($posts->idRecord);
         }
 
         $queries = array();
@@ -413,16 +439,19 @@ class blog_dbHandlers extends Cblog
 
 
         //=======================[ update blogRecords_settings ]================
-        $columns = 'modelBlog_name, css, js, idFolder, relatedStory' ;
-        $sets = handlePosts::Db_Get_setString($this->posts, $columns);
+        $columns = 'idFormat, idFolder, css, js, relatedStory' ;
+        $sets = handlePosts::Db_Get_setString($this->posts, $columns, false);
         if ($sets) {
             $query = "UPDATE blogRecords_settings SET $sets
                      WHERE idRecord = '{$posts->idRecord}' ";
             $queries['blogRecords_settings'] = $query;
 
+            error_log("[ ivy ] blog_dbHandlers blogRecords_settings query = ".$query);
+
         }
 
-         /*foreach($queries AS $table => $query) {
+        /*var_dump($_POST);
+         foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }
         return false;*/
@@ -454,29 +483,22 @@ class blog_dbHandlers extends Cblog
         return true;
 
     }
+    function _hook_deleteRecord()
+    {
+        if (!$this->Get_rights_articleEdit($this->uidRec, $this->uids)) {
+            return $this->fbk->SetGet_badmess(
+                        'error',
+                        'Not allowed to delete',
+                        'your are not the author of this article!!! ');
+                        //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
+        }
+        return true;
+    }
     function  deleteRecord()
     {
-
         $idRecord = $_POST['BLOCK_id'];
 
-        /**
-         *  Deleteul trebuie sa se faca din (aceste tabele trebuie relationate intre ele)
-         *      - blogRecords
-         *      - blogRecords_settings
-         *      - blogComments
-         *      - [blogName]_records
-         *
-          */
-
-        /**
-         * daca userul nu are permisiuni de master pe recorduri
-         * atunci va putea deleta doar recordurile pentru care este autor
-         */
-
-        $where = !$this->user->rights['article_rm']
-                    ? "AND uidRec='{$this->uid}'": '';
-
-        $query = "DELETE FROM blogRecords WHERE idRecord = '{$idRecord}' {$where} ";
+        $query = "DELETE FROM blogRecords WHERE idRecord = '{$idRecord}' ";
         $result = $this->DB->query($query);
         if($result) {
             $this->C->feedback->Set_mess(
