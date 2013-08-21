@@ -1,0 +1,28 @@
+<!--
+<div class='blogSettings'>
+    <p class='b'>Formats</p>
+    <div class='allENTS ib margin-10 formats' id='formats_en'>
+        ".$this->Render_itemsFromStr($o->formats,'',"
+            <div class='ENT padding-3 formatContainer' id='formatContainer_{~ao->idFormat}_en'>
+                <p class='EDtxt width150  format'>{~ao->format} </p>
+            </div>
+        ")."
+    </div>
+</div>-->
+
+<form action='' method='post' class='format-blogSettings' style='margin: 20px;'>
+    <div class='b '>Formats</div>
+    <input type='text' class='ivy-light formats' value='{$o->formatNames}'>
+
+    <br>
+    <br>
+    <div class='b'>Folders</div>
+    <!--<input type='text' class='ivy-light' value='{$o->folderNames}'>-->
+    <textarea name='folderNames' class='ivy-light folders '>
+        {$o->folderNames}
+    </textarea>
+
+    <input type='hidden' name='modName' value='blog'>
+    <input type='hidden' name='methName' value='update_blogSettings'>
+    <input type='submit' name='updateSettings' value='update settings' class='ivy'>
+</form>

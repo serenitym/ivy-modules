@@ -1,12 +1,21 @@
 <?php
 class blog_handlers extends Cblog_vars
 {
+    // records list
+    var $records;
+
+    // archive.html - filters
+    var $filterRecTypes ;
+    var $filterTags     ;
+    var $filterCountries;
+    var $filterFolders  ;
+
     //===============================================[ data filters ]===========
     // processors
     //======================================================[PROCESS - ENTRY's]=
 
 
-    function SET_content(&$row, $lenght = 100)      {
+    function Get_content(&$row, $lenght = 100)      {
 
          if(!$row['content']){
              $string =    substr(strip_tags($row['content']),0,$lenght);
@@ -15,7 +24,7 @@ class blog_handlers extends Cblog_vars
          else
              return $row['content'];
     }
-    function SET_content_noPic(&$row, $lenght = 100){
+    function Get_content_noPic(&$row, $lenght = 100){
 
         if (preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches))
         foreach($matches[0] AS $match)
@@ -30,7 +39,7 @@ class blog_handlers extends Cblog_vars
          else
              return $row['content'];
     }
-    function SET_leadSec(&$row, $lenght = 70)       {
+    function Get_leadSec(&$row, $lenght = 70)       {
 
          if(!$row['leadSec']){
 
@@ -42,21 +51,21 @@ class blog_handlers extends Cblog_vars
              return $row['leadSec'];
          }
     }
-    function Set_recordPics(&$row)                  {
+    function Get_recordPics(&$row)                  {
        // preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches);
         //preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $row['content'], $matches);
         preg_match_all('/(?<=\<img).+src=[\'"]([^\'"]+)/i', $row['content'], $matches);
-        //echo "<b>SET_record_mainPic : matches </b>";
+        //echo "<b>Get_record_mainPic : matches </b>";
         //var_dump($matches);
         return $matches;
 
     }
-    function SET_record_mainPic(&$row)              {
+    function Get_record_mainPic(&$row)              {
          #====================================[ main Pic ]===========================================================================
         /*$row['record_mainPic_src'] = preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches)
                                  ? $matches[1][0]
                                  : "";*/
-        $matches = $this->Set_recordPics($row);
+        $matches = $this->Get_recordPics($row);
 
         if ($matches[1]) {
             return  $matches[1][0];
@@ -64,14 +73,14 @@ class blog_handlers extends Cblog_vars
 
         # echo $row['title']."<br>".var_dump($matches)."<br>";
     }
-    function SET_record_href(&$row)                 {
+    function Get_record_href(&$row)                 {
 
        $idTree = !$this->tmpIdTree ? $this->idTree : $this->tmpIdTree;
        return "index.php?idT={$idTree}".
                  "&idC={$row['idCat']}".
                  "&idRec={$row['idRecord']}".
                  //"&type={$currentLayout}".
-                  ($row['modelBlog_name'] && $row['modelBlog_name']!='blog' ? "&recType={$row['modelBlog_name']}" : '');
+                  ($row['format'] && $row['format']!='blog' ? "&recType={$row['format']}" : '');
 
     }
     function Get_record_authorHref($uid)            {
@@ -81,21 +90,54 @@ class blog_handlers extends Cblog_vars
                          "&uid={$uid}";
 
     }
-    function Set_recordHrefHome($row)               {
+    function Get_record_hrefFolderFilter($idFolder) {
+
+        $href = "?idT={$this->idTree}&idC={$this->idNode}&"
+                .$this->hrefFilter('idFolder', $idFolder);
+        return  $href;
+
+    }
+    function Get_tagsArray($tagsName)               {
+        $tags = str_getcsv($tagsName, ',');
+        foreach($tags AS $key=>$tag) {
+            $tags[$key] = trim($tag);
+        }
+
+        return $tags;
+    }
+    function Get_publishedStatus ($publishDate)     {
+        return $publishDate ? 'record-published' : 'record-unpublished';
+
+    }
+    function Get_recordHrefHome($row)               {
         return  "index.php?idT={$this->tmpIdTree}".
                   "&idC={$row['idCat']}".
                   "&idRec={$row['idRecord']}".
-                   ($row['modelBlog_name'] && $row['modelBlog_name']!='blog' ? "&recType={$row['modelBlog_name']}" : '');
+                   ($row['format'] && $row['format']!='blog' ? "&recType={$row['format']}" : '');
+    }
+    function Get_authors($uids, $fullNames)         {
+        $authors    = array();
+        foreach ($uids AS $key => $uid) {
+            array_push($authors, array(
+                    "uid" => $uid,
+                    "fullName" => $fullNames[$key],
+                    "authorHref" => $this->Get_record_authorHref($uid)
+                ));
+        }
+        //var_dump( $authors);
+
+        return $authors;
     }
 
-    function SET_Rating(&$row)                      {
+    // deprecated methods
+    /**
+     * function GET_Rating(&$row)                      {
 
         return  isset($row['ratingTotal']) ?  $row['ratingTotal'] / $row['nrRates'] : '0';
 
-    }
-
-/*
-    function SET_total_nrComments(&$row)            {
+    }*/
+    /**
+   * function SET_total_nrComments(&$row)            {
 
         // daca vizibilitatea commenturilor este disable
         if($row['commentsView'])
@@ -110,26 +152,12 @@ class blog_handlers extends Cblog_vars
     }
  */
 
-    function Get_tagsArray($tagsName)               {
-        $tags = str_getcsv($tagsName, ',');
-        foreach($tags AS $key=>$tag) {
-            $tags[$key] = trim($tag);
-        }
-
-        return $tags;
-
-    }
-    function Get_publishedStatus ($publishDate)     {
-        return $publishDate ? 'record-published' : 'record-unpublished';
-
-    }
-
-     //=====================================[Control - PROCESS - ENTRY's]=======
+    //=====================================[Control - PROCESS - ENTRY's]=======
 
     //_hookRow_blogHome
     function _hookRow_blogHome($row)
     {
-        $row['record_href'] = $this->SET_recordHrefHome($row);
+        $row['record_href'] = $this->Get_recordHrefHome($row);
         $row['EDrecord'] = 'not';
         #var_dump($row);
         return $row;
@@ -146,7 +174,7 @@ class blog_handlers extends Cblog_vars
            title,content,lead,
          *
          * [ TB blogRecords_settings ]
-           modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+           format,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
 
          * [ TB blogMap_recordsTags ]
            uid_Rec, fullName,
@@ -172,7 +200,7 @@ class blog_handlers extends Cblog_vars
          * + leadSec
          * + country
          * + city
-         * + modelBlog_name
+         * + format
          * + modelComm_name
          * + commentsView
          * + commentsApprov
@@ -181,17 +209,26 @@ class blog_handlers extends Cblog_vars
          * + fullName
          * + tagsName
          */
-        $row['record_href'] = $this->SET_record_href($row);
+        $row['record_href'] = $this->Get_record_href($row);
         $row['tags']        = $this->Get_tagsArray($row['tagsName']);
         if(isset($this->tree[$row['idCat']])) {
             $row['catResFile']  = $this->tree[$row['idCat']]->resFile;
         }
 
+        // atuhor & authors
+        $row['authorHref']  = $this->Get_record_authorHref($row['uidRec']);
+
+        // daca are mai multi autori
+        if ($row['uidsCSV']) {
+            $row['uids']       = explode(', ',$row['uidsCSV']);
+            $row['fullNames']  = explode(', ',$row['fullNamesCSV']);
+            $row['authors']    = $this->Get_authors($row['uids'], $row['fullNames']);
+
+        }
         #var_dump($row);
 
         return $row;
     }
-
     function _hookRow_archive($row)
     {
         /**
@@ -203,7 +240,7 @@ class blog_handlers extends Cblog_vars
            title,content,lead,
          *
          * [ TB blogRecords_settings ]
-           modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
+           format,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
 
          * [ TB blogMap_recordsTags ]
            uid_Rec, fullName,
@@ -212,9 +249,9 @@ class blog_handlers extends Cblog_vars
            tagsName
         */
 
-        $row['leadSec']          = $this->SET_leadSec($row, 80);
-        $row['record_mainPic']   = $this->SET_record_mainPic($row);
-        $row['record_href']      = $this->SET_record_href($row);
+        $row['leadSec']          = $this->Get_leadSec($row, 80);
+        $row['record_mainPic']   = $this->Get_record_mainPic($row);
+        $row['record_href']      = $this->Get_record_href($row);
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
 
 
@@ -222,10 +259,9 @@ class blog_handlers extends Cblog_vars
 
         return $row;
     }
-
     function _hookRow_recordRelated($row)
     {
-        $row['record_href'] = $this->SET_record_href($row);
+        $row['record_href'] = $this->Get_record_href($row);
 
         return $row;
     }
@@ -239,7 +275,7 @@ class blog_handlers extends Cblog_vars
        // $byUid = (isset($this->uid) ? $this->uid : false );
 
         //function setINI($ratingType, $extKey_name, $extKey_value, $setName='', $getbyUid= false, $onlyUser=false) {
-       /* $this->C->rating->setINI('blog',
+        /* $this->C->rating->setINI('blog',
                                  'idRecord',
                                  $row['idRecord'],
                                 'SET_recordRating',
@@ -247,7 +283,22 @@ class blog_handlers extends Cblog_vars
         #$this->C->rating->template_file = 'ratingRecord_bigStar';
         #===============================================================================================================
         $row['tags']        = $this->Get_tagsArray($row['tagsName']);
+        $row['hrefFolderFilter']  = $this->Get_record_hrefFolderFilter($row['idFolder']);
+        // pt blogRecord.html
+        if(isset($this->tree[$row['idCat']])) {
+            $row['catResFile']  = $this->tree[$row['idCat']]->resFile;
+        }
+
+        // atuhor & authors
         $row['authorHref']  = $this->Get_record_authorHref($row['uidRec']);
+
+        // daca are mai multi autori
+        if ($row['uidsCSV']) {
+            $row['uids']       = explode(', ',$row['uidsCSV']);
+            $row['fullNames']  = explode(', ',$row['fullNamesCSV']);
+            $row['authors']    = $this->Get_authors($row['uids'], $row['fullNames']);
+
+        }
 
         return $row;
 
@@ -255,17 +306,19 @@ class blog_handlers extends Cblog_vars
     // for external use CblogSite - profile.html
     function _hookRow_profile($row)
     {
-        $row['record_href']      = $this->SET_record_href($row);
+        $row['record_href']      = $this->Get_record_href($row);
         return $row;
     }
 
-    function _hookRow_recordsPrior($row) {
+    //deprecated ???
+    function _hookRow_recordsPrior($row)
+    {
 
 
         $row['lead']             = $this->SET_lead($row);
-        $row['record_mainPic']   = $this->SET_record_mainPic($row);
-        $row['content']          = $this->SET_content_noPic($row,1050);
-        $row['record_href']      = $this->SET_record_href($row);
+        $row['record_mainPic']   = $this->Get_record_mainPic($row);
+        $row['content']          = $this->Get_content_noPic($row,1050);
+        $row['record_href']      = $this->Get_record_href($row);
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
         // $row['Ratidng']           = $this->SET_Rating($row);
         // $row['total_nrComments'] = $this->SET_total_nrComments($row);
@@ -302,7 +355,7 @@ class blog_handlers extends Cblog_vars
 
     //===============================================[ request handlers ]=======
 
-    // home Data
+    //==========================================================[ home Data ]===
     function home_GetDataBlogLatest()
     {
          // echo "home_setData()";
@@ -312,7 +365,7 @@ class blog_handlers extends Cblog_vars
 
         $queryBase = "SELECT
                         idRecord,idCat,uidRec,entryDate,
-                        publishDate,title, modelBlog_name
+                        publishDate,title, format
                     FROM blogRecords_view ";
 
         foreach ($this->tmpTree[$this->tmpIdTree]->children AS $idCat) {
@@ -359,14 +412,15 @@ class blog_handlers extends Cblog_vars
 
     }
 
-    // blog Data
+    //==========================================================[ blog Data ]===
     function blog_setData()
     {
         $sql   = $this->Get_queryRecords(array('category' => ''));
         $query = $sql->fullQuery . ' ORDER BY entryDate DESC';
         $this->records = $this->C->Db_Get_procRows($this, '_hookRow_blog', $query);
     }
-    //archive Data
+
+    //=======================================================[ archive Data ]===
     function archive_setData()
     {
         /**
@@ -386,7 +440,7 @@ class blog_handlers extends Cblog_vars
          * + leadSec
          * + country
          * + city
-         * + modelBlog_name
+         * + format
          * + modelComm_name
          * + commentsView
          * + commentsApprov
@@ -414,10 +468,11 @@ class blog_handlers extends Cblog_vars
         $this->filterRecTypes   =  $this->Get_hrefFilterRecTypes($baseUrl);
         $this->filterTags       =  $this->Get_hrefFilterTags($baseUrl, 5);
         $this->filterCountries  =  $this->Get_hrefFilterCountry($baseUrl);
+        $this->filterFolders    =  $this->Get_hrefFilterFolders($baseUrl);
 
     }
 
-    // record Data
+    //========================================================[ record Data ]===
     function record_GetDataRelated()
     {
         // filtres onwhitch the related articles are based
@@ -425,7 +480,7 @@ class blog_handlers extends Cblog_vars
             'category' => '',
             'tag'      => $this->tags[0],
             'country'  => $this->country,
-            'recType'  => $this->modelBlog_name
+            'format'   => $this->format
         );
 
         // get SQL parts
@@ -463,9 +518,11 @@ class blog_handlers extends Cblog_vars
 
 
         //echo "<b>blog_handlers - record_setData()</b><br>";
+        //echo "<b>query = </b><br>". $sql->fullQuery;
         //var_dump($this->record);
     }
 
+    //=======================================================[ profile Data ]===
     function profile_getData($idTree, $uid)
     {
         $this->tmpIdTree = $idTree;
@@ -485,42 +542,37 @@ class blog_handlers extends Cblog_vars
         $this->recordsBlog = $this->profile_getData('86', $uid);
     }
 
+    //=============================================[ reuquest controller ]======
     function _handle_requests()
     {
-        /* isset($_GET['idRec'])
-         ? $this->GET_Record()
-         :  $this->GET_Records();*/
-
          // setarea metodei to handle the request
-        // setarea template_file
+         // setarea template_file
 
-         if (!isset($_GET['idRec'])) {
-             if (!isset($this->methodHandles[$this->idTree])) {
-            // if (!isset($this->tree[$this->idTree]->modOpt->handler)) {
-                 // $this->template_file = 'blogRecords';
-                 error_log("[ ivy ] blog_handlers - _handle_requests :"
-                         . " Atentie nu a fost setat nici un method handler pentru "
-                         . " idTree = {$this->idTree}"
-                         );
-             } else {
-                 $this->methodHandle = $this->methodHandles[$this->idTree];
-               //  $this->methodHandle  = $this->tree[$this->idTree]->modOpt->handler;
-                 $this->assocTmplFile = $this->methodHandle;
+         // determinam categoria care trebuie listata
+         if (!isset($this->methodHandles[$this->idTree])) {
+         // if (!isset($this->tree[$this->idTree]->modOpt->handler)) {
+             // $this->template_file = 'blogRecords';
+             error_log("[ ivy ] blog_handlers - _handle_requests :"
+                     . " Atentie nu a fost setat nici un method handler pentru "
+                     . " idTree = {$this->idTree}"
+                     );
+        } else {
+             $this->methodHandle = $this->methodHandles[$this->idTree];
+           //  $this->methodHandle  = $this->tree[$this->idTree]->modOpt->handler;
+             $this->assocTmplFile = $this->methodHandle;
 
-                 error_log("[ ivy ] blog_handlers - _handle_requests :"
-                         . " A fost setat method handler = {$this->methodHandle} "
-                         . " pentru idTree = {$this->idTree}"
-                          );
-             }
+             error_log("[ ivy ] blog_handlers - _handle_requests :"
+                     . " A fost setat method handler = {$this->methodHandle} "
+                     . " pentru idTree = {$this->idTree}"
+                      );
+        }
 
-         } else {
-             $this->methodHandle  = 'record';
-             $this->assocTmplFile = !isset($_GET['recType'])
-                                    ? 'record'
-                                    : $_GET['recType'];
+        // daca trebuie afisat un articol
+        if (isset($_GET['idRec'])) {
+            $this->methodHandle = 'record';
+            $this->assocTmplFile .='Record';
+        }
 
-
-         }
 
         //set template_file
         if (!isset($this->tmplFiles[$this->assocTmplFile])) {

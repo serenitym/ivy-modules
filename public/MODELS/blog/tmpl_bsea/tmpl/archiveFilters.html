@@ -1,22 +1,36 @@
 <div class='fullwidth overflow'> <!-- begin filter selections -->
-		<div class='imageColumn thickBorder thickBorderBlue filter selected' id='filter1'>
-            <div class='Name filterblue' id='filter1_name' style='color: #59A4B5;'>Filter: </div>
+		<div class='imageColumn thickBorder thickBorderBlue filter selected' id='filter1'><div class='Name filterblue' id='filter1_name'>Folder</div><div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter2'><div class='Name' id='filter2_name'>By Media Format </div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter' id='filter2'><div class='Name' id='filter2_name'>Media Format </div><div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter3'><div class='Name' id='filter3_name'>By Issue</div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter' id='filter3'><div class='Name' id='filter3_name'>Tag</div><div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter4'><div class='Name' id='filter4_name'>By Region</div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter' id='filter4'><div class='Name' id='filter4_name'>Region</div><div class='arrowDown'></div>
 		</div>
 	</div> <!-- end filter selections -->
 
-	    <div class='fullwidth overflow'><!-- begin filter panels -->
+	<div class='fullwidth overflow'><!-- begin filter panels -->
+
+		<div class='fullwidth filter_panel space' id='filter1_panel'>
+			<ul>
+                ".$this->Render_itemsFromStr($o->filterFolders, '', "
+                    <li>
+                        <a href='{~ao->filterHref}' class='filter_label'>
+                            {~ao->filterName}
+                        </a>
+                    </li>
+                ")."
+				<!--<li><div class='filter_label'>Video stories</div></li>-->
+			</ul>
+		</div>
+
+
 		<div class='fullwidth filter_panel space' id='filter2_panel'>
 			<ul>
                 ".$this->Render_itemsFromStr($o->filterRecTypes, '', "
                     <li>
                         <a href='{~ao->filterHref}' class='filter_label'>
-                            {~ao->filterName} stories
+                            {~ao->filterName}
                         </a>
                     </li>
                 ")."

@@ -36,7 +36,7 @@ ALTER TABLE `blogRecords`
 
 CREATE TABLE IF NOT EXISTS `blogRecords_settings` (
   `idRecord` int(5) NOT NULL COMMENT 'ext blogRecords',
-  `modelBlog_name` varchar(50) DEFAULT NULL COMMENT 'template pt acest record',
+  `format` varchar(50) DEFAULT NULL COMMENT 'template pt acest record',
   `modelComm_name` varchar(50) DEFAULT NULL COMMENT 'modelul Commenturilor',
   `commentsView` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'se vad sau nu',
   `commentsApprov` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'commenturile trebuie aprobate inainte de publicare',
@@ -135,21 +135,41 @@ AS select
 `blogRecords`.`idRecord` AS `idRecord`,
 `blogRecords`.`idCat` AS `idCat`,
 `blogRecords`.`uidRec` AS `uidRec`,
-`blogRecords`.`entryDate` AS `entryDate`,
-`blogRecords`.`publishDate` AS `publishDate`,
-`blogRecords`.`nrRates` AS `nrRates`,
-`blogRecords`.`ratingTotal` AS `ratingTotal`,
 `blogRecords`.`title` AS `title`,
 `blogRecords`.`content` AS `content`,
 `blogRecords`.`lead` AS `lead`,
 `blogRecords`.`leadSec` AS `leadSec`,
 `blogRecords`.`country` AS `country`,
 `blogRecords`.`city` AS `city`,
-`blogRecords_settings`.`modelBlog_name` AS `modelBlog_name`,
-`blogRecords_settings`.`modelComm_name` AS `modelComm_name`,
-`blogRecords_settings`.`commentsView` AS `commentsView`,
-`blogRecords_settings`.`commentsStat` AS `commentsStat`,
-`blogRecords_settings`.`commentsApprov` AS `commentsApprov`,
-`blogRecords_settings`.`SEO` AS `SEO`
-from (`blogRecords` left join `blogRecords_settings`
- on((`blogRecords`.`idRecord` = `blogRecords_settings`.`idRecord`)));
+`blogRecords_stats`.`entryDate` AS `entryDate`,
+`blogRecords_stats`.`publishDate` AS `publishDate`,
+`blogRecords_stats`.`nrRates` AS `nrRates`,
+`blogRecords_stats`.`ratingTotal` AS `ratingTotal`,
+`blogRecords_stats`.`republish` AS `republish`,
+`blogRecords_settings`.`relatedStory` AS `relatedStory`,
+`blogRecords_settings`.`css` AS `css`,
+`blogRecords_settings`.`js` AS `js`,
+`blogRecords_settings`.`SEO` AS `SEO`,
+blogRecord_folders.folderName AS folderName,
+blogRecord_folders.idFolder AS idFolder,
+blogRecord_formats.format AS format,
+blogRecord_formats.idFormat AS idFormat
+
+
+from
+
+ `blogRecords`
+  JOIN blogRecords_stats
+   on(`blogRecords`.`idRecord` = `blogRecords_stats`.`idRecord`)
+
+  left join `blogRecords_settings`
+  on(`blogRecords`.`idRecord` = `blogRecords_settings`.`idRecord`)
+
+
+  LEFT OUTER JOIN blogRecord_folders
+  ON ( blogRecords_settings.idFolder = blogRecord_folders.idFolder )
+
+  LEFT OUTER JOIN blogRecord_formats
+  ON ( blogRecords_settings.idFormat = blogRecord_formats.idFormat )
+  ;
+

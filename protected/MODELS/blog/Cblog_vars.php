@@ -4,8 +4,8 @@ class Cblog_vars{
 
 
     var $modelBlog_vars = array();          #CONF: sunt variabilele aditionate lui template_vars in cazul in care avem un blog personalizat
-    var $modelBlog_name = '';               #CONF: numele blogului personalizat
-    var $modelBlog_tableRecords = '';       #RET : blog[modelBlog_name]_records
+    var $format = '';               #CONF: numele blogului personalizat
+    var $modelBlog_tableRecords = '';       #RET : blog[format]_records
     var $template = '';                     #CONF: numele templateului aferent blogului personalizat sau al blogului simplu
     var $modelBlog_vars_ColsStr = "";       # RET: col1, col2...ale tabelului aferent blogModel
 
@@ -63,7 +63,7 @@ class Cblog_vars{
 
 
     #var $current_Layout       = 'masterBlog';        # sau profile in functie de caz
-    var $current_modelBlog    = 'blog';               # sau poare sa fie modelBlog_name in cazul in care s-a facut request de un articol de un tip special
+    var $current_modelBlog    = 'blog';               # sau poare sa fie format in cazul in care s-a facut request de un articol de un tip special
     # var $contentTemplate_file = 'blogRecords';       # subtemplate
     var $categoriesHTML       = '';                   # categoriile blogului
 

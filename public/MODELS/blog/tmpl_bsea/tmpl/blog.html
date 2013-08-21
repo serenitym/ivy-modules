@@ -3,11 +3,13 @@
 	<div class='textColumnBig right space'>
         ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
            "
-            <div class='blogSectionColumn blogSection' id='{~this->tree[~i]->resFile}'>
-                <a href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'>
-                    {~this->tree[~i]->name}
-                </a>
-            </div>
+            <a  href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'
+                 class='blogSectionColumn blogSection
+                       `.(~this->tree[~i]->id != ~this->idNode ? `` : `blogSectionColumn-current` ).` '
+                 id='{~this->tree[~i]->resFile}'
+            >
+               {~this->tree[~i]->name}
+            </a>
            "
         )."
 

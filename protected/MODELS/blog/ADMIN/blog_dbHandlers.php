@@ -155,13 +155,13 @@ class blog_dbHandlers extends Cblog
         elseif($_POST['asyncReq_action'] == 'get_recordPrior') $this->get_recordPrior();
     }
 
-    #===============================================[ DB - methods ]====================================================
+    #===============================================[ DB - methods ]============
     function _hook_addRecord()
     {
         /**
          * aspect:
          *  - title
-         *  - modelBlog_name
+         *  - format
          */
         $postsConf = &$this->posts_addRecord;
         //var_dump($postsConf);
@@ -182,11 +182,9 @@ class blog_dbHandlers extends Cblog
     }
     function addRecord()
     {
-        $query =     "INSERT INTO blogRecords
-                                    (idCat, entryDate, title, uidRec)
+        $query =     "INSERT INTO blogRecords  (idCat, title, uidRec)
                              VALUES (
                               '{$this->idNode}' ,
-                              NOW(),
                               '{$this->posts->title}' ,
                               '{$this->uid}'
                              )";
@@ -196,33 +194,34 @@ class blog_dbHandlers extends Cblog
         $lastID = $this->DB->insert_id;
 
 
-        if(isset($lastID)) {
-            $query =     "INSERT INTO blogRecords_settings
-                                        (idRecord, modelBlog_name)
+        if(!isset($lastID)) {
+            error_log("[ ivy ] addRecord : atentie lastId nu a fost recuperat");
+
+        } else {
+            $queries = array();
+            // insert in blogRecords_stats
+            $query =     "INSERT INTO blogRecords_stats (idRecord, entryDate)
                                  VALUES (
                                  '{$lastID}' ,
-                                 '{$this->posts->modelBlog_name}'
+                                 NOW()
+                                 )";
+            //echo "<b>blogRecords_stats </b>".$query."</br>";
+            array_push($queries, $query);
+
+
+            // insert in blogRecords_settings
+            $query =     "INSERT INTO blogRecords_settings (idRecord, idFormat)
+                                 VALUES (
+                                 '{$lastID}' ,
+                                 '{$this->posts->idFormat}'
                                  )";
             //echo "<b>blogRecords_settings </b>".$query."</br>";
-            $this->C->DB->query($query);
+            array_push($queries, $query);
+
+            $this->C->Db_queryBulk($queries, false);
             $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idTree}&idC={$this->idNode}&idRec={$lastID}";
             $this->C->reLocate($location);
-        } else {
-            error_log("[ ivy ] addRecord : atentie lastId nu a fost recuperat");
         }
-
-    }
-
-    // not used yest
-    function update_blogSettings($idRecord)
-    {
-        $set_blogRecords_settings   = $this->C->DMLsql_setValues($this->blogRecords_settings_vars);
-        $query = "UPDATE blogRecords_settings
-                        SET {$set_blogRecords_settings}
-                        WHERE idRecord = '{$idRecord}' ";
-        $this->C->Db_query($query, false);
-
-        #echo '</br><b> blogRecords_settings </b>'.$query.'</br>';
 
     }
 
@@ -279,9 +278,40 @@ class blog_dbHandlers extends Cblog
     }
     function _hook_updateRecord()
     {
-        /*use from yml: blogPests_updateRecord */
-        if ($this->user->uid != $this->uidRec  && !$this->user->rights['article_edit']) {
+       // echo "<b>blog_dbHandlers</b>  _POST";
+       //var_dump($_POST);
+        //=====================================[ preValidate data ]=============
+        /**
+         * Rules:
+         *
+         * 1. daca tipul recordului este acelasi cu cel curent scote-l din post
+         * 2. daca userul nu are drepturi de editare al recordurilor
+         *    - nu are drepturi de moderator si deci de css si js
+         *    - nu are dreptul de a schimba data publicarii unui articol
+         *
+         * 3. daca userul nu are drepturi de publicare atunci nu poate sa isi schimbe
+         * data publicarii
+         */
+        if($this->format == $_POST['idFormat']) {
+            unset($_POST['idFormat']);
+        }
 
+        if(!$this->user->rights['article_edit']) {
+            unset($_POST['css']);
+            unset($_POST['js']);
+            unset($_POST['publishDate']);
+
+        } else {
+            if($_POST['publishDate'] != $this->publishDate) {
+                $_POST['republish'] = 1;
+            }
+        }
+
+
+        //=====================================[ validate data ]=================
+
+        /*use from yml: blogPests_updateRecord */
+        if (!$this->Get_rights_articleEdit($this->uidRec, $this->uids)) {
             return $this->fbk->SetGet_badmess(
                         'error',
                         'Not allowed to edit',
@@ -289,7 +319,7 @@ class blog_dbHandlers extends Cblog
                         //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
         }
         $postsConf =&$this->posts_updateRecord;
-        $this->posts = handlePosts::Get_postsFlexy($postsConf);
+        $this->posts = handlePosts::Get_postsFlexy($postsConf, '', true);
 
         //var_dump($this->blogPsts_updateRecord);
         $validStat = true;
@@ -310,34 +340,54 @@ class blog_dbHandlers extends Cblog
                            $postsConf['lead']['fbk_notempty']
                        );
 
+        // nu mai are rost sa procesam datele daca sunt invalide
+        if (!$validStat) {
+            return false;
+        }
+
+        //=====================================[ process data ]=================
+        // nu ii mai vad sensul
+        //$this->posts->content = addslashes($this->posts->content);
+
         if ($this->status_recordTags) {
             $this->posts->recordTags = $this->Get_validTags($this->posts->recordTags);
         }
+
+        if($this->posts->authors){
+            $this->posts->authors = explode(',', $this->posts->authors);
+        }
         //echo "_hook_updateRecord() ";
         //echo "validation = ".($validStat ? "true" : "false");
-        //var_dump($_POST);
+
+        // echo "<b>blog_dbHandlers</b> this->posts";
         //var_dump($this->posts);
 
         //$this->C->reLocate();
 
-        return $validStat;
+        return true;
         //return false;
+    }
+
+    /**
+     * updateaza autorii pentru un articol
+     *
+     * 1. inaini ii delelteaza pe toti
+     * 2. apoi ii adaugat din nou
+     * @param $idRecord
+     */
+    function update_authors($idRecord){
+
+        $query_delete = "DELETE FROM blogRecords_authors WHERE idRecord = '{$idRecord}' ";
+        $this->DB->query($query_delete);
+
+        foreach($this->posts->authors AS $authId) {
+            $query_insert = "INSERT INTO blogRecords_authors (idRecord, uid ) VALUES ('{$idRecord}','{$authId}')  ";
+            $this->DB->query($query_insert);
+        }
+
     }
     function update_blogTags($idRecord)
     {
-
-        /*
-         * LOGISTICS
-         *  delete all tags associated with this record
-         *  insert new tags
-         *  update the blogTags table if necesary
-         *
-         *
-         *
-         *  DELETE from blogMap_recordsTags WHERE idRecord = ''
-            INSERT INTO blogMap_recordsTags ( tagName ) VALUES ('')
-            REPLACE into blogTags (tagName ) values ('' )
-        */
 
         $query_delete  = "DELETE from blogMap_recordsTags WHERE idRecord = '{$idRecord}'";
         $this->DB->query($query_delete);
@@ -355,57 +405,59 @@ class blog_dbHandlers extends Cblog
         }
 
     }
-    function update_category()
-    {
-
-    }
-    function update_recordType()
-    {
-        $query = "UPDATE blogRecords_settings
-                     SET modelBlog_name = {$this->posts->modelBlog_name}
-                     WHERE idRecord = {$this->posts->idRecord}";
-        //echo "blog_dbHandlers - update_recordType query = $query <br>";
-        $this->DB->query($query);
-    }
     function updateRecord()
     {
-        /*use from yml: blogPests_updateRecord */
-        // $this->update_blogSettings($idRecord);
 
         $posts = &$this->posts;
-        // update tags
-        if(isset($posts->recordTags) && is_array($posts->recordTags)) {
+        //=================================[ update tags ]======================
+        if (isset($posts->recordTags) && is_array($posts->recordTags)) {
             $this->update_blogTags($posts->idRecord);
         }
-
-        // update blogSettings
-        if($this->modelBlog_name != $posts->modelBlog_name) {
-            $this->update_recordType();
+        //================================[  update authors ]===================
+        if (count($posts->authors) > 0) {
+           $this->update_authors($posts->idRecord);
         }
 
-        // update main blogRecords;
-        $query = "UPDATE blogRecords
-                  SET
-                     idCat = '{$posts->idCat}',
-                     title = '{$posts->title}',
-                     content = '".addslashes($posts->content)."',
-                     lead = '{$posts->lead}',
-                     leadSec = '{$posts->leadSec}',
-                     city = '{$posts->city}',
-                     country = '{$posts->country}'
-                     ".(!$posts->publishDate ? '' : "
-                        ,publishDate = '{$posts->publishDate}'
-                     " )."
-
+        $queries = array();
+        //==============================[ update main blogRecords ]=============
+        $columns = 'idCat, title, content, lead, leadSec, city, country';
+        $sets = handlePosts::Db_Get_setString($this->posts, $columns);
+        $query = "UPDATE blogRecords SET {$sets}
                   WHERE idRecord = '{$posts->idRecord}' ";
+        $queries['blogRecords'] = $query;
 
-        // echo "updateRecord ".$query;
-        //$this->C->Db_query($query, false);
-        $this->DB->query($query);
-        //$errorMysql = $this->DB->error;
-        // var_dump($_POST);
-        //echo '</br><b> blogRecords </b>'.$query.'</br>';
-        //return false;
+
+        //==============================[ update blogRecords_stats ]============
+        $columns = 'publishDate, republish';
+        $sets = handlePosts::Db_Get_setString($this->posts, $columns);
+        if($sets) {
+            $query = "UPDATE blogRecords_stats SET {$sets}
+                      WHERE idRecord = '{$posts->idRecord}' ";
+            $queries['blogRecords_stats'] = $query;
+
+        }
+
+
+        //=======================[ update blogRecords_settings ]================
+        $columns = 'idFormat, idFolder, css, js, relatedStory' ;
+        $sets = handlePosts::Db_Get_setString($this->posts, $columns, false);
+        if ($sets) {
+            $query = "UPDATE blogRecords_settings SET $sets
+                     WHERE idRecord = '{$posts->idRecord}' ";
+            $queries['blogRecords_settings'] = $query;
+
+            error_log("[ ivy ] blog_dbHandlers blogRecords_settings query = ".$query);
+
+        }
+
+        /*var_dump($_POST);
+         foreach($queries AS $table => $query) {
+            echo "<br><br><b>table = $table query = </b> <br> $query ";
+        }
+        return false;*/
+
+
+        $this->C->Db_queryBulk($queries, false);
         return true;
 
     }
@@ -417,7 +469,7 @@ class blog_dbHandlers extends Cblog
          * butoanele de publish nu se vor afisa daca userul nu are permisiuni de publicare
          */
         $idRecord      =   $_POST['idRecord'];
-        $query = "UPDATE blogRecords SET publishDate = NOW() WHERE idRecord = '{$idRecord}' ";
+        $query = "UPDATE blogRecords_stats SET publishDate = NOW() WHERE idRecord = '{$idRecord}' ";
         //echo $query;
         $this->DB->query($query);
         return true;
@@ -425,33 +477,28 @@ class blog_dbHandlers extends Cblog
     function  unpublish()
     {
         $idRecord      =   $_POST['idRecord'];
-        $query = "UPDATE blogRecords SET publishDate = NULL WHERE idRecord = '{$idRecord}' ";
+        $query = "UPDATE blogRecords_stats SET publishDate = NULL WHERE idRecord = '{$idRecord}' ";
         $this->C->Db_query($query);
         #echo $query;
+        return true;
+
+    }
+    function _hook_deleteRecord()
+    {
+        if (!$this->Get_rights_articleEdit($this->uidRec, $this->uids)) {
+            return $this->fbk->SetGet_badmess(
+                        'error',
+                        'Not allowed to delete',
+                        'your are not the author of this article!!! ');
+                        //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
+        }
+        return true;
     }
     function  deleteRecord()
     {
-
         $idRecord = $_POST['BLOCK_id'];
 
-        /**
-         *  Deleteul trebuie sa se faca din (aceste tabele trebuie relationate intre ele)
-         *      - blogRecords
-         *      - blogRecords_settings
-         *      - blogComments
-         *      - [blogName]_records
-         *
-          */
-
-        /**
-         * daca userul nu are permisiuni de master pe recorduri
-         * atunci va putea deleta doar recordurile pentru care este autor
-         */
-
-        $where = !$this->user->rights['article_rm']
-                    ? "AND uidRec='{$this->uid}'": '';
-
-        $query = "DELETE FROM blogRecords WHERE idRecord = '{$idRecord}' {$where} ";
+        $query = "DELETE FROM blogRecords WHERE idRecord = '{$idRecord}' ";
         $result = $this->DB->query($query);
         if($result) {
             $this->C->feedback->Set_mess(

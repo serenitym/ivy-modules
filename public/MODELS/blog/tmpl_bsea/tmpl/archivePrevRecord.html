@@ -1,13 +1,14 @@
 <div class='{$ao->EDrecord}ENT  archivePrevRec record'  id='record_{$ao->idRecord}_{$o->lang}' >
        <div class='mainFeaturedImg' id='Main{$ao->idRecord}'>
-
-           ".( $ao->record_mainPic
-                ? "<img src='{$ao->record_mainPic}' />"
-                : "<img style='width:100%' src='/RES/uploads/images/wp/2010/05/1.jpg'/>"
-           )."
+           <a href='{$ao->record_href}'>
+               ".( $ao->record_mainPic
+                    ? "<img src='{$ao->record_mainPic}' />"
+                    : "<img style='width:100%' src='/RES/uploads/images/wp/2010/05/1.jpg'/>"
+               )."
+           </a>
 
            <div class='fullwidth iconsThumb' id='Main{$ao->idRecord}_Thumb'>
-               <div class='{$ao->modelBlog_name}IconThumb'></div>
+               <div class='{$ao->format}IconThumb'></div>
            </div>
        </div>
        <div class='imageColumnMeta'>

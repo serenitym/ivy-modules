@@ -69,7 +69,7 @@ class ACprofile extends Cprofile
     }
     function change_activeStatus()
     {
-        parent::change_activeStatus($this->post->uid, $this->potst->activeStatus);
+        parent::change_activeStatus($this->post->uid, $this->posts->activeStatus);
         return true;
     }
 

@@ -5,17 +5,33 @@ country
 city
 category - poate daca vrei sa il muti in alta categorie
 -->
-<div class='ATmpl  block'>
+<div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraFields'>
 
-        <div class='admin-extra' id='admin-leadSec'>
-            <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
-                Preview Lead
-            </button>
-            <div class='EDtxa  hidden admin-leadSec leadSec'>
-                {$o->leadSec}
-            </div>
-        </div>
+       <div class='admin-extra admin-authors-container'>
+
+               <button class='ivy btt-authors' onclick='fmw.toggle(\"form[id^=EDITform] .admin-authors\"); return false;'>
+                   Other Authors
+               </button>
+               <div class='hidden admin-authors'>
+
+                   <input name='authors' id='adminAuthors' >
+               </div>
+
+       </div>
+
+        <div class='admin-extra'   id='admin-leadSec'>
+
+               <button class='ivy btt-leadSec' onclick='fmw.toggle(\"form[id^=EDITform] .admin-leadSec\"); return false;'>
+                   Preview Lead
+               </button>
+               <div class='EDtxa  hidden admin-leadSec leadSec'>
+                   {$o->leadSec}
+               </div>
+
+       </div>
+
+
         <div class='admin-extra' >
             <div> Tags </div>
             <div class='EDtags  recordTags'>
@@ -35,7 +51,7 @@ category - poate daca vrei sa il muti in alta categorie
             </div>
         </div>
 
-        ".(!$o->publishDate ? '' : "
+        ".(!$o->publishDate || !$o->user->rights['article_edit'] ? '' : "
             <div class='admin-extra' >
                 <div> Publish Date </div>
                 <div class='EDdate  publishDate'>
@@ -45,33 +61,38 @@ category - poate daca vrei sa il muti in alta categorie
         ")."
 
 
+
+
     </div>
 
 </div>
 <!-- Extra settings
-    modelBlog_name
+    format
     idCat
 -->
-<div class='ATmpl  block'>
+<div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraSettings'>
-        <div class='admin-extra' >
-              <div> Category </div>
-              <select name='idCat'>
-                  ".$this->Render_itemsFromStr($o->blogCategories, $o, "
-                        <option value='{~ao->idCat}'
-                                `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
-                            {~ao->catName}
-                        </option>
-                  ")."
-              </select>
-        </div>
+            ".(  !$o->user->rights['article_edit'] ? '' : "
+                <!--Doar moderatorii pot schimba categoria unui articol-->
+                <div class='admin-extra' >
+                      <div> Category </div>
+                      <select name='idCat'>
+                          ".$this->Render_itemsFromStr($o->blogCategories, $o, "
+                                <option value='{~ao->idCat}'
+                                        `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
+                                    {~ao->catName}
+                                </option>
+                          ")."
+                      </select>
+                </div>
+            ")."
         <div class='admin-extra' >
               <div> Article Type </div>
-              <select name='modelBlog_name'>
-                  ".$this->Render_arrayFromStr($o->blogModels, $o, "
-                        <option value='{~i}'
-                            `.(~i != ~o->modelBlog_name ? '' :  'selected' ).` >
-                               {~i}
+              <select name='idFormat'>
+                  ".$this->Render_itemsFromStr($o->formats, $o, "
+                        <option value='{~ao->idFormat}'
+                            `.(~ao->format != ~o->format ? '' :  'selected' ).` >
+                               {~ao->format}
                         </option>
                   ")."
               </select>

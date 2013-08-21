@@ -6,9 +6,9 @@
         </div>
         <div class='ib' >
             <p>Post Type</p>
-            <select name='modelBlog_name'>
-                ".$this->Render_arrayFromStr($o->blogModels, '',
-                " <option value='{~i}'>{~i}</option>"
+            <select name='idFormat'>
+                ".$this->Render_itemsFromStr($o->formats, '',
+                " <option value='{~ao->idFormat}'>{~ao->format}</option>"
                 )."
 
             </select>

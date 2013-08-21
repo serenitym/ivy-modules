@@ -23,3 +23,20 @@
 input.addArticle {width: 350px;}
 
 
+form.SGrecord .admin-authors-container {width: 220px}
+form.SGrecord .btt-authors {width: 220px}
+
+form.SGrecord input.country,
+form.SGrecord input.city,
+form.SGrecord input.publishDate {width: 120px;}
+
+/*=====================[ blog_settings.html]==================*/
+
+.format-blogSettings .formats,
+.format-blogSettings .folders {
+    width: 200px;
+    white-space: normal !important;
+}
+.format-blogSettings .folders {
+    height: 60px;
+}
