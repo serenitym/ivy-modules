@@ -11,7 +11,7 @@
         </div>
 
         ".( count($o->recordsArchive) == 0
-            ? "<p> There are not stories written </p>"
+            ? "<p> There are no stories written </p>"
             : "<ul class='contributions space'>"
               . $this->Render_itemsFromStr($o->recordsArchive, '', "
                     <li>
@@ -26,7 +26,7 @@
 
 	    <div class='fullwidth'><div class='label'>Blog contributions</div></div>
         ".( count($o->recordsBlog) == 0
-            ? "<p> There are not stories written </p>"
+            ? "<p> There are no stories written </p>"
             : "<ul class='contributions space'>"
               . $this->Render_itemsFromStr($o->recordsBlog, '', "
                     <li>

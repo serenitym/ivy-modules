@@ -35,7 +35,7 @@
 
 class ACprofile extends Cprofile
 {
-    public  $posts;   // obiect cu posturile asteptate
+    public  $post;   // obiect cu posturile asteptate
     public  $user;    // pointer to Cuser
     public  $fbk;     // pointer to Cfeedback
     public  $toolbar; // pointer to ACTOOLbar
@@ -51,7 +51,7 @@ class ACprofile extends Cprofile
         //=============================================[ data validation ]======
 
         $postExpected = &$this->post_adminActiveStat;
-        $this->posts = handlePosts::Get_postsFlexy($postExpected);
+        $this->post = handlePosts::Get_postsFlexy($postExpected);
 
         //Debugging
         //echo "ACprofile -_hook_change_activeStatus posts" ;
@@ -60,7 +60,7 @@ class ACprofile extends Cprofile
         // var_dump($postExpected);
         // echo "ACprofile -_hook_change_activeStatus : $validation" ;
         //echo "ACprofile -_hook_change_activeStatus : posts" ;
-        // var_dump($this->posts);
+        // var_dump($this->post);
          return true;
 
         //return $validation;
@@ -69,7 +69,7 @@ class ACprofile extends Cprofile
     }
     function change_activeStatus()
     {
-        parent::change_activeStatus($this->posts->uid, $this->potst->activeStatus);
+        parent::change_activeStatus($this->post->uid, $this->potst->activeStatus);
         return true;
     }
 
@@ -85,21 +85,21 @@ class ACprofile extends Cprofile
         $validation = true;
 
         $postExpected = &$this->post_adminProfile;
-        $this->posts = handlePosts::Get_postsFlexy($postExpected);
+        $this->post = handlePosts::Get_postsFlexy($postExpected);
 
         /**
          * Daca numele userului a fost schimbat
          * daca nu nu are rost sa se mai faca teste
          */
-        if($this->posts->uname != $this->profile->uname)
+        if($this->post->uname != $this->profile->uname)
         {
             /**
              * The uname validation to see if it allready exists or not should be done
              * async.
              */
-            $validation &= !$this->posts->uname
+            $validation &= !$this->post->uname
                 ? $this->fbk->SetGet_badmessFbk($fbks['emptyUname'])
-                : ( $this->valid_uname($this->posts->uname) ? true :
+                : ( $this->valid_uname($this->post->uname) ? true :
                     $this->fbk->SetGet_badmessFbk($fbks['takenUname'])
                 )  ;
         }
@@ -112,7 +112,7 @@ class ACprofile extends Cprofile
         // var_dump($postExpected);
         // echo "ACprofile - _hook_saveProfileAdmin : $validation" ;
         //echo "ACprofile - _hook_saveProfileAdmin : posts" ;
-        // var_dump($this->posts);
+        // var_dump($this->post);
         // return true;
 
         return $validation;
@@ -124,11 +124,11 @@ class ACprofile extends Cprofile
          * vom avea change_uclass
          * si change_uName
          */
-        if($this->posts->uname != $this->profile->uname) {
-            $this->change_uclass($this->profile->uid, $this->posts->uname);
+        if($this->post->uname != $this->profile->uname) {
+            $this->change_uclass($this->profile->uid, $this->post->uname);
         }
-        if($this->posts->cid != $this->profile->cid) {
-            $this->change_uclass($this->profile->uid, $this->posts->cid);
+        if($this->post->cid != $this->profile->cid) {
+            $this->change_uclass($this->profile->uid, $this->post->cid);
         }
 
         return false;
@@ -140,8 +140,8 @@ class ACprofile extends Cprofile
         $validation = true;
         $postExpected = &$this->post_profile;
 
-        $this->posts = handlePosts::Get_postsFlexy($postExpected);
-        $posts = &$this->posts;
+        $this->post = handlePosts::Get_postsFlexy($postExpected);
+        $posts = &$this->post;
 
 
         $validation &= $this->Get_rightsProfile($posts->uid) ? true :
@@ -163,7 +163,7 @@ class ACprofile extends Cprofile
         //echo "ACblogSite - _hook_saveProfile: ".BASE_URL."<br>";
         //var_dump($_POST);
         // echo "ACblogSite - _hook_saveProfile: validation = ".($validation ? "true" :  "false")."<br>";
-       // var_dump($this->posts);
+       // var_dump($this->post);
         //return false;
         return $validation;
     }
@@ -172,23 +172,23 @@ class ACprofile extends Cprofile
         $query_userDetails = "
             UPDATE auth_user_details
              SET
-                first_name = '{$this->posts->first_name}',
-                last_name  = '{$this->posts->last_name}',
-                title      = '{$this->posts->title}',
-                site       = '{$this->posts->site}',
-                phone      = '{$this->posts->phone}',
-                bio        = '{$this->posts->bio}',
-                {$this->posts->photoQuery}
+                first_name = '{$this->post->first_name}',
+                last_name  = '{$this->post->last_name}',
+                title      = '{$this->post->title}',
+                site       = '{$this->post->site}',
+                phone      = '{$this->post->phone}',
+                bio        = '{$this->post->bio}',
+                {$this->post->photoQuery}
              WHERE
-                 uid = {$this->posts->uid}
+                 uid = {$this->post->uid}
         ";
 
         $query_updateUser  = "
             UPDATE auth_users
             SET
-              email = '{$this->posts->email}'
+              email = LOWER('{$this->post->email}')
             WHERE
-                 uid = {$this->posts->uid}
+                 uid = {$this->post->uid}
         ";
 
         //echo "ACblogSite - saveProfile query_userDetails = $query_userDetails <br>";
@@ -210,13 +210,13 @@ class ACprofile extends Cprofile
         //=============================================[ data validation ]======
 
         $postExpected = &$this->post_adminActiveStat;
-        $this->posts = handlePosts::Get_postsFlexy($postExpected);
+        $this->post = handlePosts::Get_postsFlexy($postExpected);
 
         return true;
     }
     function deleteUser()
     {
-        $this->delete_user($this->posts->uid);
+        $this->delete_user($this->post->uid);
         var_dump($_POST);
         return false;
     }
