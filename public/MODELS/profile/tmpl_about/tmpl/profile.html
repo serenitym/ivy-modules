@@ -62,7 +62,8 @@
 	    <div class='fullwidth space'></div>
 	    <div class='imageColumnHead'>
             <span class='ATmpl'>site</span>
-            <span class='EDtxt site'>{$o->profile->site}</span><br>
+            <a href='http://" . str_replace('http://','',$o->profile->site) . "' 
+                class='EDtxt site' target='_blank'>{$o->profile->site}</a><br>
             <span class='ATmpl'>email</span>
             <span class='EDtxt email'>{$o->profile->email}</span><br>
             <span class='ATmpl'>phone</span>

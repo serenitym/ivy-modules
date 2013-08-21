@@ -157,7 +157,7 @@ class ivyMailer
         foreach ($this->headers as $key => $val)
           $headers .= $key . ': ' . $val . self::CRLF;
 
-        file_put_contents(
+        Toolbox::Fs_writeTo(
             LOG_PATH . 'mail.log',
             "{$headers}$newline{$this->body}$newline."
         );

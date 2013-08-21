@@ -148,11 +148,11 @@ class ACprofile extends Cprofile
                        $this->fbk->SetGet_badmessFbk($postExpected['uid']['fbk']);
                      ;
 
-        $validation &= $this->C->emptyValidation(
+        /*$validation &= $this->C->emptyValidation(
                          $this,
                          $postExpected,
                         "first_name,last_name,bio"
-                      );
+                      );*/
 
         if(!$validation) return false;
 
