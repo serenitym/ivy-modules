@@ -18,3 +18,7 @@
 }
 
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
+
+#sharepanel .addthis_toolbox {
+    margin-top: -6px !important;
+}
