@@ -79,6 +79,7 @@ class Cprofile extends Cuser{
 	    FROM auth_user_details
 	    JOIN auth_users
 	    ON (auth_user_details.uid = auth_users.uid)
+        ORDER BY RAND()
         ";
         // WHERE ACTIVE = 1
 

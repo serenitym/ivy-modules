@@ -525,12 +525,22 @@ class blog_handlers extends Cblog_vars
     //=======================================================[ profile Data ]===
     function profile_getData($idTree, $uid)
     {
-        $this->tmpIdTree = $idTree;
-        $this->tmpTree    = $this->C->Get_tree($this->tmplIdTree);
-        $sql   = $this->Get_queryRecords(array('category' => $this->tmpIdTree, 'uid'=>$uid));
-        $query = $sql->fullQuery.' ORDER BY entryDate DESC';
+        $this->tmpIdTree  = $idTree;
+        $this->tmpTree    = $this->C->Get_tree($this->tmpIdTree);
+        if(count($this->tmpTree) == 0) {
 
-        return $this->C->Db_Get_procRows($this, '_hookRow_profile', $query);
+            error_log("[ ivy ] blog_handlers profile_getData:"
+                ." nu s-a preluat tmpTree cu id-ul = ".$idTree);
+            return '';
+        } else {
+
+            /*echo "blog_handlers profile_getData - tmpTree pt id-ul = ".$idTree;
+            var_dump($this->tmpTree);*/
+            $sql   = $this->Get_queryRecords(array('category' => $this->tmpIdTree, 'uid'=>$uid));
+            $query = $sql->fullQuery.' ORDER BY entryDate DESC';
+
+            return $this->C->Db_Get_procRows($this, '_hookRow_profile', $query);
+        }
 
     }
     function profile_setData($uid)

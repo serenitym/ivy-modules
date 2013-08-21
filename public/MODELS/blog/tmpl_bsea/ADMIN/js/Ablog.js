@@ -97,7 +97,7 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
                     fn: ivyMods.blog.blogSettings_liveEdit,
                     context: ivyMods.blog
                 },
-                widthPop: '230'
+                widthPop: '250'
             });
 
         },

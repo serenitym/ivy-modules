@@ -11,7 +11,7 @@
         </div>
 
         ".( count($o->recordsArchive) == 0
-            ? "<p> There are not stories written </p>"
+            ? "<p> There are no stories written </p>"
             : "<ul class='contributions space'>"
               . $this->Render_itemsFromStr($o->recordsArchive, '', "
                     <li>
@@ -26,7 +26,7 @@
 
 	    <div class='fullwidth'><div class='label'>Blog contributions</div></div>
         ".( count($o->recordsBlog) == 0
-            ? "<p> There are not stories written </p>"
+            ? "<p> There are no stories written </p>"
             : "<ul class='contributions space'>"
               . $this->Render_itemsFromStr($o->recordsBlog, '', "
                     <li>
@@ -62,7 +62,8 @@
 	    <div class='fullwidth space'></div>
 	    <div class='imageColumnHead'>
             <span class='ATmpl'>site</span>
-            <span class='EDtxt site'>{$o->profile->site}</span><br>
+            <a href='http://" . str_replace('http://','',$o->profile->site) . "' 
+                class='EDtxt site' target='_blank'>{$o->profile->site}</a><br>
             <span class='ATmpl'>email</span>
             <span class='EDtxt email'>{$o->profile->email}</span><br>
             <span class='ATmpl'>phone</span>

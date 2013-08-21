@@ -160,7 +160,9 @@ $.extend (
         if(jqCont.liveEditStat == 0) {
             jqCont.imgs.map(function(){
                 var caption = $(this).attr('alt');
-                $(this).after("<div class='storyCaption'>"+caption+"</div>");
+                if(caption) {
+                    $(this).after("<div class='storyCaption'>"+caption+"</div>");
+                }
             });
         }
     },
