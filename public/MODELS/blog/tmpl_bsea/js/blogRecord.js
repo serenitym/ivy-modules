@@ -36,7 +36,7 @@ $.extend (
 
         jqCont.imgs.map(function()
         {
-            console.log(" img = "+ $(this).attr('src'));
+            //console.log(" img = "+ $(this).attr('src'));
             src = $(this)
                     .attr('src')
                     .replace(ivyMods.blog.sel.basePathPic,ivyMods.blog.sel.thumbPathPic);

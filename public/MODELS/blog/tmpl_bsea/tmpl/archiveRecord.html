@@ -49,14 +49,16 @@
                 {$o->title}
             </div>
             <div class='imageColumnHead orange space authName'>
-                <a href='$o->authorHref'>{$o->fullName}</a>
+                <a href='$o->authorHref'  class='ib'>{$o->fullName}</a>
                 ".(count($o->authors) == 0 ? '' :
                  $this->Render_itemsFromStr($o->authors,'', "
-                    , <a href='~ao->authorHref'>{~ao->fullName}</a>
+                    , <a href='~ao->authorHref' class='ib'>{~ao->fullName}</a>
 
                "))."
 
-                / ".($o->publishDate ?: "<p class='notPublished'>not yet published<p>")."
+                ".($o->publishDate
+                    ? "<span class='ib'>/ {$o->publishDate}</span>"
+                    : "<p class='notPublished'>not yet published</p>")."
 
             </div>
             <div  class='imageColumnHead orange space'>
