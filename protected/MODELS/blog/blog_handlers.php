@@ -75,8 +75,7 @@ class blog_handlers extends Cblog_vars
     }
     function Get_record_href(&$row)                 {
 
-       $idTree = !$this->tmpIdTree ? $this->idTree : $this->tmpIdTree;
-       return "index.php?idT={$idTree}".
+       return "index.php?idT={$row['idTree']}".
                  "&idC={$row['idCat']}".
                  "&idRec={$row['idRecord']}".
                  //"&type={$currentLayout}".
@@ -416,7 +415,7 @@ class blog_handlers extends Cblog_vars
     function blog_setData()
     {
         $sql   = $this->Get_queryRecords(array('category' => ''));
-        $query = $sql->fullQuery . ' ORDER BY entryDate DESC';
+        $query = $sql->fullQuery . ' ORDER BY publishDate DESC';
         $this->records = $this->C->Db_Get_procRows($this, '_hookRow_blog', $query);
     }
 
@@ -473,7 +472,7 @@ class blog_handlers extends Cblog_vars
     }
 
     //========================================================[ record Data ]===
-    function record_GetDataRelated()
+    function record_SetDataRelated()
     {
         // filtres onwhitch the related articles are based
         $filtres = array(
@@ -488,31 +487,51 @@ class blog_handlers extends Cblog_vars
         $fullQuery = $sql->parts['query']
                      . (!$sql->parts['where'] ? ' WHERE ' :
                          $sql->parts['where'] . ' AND ' )
-                     . " blogRecords_view.idRecord != {$this->idRecord} AND ";
+                     ;
 
-        // select by filters
-        $queries = array();
-        foreach($filtres AS $filterName => $filterValue) {
-            $query = "(".$fullQuery
-                        .$this->{'Get_'.$filterName.'Filter'}($filterValue)
-                                    ."ORDER BY RAND( ) LIMIT 0,1 )";
-            array_push($queries, $query);
-            //echo $query."<br><br>";
+        $excludeRecords = array($this->idRecord);
+         //======================================[ editor's pick related ]======
+         //relatedStory
+
+        if($this->relatedStory) {
+            $query = $fullQuery." blogRecords_view.idRecord = {$this->relatedStory}";
+            //echo $query;
+
+            $this->recordRelated
+                = $this->C->Db_Get_procRow($this, '_hookRow_recordRelated', $query);
+           // var_dump($this->recordRelated);
+
+            array_push($excludeRecords, $this->relatedStory);
         }
-        $query = implode(' UNION ', $queries );
-        //echo $query;
 
-        // return related records
-        return $this->C->Db_Get_procRows($this, '_hookRow_recordRelated', $query);
+        //======================================[ select by filters ]===========
+        $this->recordsRelated = array();
+        foreach($filtres AS $filterName => $filterValue) {
+            $query = "("
+                        .$fullQuery
+                        ." blogRecords_view.idRecord NOT IN (".implode(', ', $excludeRecords).") AND "
+                        .$this->{'Get_'.$filterName.'Filter'}($filterValue)
+                        ."ORDER BY RAND( ) LIMIT 0,1"
+                     .")";
+            //echo "<b>record_SetDataRelated - filter by {$filterName}</b>".$query."<br><br>";
 
+            $recordRelated = $this->C->Db_Get_procRow($this, '_hookRow_recordRelated', $query);
+            // daca a gasit ceva pe acest filtru
+            if($recordRelated) {
+                array_push($excludeRecords, $recordRelated['idRecord']);
+                array_push($this->recordsRelated,$recordRelated );
+                // echo "<b>filter found  last_id = ".$recordRelated['idRecord']." </b><br>";
+                //var_dump($recordRelated);
+            }
 
+        }
 
     }
     function record_setData()
     {
         $sql = $this->Get_queryRecord();
         $this->record         = $this->C->Db_Set_procModProps($this, '_hookRow_record', $sql->fullQuery);
-        $this->recordsRelated = $this->record_GetDataRelated();
+        $this->record_SetDataRelated();
         //var_dump($this);
         //var_dump($this->recordsRelated);
 

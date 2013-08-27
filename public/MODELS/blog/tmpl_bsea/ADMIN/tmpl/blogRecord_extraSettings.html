@@ -34,7 +34,11 @@ category - poate daca vrei sa il muti in alta categorie
 
         <div class='admin-extra' >
             <div> Tags </div>
-            <div class='EDtags  recordTags'>
+            <div class='EDtxtauto  recordTags'
+                 data-iedit-path = 'MODELS/blog/ADMIN/getTags.php'
+                 data-iedit-minln = '2'
+                 data-iedit-select = 'multiple'
+                    >
                 {$o->tagsName}
             </div>
         </div>
@@ -72,7 +76,7 @@ category - poate daca vrei sa il muti in alta categorie
 -->
 <div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraSettings'>
-            ".(  !$o->user->rights['article_edit'] ? '' : "
+            ".(  !$o->user->rights['article_edit'] || !$o->blogCategories ? '' : "
                 <!--Doar moderatorii pot schimba categoria unui articol-->
                 <div class='admin-extra' >
                       <div> Category </div>

@@ -240,6 +240,7 @@ class Cblog extends blog_handlers
          $query = "SELECT
                      blogRecords_view. idRecord,
                      idCat,
+                     idTree,
                      uidRec,
                      title,
                      content,
@@ -251,6 +252,7 @@ class Cblog extends blog_handlers
                      publishDate,
                      republish,
                      relatedStory,
+
                      css,
                      js,
                      SEO,
@@ -326,6 +328,7 @@ class Cblog extends blog_handlers
         $query = "SELECT
                     blogRecords_view.idRecord,
                     idCat,
+                    idTree,
                     uidRec,
                     title,
                     content,
@@ -418,7 +421,7 @@ class Cblog extends blog_handlers
                                   : ' WHERE '.implode(' AND ', $sql->parts['wheres'])
                                  );
         $sql->fullQuery       = $sql->parts['query'].
-                                    $sql->parts['where'];
+                                $sql->parts['where'];
 
         error_log("[ ivy ] Cblog - Get_queryRecords : "
                   .preg_replace('/\s+/', ' ', $sql->fullQuery)

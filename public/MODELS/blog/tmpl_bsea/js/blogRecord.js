@@ -10,6 +10,7 @@ $.extend (
         thumbPathPic : "/RES/uploads/.thumbs/images/",
         colectorPics : '*[class$=thumbRecordPics]',
         imgs:          '*[class$=lead] img, *[class$=content] img',
+        iframes:       '*[class$=lead] iframe, *[class$=content] iframe',
         article:       'div[class$=SGrecord]',
         articlesBlog:  'div[class~=blogPrevRec]',
         gallery :      '*[class$=thumbRecordPics] a.fancybox',
@@ -187,6 +188,33 @@ $.extend (
        // this.resizeContentPics(jqCont);
         this.captionContentPics(jqCont);
     },
+    resize_iframes: function(jqCont){
+        jqCont.iframes.map(function(){
+            /*var width = $(this).width(),
+                height = $(this).height(),
+                proportion =   height/width;
+*/
+            var width = 560,
+                height = 315,
+                proportion =   height/width;
+
+
+            $(this).css('width','100%');
+            var newWidth = $(this).width();
+            var newHeight = newWidth * proportion;
+            $(this).css('height', newHeight);
+
+           /* console.log(
+                  "old_width = " + width
+                + "\n old_height = " + height
+                + "\n new_width = " + newWidth
+                + "\n new_height = " + newHeight
+                +"\n"
+            );*/
+
+
+        });
+    },
     /**
      * datele din si despre containerul ales
      *
@@ -204,6 +232,7 @@ $.extend (
 
         jqCont.jq   = jqContainer;
         jqCont.imgs = jqContainer.find(this.sel.imgs);
+        jqCont.iframes = jqContainer.find(this.sel.iframes);
         jqCont.colectorPics =  jqContainer.find(this.sel.colectorPics);
         jqCont.gallery      =  jqContainer.find(this.sel.gallery);
         jqCont.liveEditStat =  jqContainer.find(this.sel.liveEdit).length;
@@ -217,12 +246,19 @@ $.extend (
     	var fancyboxGroup = 1;
         var jqCont = {};
 
-        // preperare article
+        // prepare article
         var article = $(this.sel.article)
         if(article.exists()) {
 
             jqCont = this.get_containerData(article);
             this.set_containerPics(jqCont);
+            if(jqCont.iframes.length) {
+
+                this.resize_iframes(jqCont);
+                $(window).resize(function() {
+                    ivyMods.blog.resize_iframes(jqCont);
+                });
+            }
         }
 
         // prepare articles
@@ -232,9 +268,9 @@ $.extend (
             {
                 jqCont = ivyMods.blog.get_containerData($(this));
                 ivyMods.blog.set_containerPics(jqCont, fancyboxGroup);
+                ivyMods.blog.resize_iframes(jqCont);
+
                 fancyboxGroup++;
-
-
             });
         } else {
            // console.log('no articles from blog found');

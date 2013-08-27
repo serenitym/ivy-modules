@@ -15,8 +15,16 @@
 {
     width: 100% !important;
     height: initial !important;
+
 }
 
+.SGrecord .content{
+    font-family: "futura-pt", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 20px;
+    color: #333;
+    font-weight: 200;
+}
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
 
 #sharepanel .addthis_toolbox {
