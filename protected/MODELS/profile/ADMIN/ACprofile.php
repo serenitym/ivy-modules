@@ -278,6 +278,24 @@ class ACprofile extends Cprofile
 
     }
 
+    // about page
+    function Set_aboutData()
+    {
+        parent::Set_aboutData();
+         // editors only for admin , webmasters & moderators
+        if($this->user->cid <= 3) {
+
+            // editors
+            $sql  =
+               $this->C->Db_Get_queryParts($this, 'Get_preProfileQuery', array('editors' => ''));
+
+            $this->editors =
+                $this->C->Db_Get_procRows($this, '_hookRow_aboutData', $sql->query);
+               // echo "<b>Cprofile - Set_aboutData</b> : editors cu queriul <br> {$sql->query}";
+                //var_dump($this->editors);
+        }
+    }
+
     public  function Set_toolbarButtons()
     {
         array_push($this->toolbar->buttons,"

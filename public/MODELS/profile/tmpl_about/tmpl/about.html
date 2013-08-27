@@ -42,18 +42,20 @@
 </div>-->
 
 <div class='block space overflow'>
-    ".$this->Render_itemsFromStr($o->profiles, '', "
-        <div class='imageColumn'>
+    ".$this->Render_itemsFromStr(array_merge($o->profiles, $o->editors), '', "
+        <div class='imageColumn space'>
             <div class='mainFeaturedImg about-photo-containter'>
                 `.(~ao->photo
-                    ? `<img style='width:100%' src='{~ao->photo}'/>`
-                    : `<img style='width:100%' src='RES/uploads/foto/default.jpg'/>`
+                    ? `<img style='width:100%' src='{~ao->photo}' class='uclass{~ao->cid}' />`
+                    : `<img style='width:100%' src='RES/uploads/foto/default.jpg'  class='uclass{~ao->cid}'/>`
                 ).`
 
             </div>
             <div class='imageColumnMeta'>
                 <div class='imageColumnHead fullwidth'>
-                    <a href='{~ao->hrefProfile}'>{~ao->fullName}</a>
+                    <a href='{~ao->hrefProfile}' class='uactive{~ao->active} uclass{~ao->cid}'>
+                        {~ao->fullName}
+                    </a>
                 </div>
                 <div class='imageColumnLocation blue'>
                     `.( ~ao->title ? ~ao->title : 'Title'  ).`
@@ -61,6 +63,8 @@
             </div>
         </div>
     ")."
+
+
 
 
 </div>

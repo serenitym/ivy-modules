@@ -71,7 +71,7 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
         adminAuthors: function() {
             // via asset tokeninput
             if(typeof this.authors != 'undefined') {
-                console.log('adminAuthors pt selectorul = '+this.sel.adminAuthors+' bucati '+$(this.sel.adminAuthors).length);
+                //console.log('adminAuthors pt selectorul = '+this.sel.adminAuthors+' bucati '+$(this.sel.adminAuthors).length);
                 $(this.sel.adminAuthors).tokenInput(
                     fmw.ajaxProxy,
                     {   prePopulate: this.authors,

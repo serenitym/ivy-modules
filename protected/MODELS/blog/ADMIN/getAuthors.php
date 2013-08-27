@@ -1,6 +1,7 @@
 <?php
-$q = mysql_real_escape_string($_GET["q"]);
 $DB = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+$DB->set_charset('utf8');
+$q = $DB->real_escape_string($_GET["q"]);
 
 $authors = array();
 $query = "SELECT uid AS id , CONCAT( first_name , ' ' , last_name) AS name

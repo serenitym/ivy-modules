@@ -182,9 +182,10 @@ class blog_dbHandlers extends Cblog
     }
     function addRecord()
     {
-        $query =     "INSERT INTO blogRecords  (idCat, title, uidRec)
+        $query =     "INSERT INTO blogRecords  (idCat, idTree, title, uidRec)
                              VALUES (
                               '{$this->idNode}' ,
+                              '{$this->idTree}' ,
                               '{$this->posts->title}' ,
                               '{$this->uid}'
                              )";
@@ -356,6 +357,18 @@ class blog_dbHandlers extends Cblog
         if($this->posts->authors){
             $this->posts->authors = explode(',', $this->posts->authors);
         }
+
+        // daca nu a venit nici un story related atunci i-al din defaultul recordului
+        if(!$this->posts->relatedStory && $_POST['relatedStory_dummy'])  {
+            $this->posts->relatedStory = $this->relatedStory;
+
+        }
+        if(!$_POST['relatedStory_dummy']) {
+            // daca a venit si totusi relatedStory_dummy inseamna ca se doreste
+            //deletul acestui recordRelated
+            $this->posts->relatedStory = '';
+        }
+
         //echo "_hook_updateRecord() ";
         //echo "validation = ".($validStat ? "true" : "false");
 
@@ -364,8 +377,10 @@ class blog_dbHandlers extends Cblog
 
         //$this->C->reLocate();
 
-        return true;
+        //var_dump($this->posts);
+
         //return false;
+        return true;
     }
 
     /**
@@ -426,6 +441,8 @@ class blog_dbHandlers extends Cblog
                   WHERE idRecord = '{$posts->idRecord}' ";
         $queries['blogRecords'] = $query;
 
+        error_log("[ ivy ] blog_dbHandlers blogRecords query = ".$query);
+
 
         //==============================[ update blogRecords_stats ]============
         $columns = 'publishDate, republish';
@@ -435,11 +452,14 @@ class blog_dbHandlers extends Cblog
                       WHERE idRecord = '{$posts->idRecord}' ";
             $queries['blogRecords_stats'] = $query;
 
+            error_log("[ ivy ] blog_dbHandlers blogRecords_stats query = ".$query);
+
         }
 
 
         //=======================[ update blogRecords_settings ]================
         $columns = 'idFormat, idFolder, css, js, relatedStory' ;
+        //$columns = 'idFormat, idFolder, css, js' ;
         $sets = handlePosts::Db_Get_setString($this->posts, $columns, false);
         if ($sets) {
             $query = "UPDATE blogRecords_settings SET $sets
@@ -455,7 +475,6 @@ class blog_dbHandlers extends Cblog
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }
         return false;*/
-
 
         $this->C->Db_queryBulk($queries, false);
         return true;

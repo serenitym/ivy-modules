@@ -78,7 +78,17 @@ class ACblog extends blog_dbHandlers
         return !$editRight ? 'not' :'';
     }
     function Get_blogCategories(){
-        $query = "SELECT id AS idCat , name_en AS catName FROM ITEMS where type='blog' ";
+        //@todo: aceast mod de aface lucrurile  este temporar
+        $cats = $this->tree[$this->idTree]->children;
+
+        if(!$cats) {
+            return false;
+        }
+        $catsStr = implode(', ', $cats);
+
+        $query = "SELECT id AS idCat , name_en AS catName
+                    FROM ITEMS
+                    WHERE type='blog' AND id IN ($catsStr) ";
         $blogCategories = $this->C->Db_Get_rows($query);
 
         return $blogCategories;

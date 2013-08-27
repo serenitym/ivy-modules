@@ -58,8 +58,8 @@
 
     <!-- begin left -->
 	<div class='LeftColumnSmall {$o->catResFile}leftborder'>
-	    <div class='Name {$o->catResFile} fullwidth'>
-            <span class='EDtxt noBorder {$o->statusPublish} title'>
+	    <div class=' fullwidth'>
+            <span class='EDtxt noBorder {$o->catResFile} Name {$o->statusPublish} title'>
                 {$o->title}
             </span>
         </div>
@@ -107,6 +107,34 @@
         <div class='fullwidth'>
             <div class='imageColumnHead'>Related </div>
             <ul>
+
+                ".(!$o->recordRelated
+                    ? "<li class = 'relatedContent ATmpl' >
+                          <span class='ATmpl it'>Editor's pic</span>
+                          <a href='#'
+                             class='EDtxtauto relatedStory'
+                             data-iedit-path = 'MODELS/blog/ADMIN/getRecords.php'
+                             data-iedit-minln = '2'
+                             data-iedit-select = 'key'
+                          >
+
+                          </a>
+                       </li>"
+
+                    : "<li class = 'relatedContent ' >
+                          <span class='ATmpl it'>Editor's pic</span>
+                          <a href='".$o->recordRelated['record_href']."'
+                             class='EDtxtauto relatedStory'
+                             data-iedit-path = 'MODELS/blog/ADMIN/getRecords.php'
+                             data-iedit-minln = '2'
+                             data-iedit-select = 'key'
+                          >
+                              ".$o->recordRelated['title']."
+                          </a>
+                       </li>"
+
+                )."
+
                 ".$this->Render_itemsFromStr($o->recordsRelated, '', "
                     <li class = 'relatedContent' >
                         <a href='{~ao->record_href}'>{~ao->title}</a>

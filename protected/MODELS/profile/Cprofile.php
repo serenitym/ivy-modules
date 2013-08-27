@@ -3,6 +3,11 @@ class Cprofile extends Cuser{
 
     var $recordsArchive = array(); // articolele scrise de user in partea de archive
     var $recordsBlog  = array(); // articolele scrise de user in partea de blog
+
+    // about page
+    var $profiles = array();
+    var $editors = array();
+
     function _hookRow_userData($row)
     {
         $row['editStatus'] = 'not';
@@ -62,31 +67,51 @@ class Cprofile extends Cuser{
         // var_dump($this->recordsBlog);
     }
 
+
+
+    // about page
     function _hookRow_aboutData($row)
     {
         $row['hrefProfile'] = "?idT={$this->idTree}&idC={$this->idNode}&uid=".$row['uid'];
         return $row;
     }
-    function Set_aboutData()
+
+    function Get_preProfileQuery()
     {
         $queryProfiles = "
-        SELECT
-            auth_user_details.uid,
-	        CONCAT(first_name, ' ', last_name) AS fullName,
-	        title,
-	        photo
+                SELECT
+                    auth_user_details.uid,
+                    cid,
+                    active,
+        	        CONCAT(first_name, ' ', last_name) AS fullName,
+        	        title,
+        	        photo
 
-	    FROM auth_user_details
-	    JOIN auth_users
-	    ON (auth_user_details.uid = auth_users.uid)
-        ORDER BY RAND()
-        ";
-        // WHERE ACTIVE = 1
+        	    FROM auth_user_details
+        	    JOIN auth_users
+        	    ON (auth_user_details.uid = auth_users.uid)";
 
-        // echo "Cprofile - Set_aboutData : $queryProfiles <br>";
+        return $queryProfiles;
+    }
+    function Get_Filter_publishers()
+    {
+        return "cid NOT IN (5, 6)   ORDER BY RAND() ";
+    }
+    function Get_Filter_editors()
+    {
+        return "cid = 5  ORDER BY RAND() ";
+    }
+    function Set_aboutData()
+    {
+        // not editors
+        $sql  =
+            $this->C->Db_Get_queryParts($this, 'Get_preProfileQuery', array('publishers' => ''));
+
         $this->profiles =
-            $this->C->Db_Get_procRows($this, '_hookRow_aboutData', $queryProfiles);
-       // var_dump($this->profiles);
+            $this->C->Db_Get_procRows($this, '_hookRow_aboutData', $sql->query);
+        // echo "Cprofile - Set_aboutData : $queryProfiles <br>";
+        // var_dump($this->profiles);
+
     }
 
     function _init_()

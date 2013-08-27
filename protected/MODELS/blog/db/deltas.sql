@@ -106,3 +106,19 @@ ALTER TABLE  `blogRecords_settings` ADD CONSTRAINT  `blogRecords_settings_ibfk_3
 ) ON DELETE NO ACTION ON UPDATE NO ACTION ;
 
 ALTER TABLE  `blogRecords_settings` DROP FOREIGN KEY  `blogRecords_settings_ibfk_3` ;
+
+--- 26 august 2013
+
+ALTER TABLE  `blogRecords` ADD  `idTree` INT( 5 ) NULL AFTER  `idCat` ,
+ADD INDEX (  `idTree` ) ;
+
+UPDATE `blogRecords` SET idTree = 88 WHERE idCat = 88;
+UPDATE `blogRecords` SET idTree = 86 WHERE idCat != 88;
+
+CREATE OR REPLACE VIEW `blogRecords_view` AS select
+`blogRecords`.`idRecord` AS `idRecord`,
+`blogRecords`.`idCat` AS `idCat`,
+`blogRecords`.`idTree` AS `idTree`,
+
+`blogRecords`.`uidRec` AS `uidRec`,`blogRecords`.`title` AS `title`,`blogRecords`.`content` AS `content`,`blogRecords`.`lead` AS `lead`,`blogRecords`.`leadSec` AS `leadSec`,`blogRecords`.`country` AS `country`,`blogRecords`.`city` AS `city`,`blogRecords_stats`.`entryDate` AS `entryDate`,`blogRecords_stats`.`publishDate` AS `publishDate`,`blogRecords_stats`.`nrRates` AS `nrRates`,`blogRecords_stats`.`ratingTotal` AS `ratingTotal`,`blogRecords_stats`.`republish` AS `republish`,`blogRecords_settings`.`relatedStory` AS `relatedStory`,`blogRecords_settings`.`css` AS `css`,`blogRecords_settings`.`js` AS `js`,`blogRecords_settings`.`SEO` AS `SEO`,`blogRecord_folders`.`folderName` AS `folderName`,`blogRecord_folders`.`idFolder` AS `idFolder`,`blogRecord_formats`.`format` AS `format`,`blogRecord_formats`.`idFormat` AS `idFormat` from ((((`blogRecords` join `blogRecords_stats` on((`blogRecords`.`idRecord` = `blogRecords_stats`.`idRecord`))) left join `blogRecords_settings` on((`blogRecords`.`idRecord` = `blogRecords_settings`.`idRecord`))) left join `blogRecord_folders` on((`blogRecords_settings`.`idFolder` = `blogRecord_folders`.`idFolder`))) left join `blogRecord_formats` on((`blogRecords_settings`.`idFormat` = `blogRecord_formats`.`idFormat`)));
+
