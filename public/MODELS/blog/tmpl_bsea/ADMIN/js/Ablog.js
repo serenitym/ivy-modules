@@ -52,7 +52,15 @@ ivyMods.set_iEdit.blog = function(){
         },
 
         'formatContainer':{
-
+            modName: 'blog',
+            saveBt: {
+                methName: 'saveFormat',
+                async: new fmw.asyncConf({
+                    dataSend: {modName: 'blog', methName: 'saveFormat'},
+                    callBack: {fn: ivyMods.blog.saveTest},
+                    restoreCore: true
+                })
+            }
         }
     });
 };
@@ -102,14 +110,27 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
 
         },
 
+        saveTest: function(Name, id, data){
+            console.log( "S-a produs un post cu \n"+
+                "Name = "+ Name + "\n" +
+                "id = "+ id + "\n" +
+                "data = "+data + "\n"
+            );
+        },
         blogSettings_liveEdit: function(){
 
             iEdit.init.start_iEdit(this.sel.blogSettings);
+        },
+        Ainit: function(){
+            if(fmw.isset(fmw.getData['blogSettings']) && fmw.isset(iEdit)) {
+                this.popUpblogSettings();
+            }
         }
+
     });
 }
 
 
 $(document).ready(function(){
-  //  ivyMods.blog.Ainit();
+    ivyMods.blog.Ainit();
 });

@@ -178,14 +178,29 @@ class ACblog extends blog_dbHandlers
     }
 
     // blog settings
+    //==========================[testing]===============================
+    function saveFormat(){
+
+        $data = '';
+        foreach($_POST AS $postName => $postValue) {
+            $data .= 'postName = '.$postName."\n";
+            $data .= 'postValue = '.$postValue."\n";
+        }
+        echo $data;
+    }
+    //==========================[testing]===============================
+
     function Set_toolbarAdminBlog()
     {
         error_log("ACblog - userul are permisiuni pentru a edita setarile blogului" );
         array_push($this->C->TOOLbar->buttons,"
-           <input type='button' name='blogSettings' value='blog Settings'
-                onclick = \"ivyMods.blog.popUpblogSettings(); return false;\">
+                   <a href='".Toolbox::curURL()."&blogSettings'> blog Settings </a>
+                  ");
+        /**
+         * <input type='button' name='blogSettings' value='blog Settings'
+                 onclick = \"ivyMods.blog.popUpblogSettings(); return false;\">
 
-          " );
+         */
     }
 
     function Set_dataBlogSettings()
