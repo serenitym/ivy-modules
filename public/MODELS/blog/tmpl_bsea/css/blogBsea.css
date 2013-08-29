@@ -27,7 +27,7 @@
     font-weight: 200;
 }
 .SGrecord-archive .content p {
-    width: 75%;
+    /*width: 75%;*/
 }
 
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
