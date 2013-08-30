@@ -53,14 +53,35 @@ ivyMods.set_iEdit.blog = function(){
 
         'formatContainer':{
             modName: 'blog',
-            saveBt: {
-                methName: 'saveFormat',
-                async: new fmw.asyncConf({
-                    dataSend: {modName: 'blog', methName: 'saveFormat'},
-                    callBack: {fn: ivyMods.blog.saveTest},
-                    restoreCore: true
-                })
-            }
+            saveBt: { async: new fmw.asyncConf({
+                      dataSend: {modName: 'blog', methName: 'saveFormat'},
+                      /* callBack: {fn: ivyMods.blog.saveTest},*/
+                      restoreCore: true })
+            },
+            addBt: { async: new fmw.asyncConf({
+                     dataSend: {modName: 'blog', methName: 'addFormat'},
+                     restoreCore: true})
+            },
+	        deleteBt: { async: new fmw.asyncConf({
+                       dataSend: {modName: 'blog', methName: 'deleteFormat'},
+                       restoreCore: true })
+           }
+
+        },
+        'folder':{
+            modName: 'blog',
+            saveBt: { async: new fmw.asyncConf({
+                      dataSend: {modName: 'blog', methName: 'saveFolder'},
+                      restoreCore: true })
+            },
+            addBt: { async: new fmw.asyncConf({
+                     dataSend: {modName: 'blog', methName: 'addFolder'},
+                     restoreCore: true })
+            },
+	        deleteBt: { async: new fmw.asyncConf({
+                       dataSend: {modName: 'blog', methName: 'deleteFolder'},
+                       restoreCore: true })
+           }
         }
     });
 };
@@ -105,18 +126,19 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
                     fn: ivyMods.blog.blogSettings_liveEdit,
                     context: ivyMods.blog
                 },
-                widthPop: '250'
+                widthPop: '400',
+	             closeBtn: 'submit'
             });
 
         },
 
-        saveTest: function(Name, id, data){
+        /*saveTest: function(Name, id, data){
             console.log( "S-a produs un post cu \n"+
                 "Name = "+ Name + "\n" +
-                "id = "+ id + "\n" +
-                "data = "+data + "\n"
+                "id = "+ id + "\n"
+               // + "data = "+data + "\n"
             );
-        },
+        },*/
         blogSettings_liveEdit: function(){
 
             iEdit.init.start_iEdit(this.sel.blogSettings);

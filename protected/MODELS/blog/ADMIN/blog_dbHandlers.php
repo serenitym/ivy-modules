@@ -524,6 +524,7 @@ class blog_dbHandlers extends Cblog
                       'Succes',
                       'Deleted',
                       'your article was succesfully deleted!!!');
+            $this->C->reLocate("?idT={$this->idTree}&idC={$this->idNode}");
             return true;
         } else {
             return $this->C->feedback->Set_badmess(

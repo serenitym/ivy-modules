@@ -178,31 +178,91 @@ class ACblog extends blog_dbHandlers
     }
 
     // blog settings
-    //==========================[testing]===============================
-    function saveFormat(){
+    function saveFormat()
+    {
+        $data = 'saveFormat ';
+        foreach($_POST AS $postName => $postValue) {
+            $data .= 'postName = '.$postName."\n";
+            $data .= 'postValue = '.$postValue."\n";
+        }
+        echo $data;
+        $format = $_POST['format'];
+        $id = $_POST['BLOCK_id'];
 
-        $data = '';
+    }
+    function addFormat()
+    {
+        echo 10;
+    }
+    function deleteFormat()
+    {
+        $data = 'deleteFormat ';
         foreach($_POST AS $postName => $postValue) {
             $data .= 'postName = '.$postName."\n";
             $data .= 'postValue = '.$postValue."\n";
         }
         echo $data;
     }
-    //==========================[testing]===============================
+
+    function saveFolder()
+    {
+        $data = 'saveFolder ';
+        /*foreach($_POST AS $postName => $postValue) {
+            $data .= 'postName = '.$postName."\n";
+            $data .= 'postValue = '.$postValue."\n";
+        }
+        echo $data;*/
+        $folderName = $_POST['folderName'];
+        $id = $_POST['BLOCK_id'];
+
+        $query = "UPDATE blogRecord_folders
+                  SET folderName = '{$folderName}'
+                  WHERE idFolder = {$id}";
+
+        $this->DB->query($query);
+
+    }
+    function addFolder()
+    {
+        $folderName = $_POST['folderName'];
+
+        $query = "INSERT INTO blogRecord_folders
+                  SET folderName = '{$folderName}'";
+        $this->DB->query($query);
+
+        $id = $this->DB->insert_id;
+        if($id){
+            echo $id;
+        }
+    }
+    function deleteFolder()
+    {
+        /*$data = 'deleteFormat ';
+        foreach($_POST AS $postName => $postValue) {
+            $data .= 'postName = '.$postName."\n";
+            $data .= 'postValue = '.$postValue."\n";
+        }
+        echo $data;
+        */
+        $id = $_POST['BLOCK_id'];
+
+        $query = "DELETE FROM  blogRecord_folders WHERE idFolder = {$id}";
+        //$this->DB->query($query);
+    }
 
     function Set_toolbarAdminBlog()
     {
         error_log("ACblog - userul are permisiuni pentru a edita setarile blogului" );
-        array_push($this->C->TOOLbar->buttons,"
-                   <a href='".Toolbox::curURL()."&blogSettings'> blog Settings </a>
-                  ");
+        array_push($this->C->TOOLbar->buttons,
+            "<input type='button' onclick='ivyMods.blog.popUpblogSettings(); return false;'  name='blogSettings' value='blog Settings' >"
+        //    "<a href='".Toolbox::curURL()."&blogSettings'> blog Settings </a>"
+        );
         /**
          * <input type='button' name='blogSettings' value='blog Settings'
                  onclick = \"ivyMods.blog.popUpblogSettings(); return false;\">
 
          */
     }
-
     function Set_dataBlogSettings()
     {
         /*echo "blog - folders <br>";
@@ -228,16 +288,9 @@ class ACblog extends blog_dbHandlers
         parent::Get_blogSettings();
 
         //=============================================[ folders ]==============
-        $query = "SELECT GROUP_CONCAT( folderName SEPARATOR ', ') AS folderNames
+        $query = "SELECT  idFolder, folderName
                   FROM blogRecord_folders";
-        $res = $this->DB->query("$query")->fetch_assoc();
-        $this->folderNames = $res['folderNames'];
-
-        //=============================================[ formats ]==============
-        $query = "SELECT GROUP_CONCAT( format SEPARATOR  ', ' ) AS formatNames
-                  FROM blogRecord_formats";
-        $res = $this->DB->query("$query")->fetch_assoc();
-        $this->formatNames = $res['formatNames'];
+        $this->folders =   $this->C->Db_Get_rows($query);
 
     }
     function _init_()
