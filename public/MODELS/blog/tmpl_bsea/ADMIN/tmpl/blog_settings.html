@@ -1,27 +1,26 @@
 <div class='blogSettings'>
-    <p class='b'>Formats</p>
-    <div class='allENTS ib margin-10 formats' id='formats_en'>
-        ".$this->Render_itemsFromStr($o->formats,'',"
+    <div class = 'ib'>
+        <div class='b'>Formats</div>
+        <div class='allENTS ib margin-b10 formats' id='formats_en'>
+            ".$this->Render_itemsFromStr($o->formats,'',"
             <div class='ENT padding-3 formatContainer' id='formatContainer_{~ao->idFormat}_en'>
                 <p class='EDtxt width150  format'>{~ao->format} </p>
             </div>
-        ")."
+            ")."
+        </div>
     </div>
+
+    <div class = 'ib'>
+        <div class='b'>Folders</div>
+        <div class='allENTS ib margin-b10 folders' id='folders_en'>
+            ".$this->Render_itemsFromStr($o->folders,'',"
+            <div class='ENT padding-3 folder' id='folder_{~ao->idFolder}_en'>
+                <p class='EDtxt width150  folderName'>{~ao->folderName} </p>
+            </div>
+            ")."
+        </div>
+    </div>
+
+
 </div>
 
-<!--
-<form action='' method='post' class='format-blogSettings' style='margin: 20px;'>
-    <div class='b '>Formats</div>
-    <input type='text' class='ivy-light formats' value='{$o->formatNames}'>
-
-    <br>
-    <br>
-    <div class='b'>Folders</div>
-    <textarea name='folderNames' class='ivy-light folders '>
-        {$o->folderNames}
-    </textarea>
-
-    <input type='hidden' name='modName' value='blog'>
-    <input type='hidden' name='methName' value='update_blogSettings'>
-    <input type='submit' name='updateSettings' value='update settings' class='ivy'>
-</form>-->

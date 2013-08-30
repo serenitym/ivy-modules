@@ -31,12 +31,15 @@ form.SGrecord input.city,
 form.SGrecord input.publishDate {width: 120px;}
 
 /*=====================[ blog_settings.html]==================*/
-
-.format-blogSettings .formats,
-.format-blogSettings .folders {
-    width: 200px;
-    white-space: normal !important;
+.blogSettings{
+    margin-left: 33px !important;
 }
-.format-blogSettings .folders {
-    height: 60px;
+.blogSettings .formats,
+.blogSettings .folders {
+
+}
+
+.blogSettings .formats .format,
+.blogSettings .folders .folderName{
+    margin: 0px;
 }
