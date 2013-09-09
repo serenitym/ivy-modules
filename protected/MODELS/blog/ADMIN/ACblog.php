@@ -37,21 +37,6 @@ class ACblog extends blog_dbHandlers
     var $authors = array(); //autorii contribuitori
 
 
-    function Get_basicFilter()
-    {
-        $wheres = array();
-
-        if(!$this->user->rights['article_edit']) {
-            array_push($wheres, " (
-                uidRec='{$this->user->uid}'
-                OR unamesCSV LIKE '%{$this->user->uname}%'
-                OR publishDate is not NULL
-             ) ");
-        }
-
-        return  $wheres;
-    }
-
     function Get_rights_articleEdit($uidRec, $uids = array())
     {
         $editRight = ($this->user->rights['article_edit'] )
@@ -61,7 +46,7 @@ class ACblog extends blog_dbHandlers
 
         return $editRight;
     }
-    // permisiuni asupra articlului
+    //=========================================[ permisiuni asupra articlului ]=
     /**
      * Daca este un user logat
      *      - daca are permisiuni de master poate edita
@@ -143,6 +128,7 @@ class ACblog extends blog_dbHandlers
        return $row;
    }
 
+    //===============================================[ request handlers ]=======
     function record_setAuthors()
     {
         // relate to $this->Get_authors;
@@ -177,7 +163,39 @@ class ACblog extends blog_dbHandlers
 
     }
 
-    // blog settings
+    function unpublished_setData($sql, $hookName)
+    {
+        $wheres = $sql->parts['wheres'];
+        $wheres['publish'] = $this->Get_unpublishedFilter();
+        $where =  count($wheres) == 0 ? ''
+                  : ' WHERE '.implode(' AND ', $wheres);
+
+        $fullQuery  = $sql->parts['query'].$where;
+
+        error_log("[ ivy ] ACblog - archive_setData : "
+                  .preg_replace('/\s+/', ' ', $fullQuery)
+        );
+
+        $query = $fullQuery.' ORDER BY entryDate DESC';
+        $this->recordsUnpublished = $this->C->Db_Get_procRows($this,
+                                    $hookName, $query);
+    }
+    function archive_setData()
+    {
+        parent::archive_setData();
+        // unpublished records
+        // set by the parent  $this->sqlRecords
+        $this->unpublished_setData($this->sqlRecords, '_hookRow_archive');
+    }
+    function blog_setData()
+    {
+        parent::blog_setData();
+        // unpublished records
+        // set by the parent  $this->sqlRecords
+        $this->unpublished_setData($this->sqlRecords, '_hookRow_blog');
+    }
+
+    //==============================================[ blog settings ]===========
     function saveFormat()
     {
         $data = 'saveFormat ';

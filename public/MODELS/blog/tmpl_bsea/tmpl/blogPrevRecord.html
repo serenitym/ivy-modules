@@ -46,24 +46,21 @@
 
         </div>
 	    <div class='imageColumnHead'>
-            ".(!$ao->tagsName ? '' :
-               "
-                    Filed under:&nbsp;
-                    <span class='{$ao->catResFile}'>
-                         <!--<a href=''>tag1</a>,
-                         <a href=''>tag2</a>,
-                         <a href=''>tag3</a>-->
-                        <!--{$ao->tagsName}-->
-                        ".substr(
-                        $this->Render_arrayFromStr($ao->tags, $o,
-                            "<a href='?idT={~o->idTree}&idC={~o->idNode}&filterName=tag&filterValue={~i}'>
-                                {~i}
-                            </a>, "
-                        ), 0, -2)."
-                    </span>
-               "
-
-            )."
+            ".(!$ao->tagsName || count($ao->tags) == 0 ? "" : "
+                Filed under:&nbsp;
+                <span class='{$ao->catResFile}'>
+                     <!--<a href=''>tag1</a>,
+                     <a href=''>tag2</a>,
+                     <a href=''>tag3</a>-->
+                    <!--{$ao->tagsName}-->
+                    ".substr($this->Render_arrayFromStr($ao->tags, $o,
+                                "<a href='?idT={~o->idTree}&idC={~o->idNode}&filterName=tag&filterValue={~i}'>
+                                    {~i}
+                                </a>, ")
+                                , 0, -2
+                    )."
+                </span>
+           ")."
 
         </div>
         <div class='fullwidth thumbRecordPics'>

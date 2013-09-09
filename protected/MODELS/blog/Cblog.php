@@ -202,7 +202,8 @@ class Cblog extends blog_handlers
                     );
                 } else {
                     $filter = $this->{'Get_'.$filterName.'Filter'}($filterValue);
-                    array_push($filtersStrs, $filter);
+                    $filtersStrs[$filterName] = $filter;
+                    //array_push($filtersStrs, $filter);
                 }
             }
         }
@@ -210,11 +211,36 @@ class Cblog extends blog_handlers
         return $filtersStrs;
     }
     //#1
+    function Get_unpublishedFilter(){
+
+        $wheres = array();
+
+        if(!$this->user->rights['article_edit']) {
+            array_push($wheres,
+                " ( uidRec='{$this->user->uid}'
+                     OR unamesCSV LIKE '%{$this->user->uname}%'
+                   ) ");
+        }
+
+        array_push($wheres, " publishDate IS NULL ");
+
+        // daca userul sa zicem emoderator atunci va putea vedea toate
+        // articolele nepublicate altfel le va vedea doar pe acelea pentru care
+        // este autor
+        $where = implode(' AND ', $wheres);
+        return $where;
+
+    }
+    function Get_publishFilter()
+    {
+        return " publishDate is not NULL ";
+    }
+    //#1
     function Get_basicFilter()
     {
         $wheres = array();
-
-        array_push($wheres, " publishDate is not NULL ");
+        $wheres['publish'] = $this->Get_publishFilter();
+        //array_push($wheres, " publishDate is not NULL ");
 
         return  $wheres;
     }
@@ -410,22 +436,20 @@ class Cblog extends blog_handlers
         //$sql->parts['query'];
         //$sql->fullQuery;
 
-
         $sql->parts['query']  = $query ? $query:  $this->Get_baseQueryRecords(); // return string
         $basicFilters         = $this->Get_basicFilter();  //return array
         $requestFilters       = $this->_handle_requestFilters($filters);
 
         $sql->parts['wheres'] = array_merge($basicFilters, $requestFilters);
-        $sql->parts['where'] =  (count($sql->parts['wheres']) == 0
-                                  ? ''
+        $sql->parts['where']  =  count($sql->parts['wheres']) == 0 ? ''
                                   : ' WHERE '.implode(' AND ', $sql->parts['wheres'])
-                                 );
+                                 ;
         $sql->fullQuery       = $sql->parts['query'].
                                 $sql->parts['where'];
 
-        error_log("[ ivy ] Cblog - Get_queryRecords : "
+        /*error_log("[ ivy ] Cblog - Get_queryRecords : "
                   .preg_replace('/\s+/', ' ', $sql->fullQuery)
-        );
+        );*/
 
         return $sql;
     }

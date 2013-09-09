@@ -1,6 +1,10 @@
 @charset "UTF-8";
 .ivy-feedback{
     min-height: 40px;
+    position: fixed;
+    z-index: 1000;
+    top: 2px;
+    right: 0px;
 }
 .ivy-feedback .toggleFb{ float: right;}
 

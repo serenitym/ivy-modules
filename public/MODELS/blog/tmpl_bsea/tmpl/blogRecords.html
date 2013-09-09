@@ -1,0 +1,13 @@
+<div class='blogSet_{$o->limitStart}'>
+    <div class='divider'></div>
+    <div class='block space overflow'></div>
+    ".(count($o->records) == 0 ?
+       "<b>Sorry there are no articles found</b>" :
+        $this->Render_itemsFromPath($o->records, $o,
+        "MODELS/blog/tmpl_bsea/tmpl/blogPrevRecord.html")
+    )."
+
+    <div class='blog-articlesNo'>
+        {$o->noRecords} out of  {$o->totalRecords}
+    </div>
+</div>

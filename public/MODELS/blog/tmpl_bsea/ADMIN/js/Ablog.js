@@ -24,7 +24,8 @@ ivyMods.set_iEdit.blog = function(){
                 "</span>"
                 ,"<span>" +
                     "<input type='hidden' name = 'action_methName'  value='deleteRecord' />" +
-                    "<input type='submit' name = 'deleteRecord'  value='delete article' class='iedit-btt'/>" +
+                    "<input type='submit' name = 'deleteRecord'  value='delete article' class='iedit-btt' " +
+			               " onclick = 'return ivyMods.blog.confirmDelete();' />" +
                 "</span>"
             ]
         },
@@ -97,6 +98,13 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
             blogSettings: '.blogSettings'
         },
 
+	     confirmDelete: function(){
+		     var confirmation = confirm("Are you sure you want to delete this article ?");
+
+		     if(!confirmation) {
+			     return false;
+		     }
+	     },
         adminAuthors: function() {
             // via asset tokeninput
             if(typeof this.authors != 'undefined') {

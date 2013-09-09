@@ -24,7 +24,14 @@
     ".(!$this->admin ? "" :
          $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_addForm.html")
+
+        .(count($o->recordsUnpublished) == 0 ? "" :
+            $this->Render_object($o,'',
+            "MODELS/blog/tmpl_bsea/ADMIN/tmpl/archiveRecords_unpublished.html")
+        )
     )."
+
+
 
    ".(count($o->records) == 0 ? "<b>Sorry there are no articles found</b>" :
          $this->Render_itemsFromPath($o->records, $o,

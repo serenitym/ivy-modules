@@ -17,24 +17,43 @@
     <!-- end categories -->
 
 	<div class='LeftColumnSmall blogsHead space'>Blogs</div> <!-- end page title -->
-	<div class='divider'></div>
+
 
 </div> <!-- end title section and categories -->
 
-<div class='block space overflow'></div>
+
 
 
 <div class='allENTS block blogRecords allrecords'  id='allrecords_{$o->lang}'>
     <div class='ENT space blogPrevRec record'   id='record_0_en' style='display: none;' >
     </div>
-    ".(!$this->admin ? '' :
+    ".(!$this->admin ? "" :
          $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_addForm.html")
+
+        .(count($o->recordsUnpublished) == 0 ? "" :
+            $this->Render_object($o,'',
+             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecords_unpublished.html")
+        )
     )."
 
-    ".(count($o->records) == 0 ? "<b>Sorry there are no articles found</b>" :
-          $this->Render_itemsFromPath($o->records, $o,
-         "MODELS/blog/tmpl_bsea/tmpl/blogPrevRecord.html")
+    ".$this->Render_object($o, '',
+        "MODELS/blog/tmpl_bsea/tmpl/blogRecords.html"
     )."
+
+    <div class='loadMore-container margin-b20'>
+        <div class='divider-clear '></div>
+        <input type='button' class='bsea getNext_blogRecords'
+               value='load more'
+               data-blog-limitstart = '{$o->limitStart}'
+               data-blog-limitend = '{$o->totalRecords}'
+
+                >
+        <input type='button' class='bsea go-topPage'
+               value = 'back to top'
+               onclick='$(window).scrollTop(0); return false;'
+                />
+    </div>
+
 
 </div>

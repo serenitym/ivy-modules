@@ -5,6 +5,7 @@ if( typeof ivyMods.blog == 'undefined'  ) {
 $.extend (
     ivyMods.blog , {
 
+	 limitSet : 10,
     sel: {
         basePathPic : "/RES/uploads/images/",
         thumbPathPic : "/RES/uploads/.thumbs/images/",
@@ -13,9 +14,11 @@ $.extend (
         iframes:       '*[class$=lead] iframe, *[class$=content] iframe',
         article:       'div[class$=SGrecord]',
         articlesBlog:  'div[class~=blogPrevRec]',
+	     blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
         gallery :      '*[class$=thumbRecordPics] a.fancybox',
         liveEdit:      '.ELMcontent',
-        adminAuthors: 'form #adminAuthors'
+        adminAuthors: 'form #adminAuthors',
+	     getNext_blogRecords: "input[class$=getNext_blogRecords]"
 
     },
     jqCont: {
@@ -25,6 +28,47 @@ $.extend (
       gallery : {},
       liveEditStat: {}
     },
+
+	asyncRecords : new fmw.asyncConf({
+		restoreCore: true,
+		dataSend: {
+			modName: 'blog',
+			methName: 'blog_renderData'
+		}
+	}),
+	fancyboxGroup: 1,
+    // ========================[ event Callbacks ]==============================
+    bind_getNext_blogRecords: function(){
+
+	      var loadButton = $(this.sel.getNext_blogRecords);
+
+			loadButton.on('click', function(){
+
+				// atentie se poate culege un vector cu toate datele
+				var limitStart = $(this).data('blogLimitstart');
+				var limitEnd   = $(this).data('blogLimitend');
+
+
+				ivyMods.blog.asyncRecords
+					.fnpost({"limitStart" : limitStart})
+					.done(function(data){
+
+
+						limitStart += 10;
+						loadButton.data('blogLimitstart', limitStart);
+						loadButton.parent().before(data);
+						ivyMods.blog.onload_articlesBlog(limitStart);
+
+						console.log('limit start = '+limitStart + ' limit end = '+limitEnd);
+						if(limitStart >= limitEnd) {
+							loadButton.next('input[class$=go-topPage]').css('display', 'block');
+							loadButton.remove();
+						}
+					});
+			});
+
+     },
+
     // ========================[ thumbnails ]===================================
     //#1
     get_RecordPics: function(jqCont){
@@ -32,7 +76,6 @@ $.extend (
         var recordPics = new Array();
         var src = '';
         var alt = '';
-
 
 
         jqCont.imgs.map(function()
@@ -242,40 +285,51 @@ $.extend (
 
     },
 
+    onload_article: function(){
+	    var jqCont = {};
+
+       // prepare article
+       var article = $(this.sel.article)
+       if(article.exists()) {
+
+           jqCont = this.get_containerData(article);
+           this.set_containerPics(jqCont);
+           if(jqCont.iframes.length) {
+
+               this.resize_iframes(jqCont);
+               $(window).resize(function() {
+                   ivyMods.blog.resize_iframes(jqCont);
+               });
+           }
+       }
+    },
+
+	 onload_articlesBlog: function(blogSet){
+		// blogset = setul de articole , see: blogRecords.html
+
+		//var fancyboxGroup = 1;
+      var jqCont = {};
+
+		var articlesBlog = $(this.sel.blogSet(blogSet)+this.sel.articlesBlog);
+      if(articlesBlog.length > 0) {
+          articlesBlog.map(function()
+          {
+              jqCont = ivyMods.blog.get_containerData($(this));
+              ivyMods.blog.set_containerPics(jqCont, ivyMods.blog.fancyboxGroup);
+              ivyMods.blog.resize_iframes(jqCont);
+
+              ivyMods.blog.fancyboxGroup++;
+          });
+      } else {
+          console.log('no articles from blog found la selectorul '+ this.sel.blogSet(blogSet)+this.sel.articlesBlog);
+      }
+
+	},
     init: function(){
-    	var fancyboxGroup = 1;
-        var jqCont = {};
-
-        // prepare article
-        var article = $(this.sel.article)
-        if(article.exists()) {
-
-            jqCont = this.get_containerData(article);
-            this.set_containerPics(jqCont);
-            if(jqCont.iframes.length) {
-
-                this.resize_iframes(jqCont);
-                $(window).resize(function() {
-                    ivyMods.blog.resize_iframes(jqCont);
-                });
-            }
-        }
-
-        // prepare articles
-        var articlesBlog = $(this.sel.articlesBlog);
-        if(articlesBlog.length > 0) {
-            articlesBlog.map(function()
-            {
-                jqCont = ivyMods.blog.get_containerData($(this));
-                ivyMods.blog.set_containerPics(jqCont, fancyboxGroup);
-                ivyMods.blog.resize_iframes(jqCont);
-
-                fancyboxGroup++;
-            });
-        } else {
-           // console.log('no articles from blog found');
-        }
-
+	    this.onload_article();
+	    this.onload_articlesBlog('unpublished');
+	    this.onload_articlesBlog(10);
+	    this.bind_getNext_blogRecords();
     }
 }
 );

@@ -412,11 +412,44 @@ class blog_handlers extends Cblog_vars
     }
 
     //==========================================================[ blog Data ]===
+    function blog_setRecords($fullQuery, $limitStart = 0, $limitEnd = 10)
+    {
+        $query = $fullQuery . "ORDER BY publishDate DESC LIMIT {$limitStart}, {$limitEnd}";
+        //echo "<b>blog_setData</b> {$query}";
+        $this->records = $this->C->Db_Get_procRows($this, '_hookRow_blog', $query);
+    }
     function blog_setData()
     {
-        $sql   = $this->Get_queryRecords(array('category' => ''));
-        $query = $sql->fullQuery . ' ORDER BY publishDate DESC';
-        $this->records = $this->C->Db_Get_procRows($this, '_hookRow_blog', $query);
+        $this->sqlRecords = $this->Get_queryRecords(array('category' => ''));
+        $this->blog_setRecords($this->sqlRecords->fullQuery);
+
+        // for async stats
+        $res = $this->DB->query($this->sqlRecords->fullQuery);
+        $this->totalRecords = $res->num_rows;
+
+        $this->noRecords =
+        $this->limitStart = 10;
+    }
+    function blog_renderData()
+    {
+        $this->limitStart = $_POST['limitStart'];
+        $this->blog_setRecords($this->sqlRecords->fullQuery, $this->limitStart);
+        // daca nu suntem la capatul articolelor
+        error_log("[ ivy ] blog_handlers - blog_renderData : "
+                  .preg_replace('/\s+/', ' ', $this->sqlRecords->fullQuery)
+        );
+
+        $this->limitStart += 10;
+        $this->noRecords = $this->limitStart;
+
+        if($this->totalRecords < $this->limitStart){
+            $this->noRecords = $this->totalRecords;
+        }
+
+        // error_log("**************[ivy] in blog_renderData");
+        $this->template_file = "blogRecords";
+        echo $this->C->Handle_Render($this);
+
     }
 
     //=======================================================[ archive Data ]===
@@ -455,8 +488,10 @@ class blog_handlers extends Cblog_vars
          * + EDrecord
          *
         */
-        $sql   = $this->Get_queryRecords(array('category' => ''));
-        $query = $sql->fullQuery.' ORDER BY entryDate DESC';
+        $this->sqlRecords   = $this->Get_queryRecords(array('category' => ''));
+
+        //====================================[ published records ]=============
+        $query = $this->sqlRecords->fullQuery.' ORDER BY entryDate DESC';
         $this->records = $this->C->Db_Get_procRows($this, '_hookRow_archive', $query);
         //echo "blog_handlers - archive_setData : this->records";
         //var_dump($this->records);
