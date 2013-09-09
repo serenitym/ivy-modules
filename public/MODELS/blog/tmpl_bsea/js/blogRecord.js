@@ -2,8 +2,8 @@ if( typeof ivyMods.blog == 'undefined'  ) {
     ivyMods.blog = {};
 }
 
-$.extend (
-    ivyMods.blog , {
+$.extend ( true, ivyMods.blog ,
+{
 
 	 limitSet : 10,
     sel: {
@@ -321,7 +321,7 @@ $.extend (
               ivyMods.blog.fancyboxGroup++;
           });
       } else {
-          console.log('no articles from blog found la selectorul '+ this.sel.blogSet(blogSet)+this.sel.articlesBlog);
+//          console.log('no articles from blog found la selectorul '+ this.sel.blogSet(blogSet)+this.sel.articlesBlog);
       }
 
 	},

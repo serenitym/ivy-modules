@@ -1,6 +1,16 @@
-$(document).ready(function() {
-    function init(){
-       // initiate leaflet map
+if( typeof ivyMods.blog == 'undefined'  ) {
+    ivyMods.blog = {};
+}
+$.extend ( true, ivyMods.blog ,
+{
+	sel: {
+		cartoDb: "#cartodb-map"
+	},
+	cartoDb_smallSize: {height: '250px', background: '#000'},
+	cartoDb_fullSize: {height: '550px', background: '#333'},
+
+	cartoDb_init: function(){
+      // initiate leaflet map
        var map = new L.Map('cartodb-map', {scrollWheelZoom:false,
        	        center: [44.016521,35.264397],
          zoom: 6
@@ -18,8 +28,35 @@ $(document).ready(function() {
        }).on('error', function() {
          //log the error
        });
-     };
 
-    init();
+		//resize map
+		this.cartoDb_resize();
+
+	},
+	cartoDb_resize: function(){
+
+		var cartoDb = $(ivyMods.blog.sel.cartoDb);
+		setTimeout(function(){
+			cartoDb.animate( ivyMods.blog.cartoDb_smallSize,1000);
+		},2500);
+
+		//binds for resizing
+		cartoDb
+			.hoverIntent({
+				over: function(){
+					cartoDb.animate( ivyMods.blog.cartoDb_fullSize,700);
+
+				},
+				out: function(){
+					cartoDb.animate( ivyMods.blog.cartoDb_smallSize,700);
+
+				}
+			});
+	}
+});
+
+$(document).ready(function() {
+   ivyMods.blog.cartoDb_init();
+
 
 });
