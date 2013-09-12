@@ -14,7 +14,7 @@
      $this->Render_object($this->blog,'',
         "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraBtns.html")
 )."
-<div class='{$o->ED}SING block SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+<div class='{$o->ED}SING block SGrecord-blog SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
     ".(!$this->admin ? '' :
          $this->Render_object($this->blog,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraSettings.html")

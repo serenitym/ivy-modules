@@ -7,7 +7,10 @@
         "MODELS/blog/tmpl_bsea/tmpl/blogPrevRecord.html")
     )."
 
-    <div class='blog-articlesNo'>
-        {$o->noRecords} out of  {$o->totalRecords}
-    </div>
+    ".( $o->totalRecords <= 10 ? "" : "
+        <div class='blog-articlesNo'>
+            {$o->noRecords} out of  {$o->totalRecords}
+        </div>
+    ")."
+
 </div>

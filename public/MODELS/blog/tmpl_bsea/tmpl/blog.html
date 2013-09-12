@@ -1,18 +1,29 @@
 <div class='block space overflow'>
     <!-- begin title section and categories -->
 	<div class='textColumnBig right space'>
-        ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
-           "
-            <a  href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'
-                 class='blogSectionColumn blogSection
-                       `.(~this->tree[~i]->id != ~this->idNode ? `` : `blogSectionColumn-current` ).` '
-                 id='{~this->tree[~i]->resFile}'
-            >
-               {~this->tree[~i]->name}
-            </a>
-           "
-        )."
 
+        <div class='".$this->blogSite->contentRights."SING blogDesc' id='blogDesc_blog_en'>
+           <div class='EDtxa textDesc desc'>
+                ".$this->Render_ModulefromRes($this->blogSite, 'blogDescription')."
+            </div>
+        </div>
+
+        <div class='margin-t10'>
+            <div>
+                ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
+               "
+                <a  href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'
+                     class='blogSectionColumn blogSection
+                           `.(~this->tree[~i]->id != ~this->idNode ? `` : `blogSectionColumn-current` ).` '
+                     id='{~this->tree[~i]->resFile}'
+                >
+                   {~this->tree[~i]->name}
+                </a>
+               "
+            )."
+            </div>
+
+        </div>
 	</div>
     <!-- end categories -->
 
@@ -37,23 +48,30 @@
         )
     )."
 
+    <!--Actual blog records listing -->
     ".$this->Render_object($o, '',
         "MODELS/blog/tmpl_bsea/tmpl/blogRecords.html"
     )."
 
-    <div class='loadMore-container margin-b20'>
-        <div class='divider-clear '></div>
-        <input type='button' class='bsea getNext_blogRecords'
-               value='load more'
-               data-blog-limitstart = '{$o->limitStart}'
-               data-blog-limitend = '{$o->totalRecords}'
 
-                >
-        <input type='button' class='bsea go-topPage'
-               value = 'back to top'
-               onclick='$(window).scrollTop(0); return false;'
-                />
-    </div>
+    <!--Load more-->
+    ".( count($o->records) < 10 ? "" : "
+        <div class='loadMore-container margin-b20'>
+            <div class='divider-clear '></div>
+            <input type='button' class='bsea getNext_blogRecords'
+                   value='load more'
+                   data-blog-limitstart = '{$o->limitStart}'
+                   data-blog-limitend = '{$o->totalRecords}'
+
+                    >
+            <input type='button' class='bsea go-topPage'
+                   value = 'back to top'
+                   onclick='$(window).scrollTop(0); return false;'
+                    />
+        </div>
+
+    ")."
+
 
 
 </div>

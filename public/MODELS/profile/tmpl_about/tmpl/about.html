@@ -1,6 +1,7 @@
 <div class='block overflow'>
-	<div class='textColumnBig right space '>
-        <p>
+	<div class='textColumnBig right space'>
+
+        <!-- <p>
             We reveal fascinating, contentious and inspiring stories from the Black Sea region for a global audience, using deep reportage, tough fact-checking and a balanced perspective.
         </p>
         <p>
@@ -18,16 +19,21 @@
 
         <p>
             We encourage you to interact with our platform to build an open portal, which intends to be a standard for transparent, accessible and objective journalism.
-        </p>
-	</div>
+        </p>-->
+        <div class='SING aboutDesc'  id='aboutDesc_about_en'>
+            <div class='EDeditor textDesc desc' data-iedit-cketoolbar='webmaster'>
+                ".$this->Render_ModulefromRes($this->blogSite, 'aboutDescription')."
+            </div>
+        </div>
+    </div>
 
 	<div class='LeftColumnSmall space'>
 			<div class='blogsHead'>Mission</div>
 			<div class='contactInfo'>
                 Bucharest, Romania<br>
 			    contact@theblacksea.eu<br>
-			    <span class='blue'>Sponsors</span><br>
-			    <span class='blue'>Awards</span><br>
+			    <a href='#sponsors' class='blue border-0'>Sponsors</a><br>
+			    <a href='#awards' class='blue border-0'>Awards</a><br>
 			</div>
 	</div>
 </div>
@@ -41,7 +47,7 @@
     </div>
 </div>-->
 
-<div class='block space overflow'>
+<div class='block space'>
     ".$this->Render_itemsFromStr(array_merge($o->profiles, $o->editors), '', "
         <div class='imageColumn space'>
             <div class='mainFeaturedImg about-photo-containter'>
@@ -64,7 +70,20 @@
         </div>
     ")."
 
+    <div class='clearfix'></div>
+    <div class='SING margin-t20 sponsorsDesc'  id='sponsorsDesc_sponsors_en'>
+        <a name='sponsors'></a>
+        <div class='EDeditor textDesc desc'  data-iedit-cketoolbar='webmaster'>
+            ".$this->Render_ModulefromRes($this->blogSite, 'sponsorsDescription')."
+        </div>
+    </div>
 
+    <div class='SING margin-t20 awardsDesc'  id='awardsDesc_awards_en'>
+        <a name='awards'></a>
+        <div class='EDeditor textDesc desc'  data-iedit-cketoolbar='webmaster'>
+            ".$this->Render_ModulefromRes($this->blogSite, 'awardsDescription')."
+        </div>
+    </div>
 
 
 </div>

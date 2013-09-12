@@ -11,7 +11,7 @@
 .blogRecords .record .blogPrev-lead img,
 .blogRecords .record .blogPrev-content img,
 .SGrecord .lead img,
-.SGrecord .content img
+.SGrecord-blog .content img
 {
     width: 100% !important;
     height: initial !important;
@@ -26,8 +26,8 @@
     color: #333;
     font-weight: 200;
 }
-.SGrecord-archive .content p {
-    /*width: 75%;*/
+.SGrecord-archive .content  {
+    width: 75%;
 }
 
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
