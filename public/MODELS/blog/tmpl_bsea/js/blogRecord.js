@@ -129,7 +129,6 @@ $.extend ( true, ivyMods.blog ,
         jqCont.colectorPics.append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
 
     },
-
     //#1
     createFancybox: function(jqCont){
         /*jqObj.find('a.fancybox').map(function()
@@ -170,33 +169,6 @@ $.extend ( true, ivyMods.blog ,
     },
 
     //=======================[ container pics ]=================================
-    //???
-    styleSocialButtons: function(){
-    	jQuery('[class^="at15t"]').css('background-position', '0px 0px');
-    },
-
-    //#1
-    // atentie nu functioneaza deoarece se refera un container f maren
-    /**
-     * make all pics that are more than 85% of container 100%
-     * @param jqObj
-     */
-    resizeContentPics: function(jqCont){
-        var containerWidth = jqCont.jq.width();
-        var prag = containerWidth*0.55 ;
-        console.log("containerWidth " + containerWidth + " prag = " +prag);
-
-        jqCont.imgs.map(function()
-        {
-            console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
-            if ($(this).width() > prag ) {
-                $(this).attr('height','');
-                $(this).css('height','initial');
-                $(this).css('width', '100% !important');
-            }
-
-        });
-    },
 
     //#1
     captionContentPics: function(jqCont){
@@ -231,33 +203,37 @@ $.extend ( true, ivyMods.blog ,
        // this.resizeContentPics(jqCont);
         this.captionContentPics(jqCont);
     },
+
     resize_iframes: function(jqCont){
-        jqCont.iframes.map(function(){
-            /*var width = $(this).width(),
-                height = $(this).height(),
-                proportion =   height/width;
-*/
-            var width = 560,
-                height = 315,
-                proportion =   height/width;
 
+	    var containerWidth = jqCont.jq.width();
+	    var width = 560;
+       var height = 315;
+       var proportion =   height/width;
 
-            $(this).css('width','100%');
-            var newWidth = $(this).width();
-            var newHeight = newWidth * proportion;
-            $(this).css('height', newHeight);
-
+       jqCont.iframes.map(function(){
+	        $(this).width(containerWidth);
+           $(this).height(containerWidth * proportion);
            /* console.log(
-                  "old_width = " + width
-                + "\n old_height = " + height
-                + "\n new_width = " + newWidth
-                + "\n new_height = " + newHeight
+                  "container = " + containerWidth
+                + "\n height = " + (containerWidth * proportion)
                 +"\n"
             );*/
-
+       });
+    },
+    //#1
+    resizeContentPics: function(jqCont){
+        var containerWidth = jqCont.jq.width();
+        //console.log("containerWidth " + containerWidth );
+        jqCont.imgs.map(function()
+        {
+            //console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
+            $(this).css('height','initial');
+	         $(this).width(containerWidth);
 
         });
     },
+
     /**
      * datele din si despre containerul ales
      *
@@ -294,13 +270,20 @@ $.extend ( true, ivyMods.blog ,
 
            jqCont = this.get_containerData(article);
            this.set_containerPics(jqCont);
+
+	       //resizing pics and iframes
+	        this.resizeContentPics(jqCont);
            if(jqCont.iframes.length) {
 
                this.resize_iframes(jqCont);
                $(window).resize(function() {
                    ivyMods.blog.resize_iframes(jqCont);
+
                });
            }
+	        $(window).resize(function() {
+                ivyMods.blog.resizeContentPics(jqCont);
+           });
        }
     },
 
@@ -325,6 +308,7 @@ $.extend ( true, ivyMods.blog ,
       }
 
 	},
+
     init: function(){
 	    this.onload_article();
 	    this.onload_articlesBlog('unpublished');

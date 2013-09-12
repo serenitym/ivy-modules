@@ -1,16 +1,24 @@
 <div class='block overflow'>
 
 	 <div class='textColumnBig right space'>
-        <p>Our archive contains Lorem Ipsum is simply dummy text of the
+        <!--<p>Our archive contains Lorem Ipsum is simply dummy text of the
             printing and typesetting industry. Lorem Ipsum has been the
             industry's standard dummy text ever since the 1500s, when an
             unknown printer took a galley of type and scrambled it to make
             a type specimen book.
-        </p>
+        </p>-->
+        <div class='SING archiveDesc' id='archiveDesc_archive_en'>
+           <div class='EDtxa textDesc desc'>
+                ".$this->Render_ModulefromRes($this->blogSite, 'archiveDescription')."
+            </div>
+        </div>
 
-        <!-- archive Filters -->
-        ".$this->Render_objectFromPath($o,
-            'MODELS/blog/tmpl_bsea/tmpl/archiveFilters.html')."
+         <div  class='margin-t20'>
+             <!-- archive Filters -->
+             ".$this->Render_objectFromPath($o,
+                 'MODELS/blog/tmpl_bsea/tmpl/archiveFilters.html')."
+
+         </div>
 
 
 
