@@ -267,7 +267,7 @@ class ACprofile extends Cprofile
     }
     function Set_userData($uid)
     {
-        $this->Set_classes();
+        $this->Set_class();
         parent::Set_userData($uid);
         $this->C->jsTalk .="
                    ivyMods.profileConf = {
