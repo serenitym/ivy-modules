@@ -3,11 +3,7 @@ class Cblog_vars{
 
 
 
-    var $modelBlog_vars = array();          #CONF: sunt variabilele aditionate lui template_vars in cazul in care avem un blog personalizat
-    var $format = '';               #CONF: numele blogului personalizat
-    var $modelBlog_tableRecords = '';       #RET : blog[format]_records
     var $template = '';                     #CONF: numele templateului aferent blogului personalizat sau al blogului simplu
-    var $modelBlog_vars_ColsStr = "";       # RET: col1, col2...ale tabelului aferent blogModel
 
     var $nrRecords = 3;
     var $records   = array();               # arrayul multidimensional al recordurilor
@@ -18,16 +14,7 @@ class Cblog_vars{
 
    #============================================================================================================
 
-    var $queryJOIN;                         # query-JOINU-ul cu modelul de blog cerut
     var $queryWheres = array();             # string cu conditiile interogarii , pot fi setate si din afara acestui model
-
-
-
-    var $Pn = 1;                            # defaultul paginii la care ne aflam
-    var $LimitEnd = '';                     # end-ul lui LIMIT;
-    var $LimitStart = '';                   # startul-ul lui LIMIT;
-    var $pagination = '';                   #  HTML
-
 
 
 
@@ -77,15 +64,5 @@ class Cblog_vars{
     var $pubPermss                = false;          # publicarea unui record   master
     var $webmPermss               = false;          # permisiuni de webMaster ex: editarea prioritatilor pe home
     var $editRecords_Permss       = false;          # delete Records           master
-
-
-    #======================================[ PRIORITIES - home ]========================================================
-    var $priorLevel_1 = array();                    # array-uri cu recorduri prioritare
-    var $priorLevel_2 = array();
-    var $priority_levels = array();       # pe level1 avem 1 prioritate , pe level2 avem 2 prioritati
-    var $totalPriorities = 3;                       # numarul total de prioritati necesare
-
-
-
 
 }

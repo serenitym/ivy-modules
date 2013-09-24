@@ -1,5 +1,16 @@
 <?php
-class ACblog extends blog_dbHandlers
+/**
+ * Class ACblog
+ *
+ * @package
+ * @subpackage
+ * @category
+ * @copyright Copyright (c) 2010 Serenity Media
+ * @license   http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
+ * @link      http://serenitymedia.ro
+ * @author
+ */
+class ACblog extends Ablog_requestHandler
 {
     /**
      * Permissions used: ( not updated )
@@ -34,166 +45,100 @@ class ACblog extends blog_dbHandlers
      *
      */
 
-    var $authors = array(); //autorii contribuitori
+    var $folders;
 
+
+    var $posts; // object with posts->postName
+
+    var $HTMLmessage_record ;
+    var $HTMLmessage_Records;   # cred ca asta ar trebui sa stea Atemplate_vars
+
+    var $POST_mss = array(
+        'succDeleteRecord' => 'You have succesfully deleted the record',
+        'mssTags_fail' => 'This tags were not registered because they are banned or have unpermited characters'
+    );
 
     function Get_rights_articleEdit($uidRec, $uids = array())
     {
-        $editRight = ($this->user->rights['article_edit'] )
-                      ||  $uidRec == $this->uid
-                      || in_array($this->uid, $uids) ;
+        $editRight = ($this->C->user->rights['article_edit'] )
+                      ||  $uidRec == $this->C->uid
+                      || in_array($this->C->uid, $uids) ;
 
 
         return $editRight;
     }
-    //=========================================[ permisiuni asupra articlului ]=
-    /**
-     * Daca este un user logat
-     *      - daca are permisiuni de master poate edita
-     *      - daca nu are permisiuni
-     *              - si este autorul recordului  - poate edita
-     *
-     */
-    function Get_recordED($uidRec, $uids = array())
+
+    #===============================================[ DB - methods ]============
+    function _hook_addRecord()
     {
-        $editRight = $this->Get_rights_articleEdit($uidRec, $uids);
-        //var_dump($this->user->rights);
-        // error_log("[ ivy ] ACblog - Get_recordED pt {$uidRec} permisiuni = {$editRight} ");
+        /**
+         * aspect:
+         *  - title
+         *  - format
+         */
+        $postsConf = &$this->posts_addRecord;
+        //var_dump($postsConf);
+        $this->posts = handlePosts::Get_postsFlexy($postsConf);
+        //echo "_hook_addRecord";
+        //var_dump($this->posts);
 
-        return !$editRight ? 'not' :'';
+        $validStat = true;
+        $validStat &= !empty($this->posts->title) ? true :
+                       $this->fbk->SetGet_badmessFbk(
+                           $postsConf['title']['fbk_notempty']
+                       );
+        //echo '<br>validStat este = '.($validStat ? "true<br>" : "false <br>");
+        return $validStat;
+        //return false;
+
+
     }
-    function Get_blogCategories(){
-        //@todo: aceast mod de aface lucrurile  este temporar
-        $cats = $this->tree[$this->idTree]->children;
+    function addRecord()
+    {
+        $query =     "INSERT INTO blogRecords  (idCat, idTree, title, uidRec)
+                             VALUES (
+                              '{$this->idNode}' ,
+                              '{$this->idTree}' ,
+                              '{$this->posts->title}' ,
+                              '{$this->uid}'
+                             )";
+        # blogRecords_view = blogRecords + blogRecords_settings;
+        # echo "<b>blogRecords </b>".$query."</br>";
+        $this->DB->query($query);
+        $lastID = $this->DB->insert_id;
 
-        if(!$cats) {
-            return false;
+
+        if(!isset($lastID)) {
+            error_log("[ ivy ] addRecord : atentie lastId nu a fost recuperat");
+
+        } else {
+            $queries = array();
+            // insert in blogRecords_stats
+            $query =     "INSERT INTO blogRecords_stats (idRecord, entryDate)
+                                 VALUES (
+                                 '{$lastID}' ,
+                                 NOW()
+                                 )";
+            //echo "<b>blogRecords_stats </b>".$query."</br>";
+            array_push($queries, $query);
+
+
+            // insert in blogRecords_settings
+            $query =     "INSERT INTO blogRecords_settings (idRecord, idFormat)
+                                 VALUES (
+                                 '{$lastID}' ,
+                                 '{$this->posts->idFormat}'
+                                 )";
+            //echo "<b>blogRecords_settings </b>".$query."</br>";
+            array_push($queries, $query);
+
+            $this->C->Db_queryBulk($queries, false);
+            $location =  "http://".$_SERVER['SERVER_NAME']."/index.php?idT={$this->idTree}&idC={$this->idNode}&idRec={$lastID}";
+            $this->C->reLocate($location);
         }
-        $catsStr = implode(', ', $cats);
-
-        $query = "SELECT id AS idCat , name_en AS catName
-                    FROM ITEMS
-                    WHERE type='blog' AND id IN ($catsStr) ";
-        $blogCategories = $this->C->Db_Get_rows($query);
-
-        return $blogCategories;
-    }
-
-   function _hookRow_archive($row)
-   {
-       $row = parent::_hookRow_archive($row);
-       $row['EDrecord']    = $this->Get_recordED($row['uidRec'], $row['uids']);
-       $row['statusPublish'] = $this->Get_publishedStatus($row['publishDate']);
-
-       return $row;
-
-   }
-   function _hookRow_blog($row)
-   {
-
-       $row = parent::_hookRow_blog($row);
-       $row['EDrecord']    = $this->Get_recordED($row['uidRec'], $row['uids']);
-       $row['statusPublish'] = $this->Get_publishedStatus($row['publishDate']);
-
-
-       return $row;
-   }
-   function _hookRow_record($row)
-   {
-       if(!$row['commentsView'])   {$row['commView_true'] = '';   $row['commView_false'] = 'checked'; }
-       if(!$row['commentsStat'])   {$row['commStat_true'] = '';   $row['commStat_false'] = 'checked'; }
-       if(!$row['commentsApprov']) {$row['commApprov_true'] = ''; $row['commApprov_false'] = 'checked'; }
-
-       $row = parent::_hookRow_record($row);
-       // nu prea isi are rostul daca nu poate administra
-       $row['blogCategories'] = $this->Get_blogCategories();
-
-       $this->ED = $this->Get_recordED($row['uidRec'], $row['uids']);
-
-
-       return $row;
-   }
-   function _hookRow_recordsPrior($row)
-   {
-       $row = parent::_hookRow_recordsPrior($row);
-       /**
-        * Daca este un user logat
-        *      - daca are permisiuni de master poate edita
-        *      - daca nu are permisiuni
-        *              - si este autorul recordului  - poate edita
-        *
-        */
-       $row['EDrecord']    = $this->C->Get_recordED($row['uidRec'], $row['uids']);
-
-       return $row;
-   }
-
-    //===============================================[ request handlers ]=======
-    function record_setAuthors()
-    {
-        // relate to $this->Get_authors;
-        $selectedAuthors = array();
-        foreach ($this->authors AS $key => $author) {
-            array_push($selectedAuthors, array(
-                    'id' => $author['uid'],
-                    'name' => $author['fullName']
-                ));
-        }
-        $authorsJSON = json_encode($selectedAuthors);
-        $this->C->jsTalk .= "
-            if( typeof ivyMods.blog == 'undefined'  ) {
-                ivyMods.blog = {};
-            }
-            ivyMods.blog.authors = $authorsJSON;
-        ";
-
-        //echo "<b>ACblog - record_setAuthors</b><br>";
-       /* var_dump($selectedAuthors);
-        var_dump(json_encode($selectedAuthors));*/
-
-
-
-    }
-    function record_setData()
-    {
-        //$this->C->Module_Set_incFiles($this, 'js','js_record');
-        // preluarea datelor de record
-        parent::record_setData();
-        $this->record_setAuthors();
 
     }
 
-    function unpublished_setData($sql, $hookName)
-    {
-        $wheres = $sql->parts['wheres'];
-        $wheres['publish'] = $this->Get_unpublishedFilter();
-        $where =  count($wheres) == 0 ? ''
-                  : ' WHERE '.implode(' AND ', $wheres);
-
-        $fullQuery  = $sql->parts['query'].$where;
-
-        error_log("[ ivy ] ACblog - archive_setData : "
-                  .preg_replace('/\s+/', ' ', $fullQuery)
-        );
-
-        $query = $fullQuery.' ORDER BY entryDate DESC';
-        $this->recordsUnpublished = $this->C->Db_Get_procRows($this,
-                                    $hookName, $query);
-    }
-    function archive_setData()
-    {
-        parent::archive_setData();
-        // unpublished records
-        // set by the parent  $this->sqlRecords
-        $this->unpublished_setData($this->sqlRecords, '_hookRow_archive');
-    }
-    function blog_setData()
-    {
-        parent::blog_setData();
-        // unpublished records
-        // set by the parent  $this->sqlRecords
-        $this->unpublished_setData($this->sqlRecords, '_hookRow_blog');
-    }
 
     //==============================================[ blog settings ]===========
     function saveFormat()
@@ -301,9 +246,10 @@ class ACblog extends blog_dbHandlers
         return false;
     }
 
-    function Get_blogSettings()
+    //=================================================[init]===================
+    function Set_blogSettings()
     {
-        parent::Get_blogSettings();
+        parent::Set_blogSettings();
 
         //=============================================[ folders ]==============
         $query = "SELECT  idFolder, folderName

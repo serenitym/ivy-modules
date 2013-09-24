@@ -1,6 +1,6 @@
 <div class='block overflow'>
 
-	 <div class='textColumnBig right space'>
+	 <div class='textColumnBig right ' >
         <!--<p>Our archive contains Lorem Ipsum is simply dummy text of the
             printing and typesetting industry. Lorem Ipsum has been the
             industry's standard dummy text ever since the 1500s, when an
@@ -12,18 +12,23 @@
                 ".$this->Render_ModulefromRes($this->blogSite, 'archiveDescription')."
             </div>
         </div>
+     </div> <!-- end description -->
+    <div class='LeftColumnSmall blogsHead space'>Story archive</div>
 
-         <div  class='margin-t20'>
-             <!-- archive Filters -->
-             ".$this->Render_objectFromPath($o,
-                 'MODELS/blog/tmpl_bsea/tmpl/archiveFilters.html')."
+   <div class='clearfix'></div>
+   <div class='space'  id='sticky-container'>
+        <div  id='sticky-archive'>
+             <div  class='textColumnBig right margin-t20'>
+                 <!-- archive Filters -->
+                 ".$this->Render_objectFromPath($o,
+                     'MODELS/blog/tmpl_bsea/tmpl/archiveFilters.html')."
 
-         </div>
+             </div>
+        </div>
+   </div>
 
 
 
-	</div> <!-- end description -->
-	<div class='LeftColumnSmall blogsHead space'>Story archive</div>
 </div>
 
 <div class='allENTS block space overflow allrecords'  id='allrecords_{$o->lang}'>
@@ -33,7 +38,7 @@
          $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_addForm.html")
 
-        .(count($o->recordsUnpublished) == 0 ? "" :
+        .(count($co->recordsUnpublished) == 0 ? "" :
             $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/archiveRecords_unpublished.html")
         )
@@ -41,8 +46,8 @@
 
 
 
-   ".(count($o->records) == 0 ? "<b>Sorry there are no articles found</b>" :
-         $this->Render_itemsFromPath($o->records, $o,
+   ".(count($co->records) == 0 ? "<b>Sorry there are no articles found</b>" :
+         $this->Render_itemsFromPath($co->records, $o,
         "MODELS/blog/tmpl_bsea/tmpl/archivePrevRecord.html")
    )."
 

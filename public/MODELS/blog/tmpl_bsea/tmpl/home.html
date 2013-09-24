@@ -11,7 +11,7 @@
                 <div class='smallUpper red home-latestIn'>
                     latest in:
                 </div>
-                ".$this->Render_ItemsFromPath($o->homeBlogRecords, $o,
+                ".$this->Render_ItemsFromPath($co->homeBlogRecords, $o,
                     'MODELS/blog/tmpl_bsea/tmpl/homeLatestInCat.html')."
 
 			</div>
@@ -28,14 +28,14 @@
         <div class='fullwidth space'>
             <div class='formatIcons'>
 
-                ".$this->Render_itemsFromStr($o->filterRecTypes, '', "
+                ".$this->Render_itemsFromStr($co->filterRecTypes, '', "
                     <div class='recType-container'>
-                        <a href='{~ao->filterHref}' class='recTypeIcon {~ao->filterName}Icon'>
+                        <a href='{~ao->href}' class='recTypeIcon {~ao->value}Icon'>
 
                         </a>
                         <span class='recTypeDesc'>
                             <span class='arrow red'> &nbsp;&gt;&gt;&nbsp; </span>
-                            {~ao->filterName}
+                            {~ao->desc}
                         </span>
 
                     </div>
@@ -56,8 +56,8 @@
 	<div class='divider'></div>
 </div><!-- end archivemain -->
 
- <div class='block space overflow' >
-    ".$this->Render_itemsFromPath($o->records, $o,
+ <div class='block space' >
+    ".$this->Render_itemsFromPath($co->records, $o,
      "MODELS/blog/tmpl_bsea/tmpl/archivePrevRecord.html"
     )."
  </div>

@@ -1,5 +1,5 @@
 <?php
-class blog_handlers extends Cblog_vars
+class blog_handlers
 {
     // records list
     var $records;

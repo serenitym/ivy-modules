@@ -1,13 +1,13 @@
 
 <form action='' method='post' id='publishRecord'>
-    <input type='hidden' name='idRecord' value='{$o->idRecord}'>
+    <input type='hidden' name='idRecord' value='{$co->idRecord}'>
     <input type='hidden' name='modName' value='blog'>
 </form>
 
  <div class='addTOOLSbtn'>
 
      ".(!$o->user->rights['article_pub'] ? '' :
-         $o->publishDate
+         $co->publishDate
              ? "<input type='submit'  class='ATmpl'
                        name='methName' value='unpublish'
                        form='publishRecord'  />"
