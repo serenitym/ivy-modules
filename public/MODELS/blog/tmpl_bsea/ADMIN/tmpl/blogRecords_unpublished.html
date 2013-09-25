@@ -1,10 +1,10 @@
 <!--Unpublished articles-->
 <button class='bsea pull-right margin-b10' onclick='fmw.toggle(\"div[class^=blogSet_unpublished]\");'>
-     ".count($o->recordsUnpublished)." articles Unpublished
+     ".count($co->recordsUnpublished)." articles Unpublished
 </button>
 <div class='blogSet_unpublished hidden'>
     <div class='divider'></div>
     <div class='block space overflow'></div>
-    ".$this->Render_itemsFromPath($o->recordsUnpublished, $o,
+    ".$this->Render_itemsFromPath($co->recordsUnpublished, $o,
             "MODELS/blog/tmpl_bsea/tmpl/blogPrevRecord.html")."
 </div>

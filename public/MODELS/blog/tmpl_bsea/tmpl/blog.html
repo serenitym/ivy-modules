@@ -1,34 +1,35 @@
 <div class='block space overflow'>
     <!-- begin title section and categories -->
-	<div class='textColumnBig right space'>
+	<div class='textColumnBig right'>
 
         <div class='".$this->blogSite->contentRights."SING blogDesc' id='blogDesc_blog_en'>
            <div class='EDtxa textDesc desc'>
                 ".$this->Render_ModulefromRes($this->blogSite, 'blogDescription')."
             </div>
         </div>
-
-        <div class='margin-t10'>
-            <div>
-                ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
-               "
-                <a  href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'
-                     class='blogSectionColumn blogSection
-                           `.(~this->tree[~i]->id != ~this->idNode ? `` : `blogSectionColumn-current` ).` '
-                     id='{~this->tree[~i]->resFile}'
-                >
-                   {~this->tree[~i]->name}
-                </a>
-               "
-            )."
-            </div>
-
-        </div>
 	</div>
     <!-- end categories -->
 
 	<div class='LeftColumnSmall blogsHead space'>Blogs</div> <!-- end page title -->
 
+   <div class='clearfix'></div>
+   <div class='space'  id='sticky-container'>
+        <div  id='sticky-blog'>
+            <div class='textColumnBig right margin-t10 space'>
+                ".$this->Render_arrayFromStr($this->tree[$this->idTree]->children , '',
+                 "
+                  <a  href='".PUBLIC_URL."?idT={~this->tree[~i]->idTree}&idC={~this->tree[~i]->id}'
+                       class='blogSectionColumn blogSection
+                             `.(~this->tree[~i]->id != ~this->idNode ? `` : `blogSectionColumn-current` ).` '
+                       id='{~this->tree[~i]->resFile}'
+                  >
+                     {~this->tree[~i]->name}
+                  </a>
+                 "
+              )."
+            </div>
+        </div>
+   </div>
 
 </div> <!-- end title section and categories -->
 
@@ -42,7 +43,7 @@
          $this->Render_object($o,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_addForm.html")
 
-        .(count($o->recordsUnpublished) == 0 ? "" :
+        .(count($co->recordsUnpublished) == 0 ? "" :
             $this->Render_object($o,'',
              "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecords_unpublished.html")
         )
@@ -55,13 +56,13 @@
 
 
     <!--Load more-->
-    ".( count($o->records) < 10 ? "" : "
+    ".( count($co->records) < 10 ? "" : "
         <div class='loadMore-container margin-b20'>
             <div class='divider-clear '></div>
             <input type='button' class='bsea getNext_blogRecords'
                    value='load more'
-                   data-blog-limitstart = '{$o->limitStart}'
-                   data-blog-limitend = '{$o->totalRecords}'
+                   data-blog-limitstart = '{$co->limitStart}'
+                   data-blog-limitend = '{$co->totalRecords}'
 
                     >
             <input type='button' class='bsea go-topPage'

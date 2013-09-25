@@ -1,5 +1,5 @@
 <?php
-class blog_dbHandlers extends Cblog
+class dep_blog_dbHandlers extends dep_Cblog
 {
 
     var $posts; // object with posts->postName

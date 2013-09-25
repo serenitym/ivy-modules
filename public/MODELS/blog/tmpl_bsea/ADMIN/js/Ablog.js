@@ -3,7 +3,7 @@ ivyMods.set_iEdit.blog = function(){
 
     iEdit.add_bttsConf({
         'SGrecord': {
-            modName: 'blog',
+            modName: 'blog, handler',
             edit: {
                 attrValue : 'edit article',
                 callback: { fn: ivyMods.blog.adminAuthors,
@@ -30,7 +30,7 @@ ivyMods.set_iEdit.blog = function(){
             ]
         },
         'record' : {
-           modName: 'blog',
+           modName: 'blog, handler',
            addBt : { status : false,  methName: 'addRecord', atrValue: 'add Record', style :" background-color: #D9E9F1;'  "},
            saveBt: { status : false},
            deleteBt:{attrValue: 'delete', methName: 'deleteRecord'},

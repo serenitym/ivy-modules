@@ -2,19 +2,19 @@
      $this->Render_object($this->blog,'',
         "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraBtns.html")
 )."
-<div class='{$o->ED}SING block space SGrecord-archive SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+<div class='{$co->ED}SING block space SGrecord-archive SGrecord' id='SGrecord_{$co->idRecord}_{$o->lang}' >
         ".(!$this->admin ? '' :
              $this->Render_object($this->blog,'',
                 "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraSettings.html")
         )."
     <div class='block-full'>
-        {$o->HTMLmessage_record}
+        {$co->HTMLmessage_record}
         <!-- start story -->
         <div class='textColumnBig right'>
             <!-- <div class='theStory'>  -->
             <div class='ATmpl'> Lead </div>
             <div class='EDeditor lead'>
-               {$o->lead}
+               {$co->lead}
             </div>
 
 
@@ -46,28 +46,28 @@
     <!-- end story -->
         <div class='LeftColumnSmall greyleftborder'> <!-- begin left -->
             <div class='EDtxt Name blue title'>
-                {$o->title}
+                {$co->title}
             </div>
             <div class='imageColumnHead orange space authName'>
-                <a href='$o->authorHref'  class='ib'>{$o->fullName}</a>
-                ".(count($o->authors) == 0 ? '' :
-                 $this->Render_itemsFromStr($o->authors,'', "
+                <a href='$o->authorHref'  class='ib'>{$co->fullName}</a>
+                ".(count($co->authors) == 0 ? '' :
+                 $this->Render_itemsFromStr($co->authors,'', "
                     , <a href='~ao->authorHref' class='ib'>{~ao->fullName}</a>
 
                "))."
 
-                ".($o->publishDate
-                    ? "<span class='ib'>/ {$o->publishDate}</span>"
+                ".($co->publishDate
+                    ? "<span class='ib'>/ {$co->publishDate}</span>"
                     : "<p class='notPublished'>not yet published</p>")."
 
             </div>
             <div  class='imageColumnHead orange space'>
-                ".( $o->folderName!='' ? "FOLDER: " : "
+                ".( $co->folderName!='' ? "FOLDER: " : "
                     <span class='ATmpl-inline'>FOLDER</span>
                 ")."
 
-                <a href='{$o->hrefFolderFilter}' class='EDsel idFolder' data-iedit-options = '{$o->jsonFolders}'  >
-                    {$o->folderName}
+                <a href='{$co->hrefFolderFilter}' class='EDsel idFolder' data-iedit-options = '{$o->jsonFolders}'  >
+                    {$co->folderName}
                 </a>
 
             </div>
@@ -78,9 +78,9 @@
                 <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->
             </div>
             <div class='fullwidth'>
-                <div class='imageColumnHead'>Related </div>
+                <div class='imageColumnHead'>Related Stories</div>
                 <ul>
-                    ".(!$o->recordRelated
+                    ".(!$co->recordRelated
                         ? "<li class = 'relatedContent ATmpl' >
                              <span class='ATmpl it'>Editor's pic</span>
                               <a href='#'
@@ -95,19 +95,19 @@
 
                         : "<li class = 'relatedContent ' >
                               <span class='ATmpl it'>Editor's pic</span>
-                              <a href='".$o->recordRelated['record_href']."'
+                              <a href='".$co->recordRelated['record_href']."'
                                  class='EDtxtauto relatedStory'
                                  data-iedit-path = 'MODELS/blog/ADMIN/getRecords.php'
                                  data-iedit-minln = '2'
                                  data-iedit-select = 'key'
                               >
-                                  ".$o->recordRelated['title']."
+                                  ".$co->recordRelated['title']."
                               </a>
                            </li>"
 
                     )."
 
-                    ".$this->Render_itemsFromStr($o->recordsRelated, '', "
+                    ".$this->Render_itemsFromStr($co->recordsRelated, '', "
                         <li class = 'relatedContent' >
                             <a href='{~ao->record_href}'>{~ao->title}</a>
                         </li>
@@ -129,7 +129,7 @@
         <div class='EDeditor content'
              data-iedit-cketoolbar ='".(!$this->user->rights['article_tmpl'] ?  'embedVideo' :  'admin' )."'
         >
-            {$o->content}
+            {$co->content}
         </div>
 
     </div><!-- end block -->

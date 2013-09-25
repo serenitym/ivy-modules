@@ -1,11 +1,22 @@
 <div class='fullwidth overflow'> <!-- begin filter selections -->
-		<div class='imageColumn thickBorder thickBorderBlue filter selected' id='filter1'><div class='Name filterblue' id='filter1_name'>Folder</div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter ".$co->filtersSets_selectedStat['idFolder']." '  id='filter1'>
+            <div class='Name' id='filter1_name'>Folder</div>
+            <div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter2'><div class='Name' id='filter2_name'>Media Format </div><div class='arrowDown'></div>
+
+		<div class='imageColumn thickBorder filter ".$co->filtersSets_selectedStat['format']."' id='filter2'>
+            <div class='Name ' id='filter2_name'>
+                Media Format
+            </div>
+            <div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter3'><div class='Name' id='filter3_name'>Tag</div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter ".$co->filtersSets_selectedStat['tag']."' id='filter3'>
+            <div class='Name' id='filter3_name'>Tag</div>
+            <div class='arrowDown'></div>
 		</div>
-		<div class='imageColumn thickBorder filter' id='filter4'><div class='Name' id='filter4_name'>Region</div><div class='arrowDown'></div>
+		<div class='imageColumn thickBorder filter ".$co->filtersSets_selectedStat['country']."' id='filter4'>
+            <div class='Name' id='filter4_name'>Region</div>
+            <div class='arrowDown'></div>
 		</div>
 	</div> <!-- end filter selections -->
 
@@ -13,10 +24,10 @@
 
 		<div class='fullwidth filter_panel space' id='filter1_panel'>
 			<ul>
-                ".$this->Render_itemsFromStr($o->filterFolders, '', "
+                ".$this->Render_itemsFromStr($co->idFolderFilters, $co, "
                     <li>
-                        <a href='{~ao->filterHref}' class='filter_label'>
-                            {~ao->filterName}
+                        <a href='{~ao->href}' class='filter_label `.~o->cls_selectedFilter[~ao->selected].` '>
+                            {~ao->desc}
                         </a>
                     </li>
                 ")."
@@ -27,10 +38,10 @@
 
 		<div class='fullwidth filter_panel space' id='filter2_panel'>
 			<ul>
-                ".$this->Render_itemsFromStr($o->filterRecTypes, '', "
+                ".$this->Render_itemsFromStr($co->formatFilters, $co, "
                     <li>
-                        <a href='{~ao->filterHref}' class='filter_label'>
-                            {~ao->filterName}
+                        <a href='{~ao->href}' class='filter_label  `.~o->cls_selectedFilter[~ao->selected].`'>
+                            {~ao->desc}
                         </a>
                     </li>
                 ")."
@@ -38,12 +49,12 @@
 			</ul>
 		</div>
 
-		<div class='fullwidth filter_panel' id='filter3_panel'>
+		<div class='fullwidth filter_panel space' id='filter3_panel'>
             <ul>
-                 ".$this->Render_itemsFromStr($o->filterTags, '', "
+                 ".$this->Render_itemsFromStr($co->tagFilters, $co, "
                      <li>
-                         <a href='{~ao->filterHref}' class='filter_label'>
-                             {~ao->filterName}
+                         <a href='{~ao->href}' class='filter_label  `.~o->cls_selectedFilter[~ao->selected].`'>
+                             {~ao->desc}
                          </a>
                      </li>
                  ")."
@@ -52,12 +63,12 @@
             </ul>
 		</div>
 
-		<div class='fullwidth filter_panel' id='filter4_panel'>
+		<div class='fullwidth filter_panel space' id='filter4_panel'>
 			<ul>
-                ".$this->Render_itemsFromStr($o->filterCountries, '', "
+                ".$this->Render_itemsFromStr($co->countryFilters, $co, "
                      <li>
-                         <a href='{~ao->filterHref}' class='filter_label'>
-                             {~ao->filterName}
+                         <a href='{~ao->href}' class='filter_label  `.~o->cls_selectedFilter[~ao->selected].`'>
+                             {~ao->desc}
                          </a>
                      </li>
                  ")."

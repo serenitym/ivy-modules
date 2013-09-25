@@ -14,7 +14,7 @@
      $this->Render_object($this->blog,'',
         "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraBtns.html")
 )."
-<div class='{$o->ED}SING block SGrecord-blog SGrecord' id='SGrecord_{$o->idRecord}_{$o->lang}' >
+<div class='{$o->ED}SING block SGrecord-blog SGrecord' id='SGrecord_{$co->idRecord}_{$o->lang}' >
     ".(!$this->admin ? '' :
          $this->Render_object($this->blog,'',
             "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blogRecord_extraSettings.html")
@@ -23,7 +23,7 @@
 	<div class='textColumnBig right'>
 	    <!-- <div class='theStory'>  -->
         <div class='EDeditor space lead'>
-            {$o->lead}
+            {$co->lead}
         </div>
         <div class='fullwidth'>
 
@@ -48,7 +48,7 @@
         </div>
 
 	    <div class='EDeditor space content'>
-            {$o->content}
+            {$co->content}
 	    </div>
 
 
@@ -57,37 +57,37 @@
     <!-- end story -->
 
     <!-- begin left -->
-	<div class='LeftColumnSmall {$o->catResFile}leftborder'>
+	<div class='LeftColumnSmall {$co->catResFile}leftborder'>
 	    <div class=' fullwidth'>
-            <span class='EDtxt noBorder {$o->catResFile} Name {$o->statusPublish} title'>
-                {$o->title}
+            <span class='EDtxt noBorder {$co->catResFile} Name {$co->statusPublish} title'>
+                {$co->title}
             </span>
         </div>
 	    <div class='imageColumnHead'>
-            <a href='$o->authorHref' class='ib'>{$o->fullName}</a>
-            ".(count($o->authors) == 0 ? '' :
-             $this->Render_itemsFromStr($o->authors,'', "
+            <a href='$co->authorHref' class='ib'>{$co->fullName}</a>
+            ".(count($co->authors) == 0 ? '' :
+             $this->Render_itemsFromStr($co->authors,'', "
                 , <a href='~ao->authorHref'  class='ib'>{~ao->fullName}</a>
 
            "))."
 
 
-             ".($o->publishDate
-                ? "<span class='ib'>/ {$o->publishDate}</span>"
+             ".($co->publishDate
+                ? "<span class='ib'>/ {$co->publishDate}</span>"
                 : "<p class='notPublished'>not yet published</p>")."
 
         </div>
 	    <div class='imageColumnHead'>
-            ".(!$o->tagsName ? '' :
+            ".(!$co->tagsName ? '' :
                "
                     Filed under:&nbsp;
-                    <span class='{$o->catResFile}'>
+                    <span class='{$co->catResFile}'>
                          <!--<a href=''>tag1</a>,
                          <a href=''>tag2</a>,
                          <a href=''>tag3</a>-->
                         <!--{$o->tagsName}-->
                         ".substr(
-                        $this->Render_arrayFromStr($o->tags, $o,
+                        $this->Render_arrayFromStr($co->tags, $o,
                             "<a href='?idT={~o->idTree}&idC={~o->idNode}&filterName=tag&filterValue={~i}'>
                                 {~i}
                             </a>, "
@@ -105,10 +105,10 @@
 
         <!--Related stories-->
         <div class='fullwidth'>
-            <div class='imageColumnHead'>Related </div>
+            <div class='imageColumnHead'>Related Stories</div>
             <ul>
 
-                ".(!$o->recordRelated
+                ".(!$co->recordRelated
                     ? "<li class = 'relatedContent ATmpl' >
                           <span class='ATmpl it'>Editor's pic</span>
                           <a href='#'
@@ -123,19 +123,19 @@
 
                     : "<li class = 'relatedContent ' >
                           <span class='ATmpl it'>Editor's pic</span>
-                          <a href='".$o->recordRelated['record_href']."'
+                          <a href='".$co->recordRelated['record_href']."'
                              class='EDtxtauto relatedStory'
                              data-iedit-path = 'MODELS/blog/ADMIN/getRecords.php'
                              data-iedit-minln = '2'
                              data-iedit-select = 'key'
                           >
-                              ".$o->recordRelated['title']."
+                              ".$co->recordRelated['title']."
                           </a>
                        </li>"
 
                 )."
 
-                ".$this->Render_itemsFromStr($o->recordsRelated, '', "
+                ".$this->Render_itemsFromStr($co->recordsRelated, '', "
                     <li class = 'relatedContent' >
                         <a href='{~ao->record_href}'>{~ao->title}</a>
                     </li>

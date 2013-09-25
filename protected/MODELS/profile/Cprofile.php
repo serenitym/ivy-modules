@@ -58,9 +58,10 @@ class Cprofile extends Cuser{
         $this->Set_userData($uid);
 
         $blog = new CblogExternal($this);
-        $blog->profile_setData($uid);
-        $this->recordsArchive = $blog->recordsArchive;
-        $this->recordsBlog = $blog->recordsBlog;
+        $blogHandler = &$blog->handler;
+        $blogHandler->profile_setData($uid);
+        $this->recordsArchive = $blogHandler->recordsArchive;
+        $this->recordsBlog = $blogHandler->recordsBlog;
 
         // echo "CblogSite - Set_profileData recordsArchive & recordsBlog";
         // var_dump($this->recordsArchive);

@@ -9,6 +9,9 @@ class CblogExternal extends Cblog
 {
     function __construct($modCaller)
     {
-        $modCaller->C->Module_configCorePointers($this);
+        $modCaller->C->Module_config($this, 'MODELS', 'blog');
+        $this->Set_objHelpers();
+        $this->handler = $this->C->Module_Build_objProp($this,
+                                       $this->handlerPrefix.'profile');
     }
 }

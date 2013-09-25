@@ -26,7 +26,7 @@ category - poate daca vrei sa il muti in alta categorie
                    Preview Lead
                </button>
                <div class='EDtxa  hidden admin-leadSec leadSec'>
-                   {$o->leadSec}
+                   {$co->leadSec}
                </div>
 
        </div>
@@ -39,27 +39,27 @@ category - poate daca vrei sa il muti in alta categorie
                  data-iedit-minln = '2'
                  data-iedit-select = 'multiple'
                     >
-                {$o->tagsName}
+                {$co->tagsName}
             </div>
         </div>
         <div class='admin-extra' >
             <div> Country </div>
             <div class='EDtxt  country'>
-                {$o->country}
+                {$co->country}
             </div>
         </div>
         <div class='admin-extra' >
             <div> City </div>
             <div class='EDtxt  city'>
-                {$o->city}
+                {$co->city}
             </div>
         </div>
 
-        ".(!$o->publishDate || !$o->user->rights['article_edit'] ? '' : "
+        ".(!$co->publishDate || !$o->user->rights['article_edit'] ? '' : "
             <div class='admin-extra' >
                 <div> Publish Date </div>
                 <div class='EDdate  publishDate'>
-                    {$o->publishDate}
+                    {$co->publishDate}
                 </div>
             </div>
         ")."
@@ -76,14 +76,14 @@ category - poate daca vrei sa il muti in alta categorie
 -->
 <div class='ATmpl  '>
     <div class='hidden admin-extras admin-extraSettings'>
-            ".(  !$o->user->rights['article_edit'] || !$o->blogCategories ? '' : "
+            ".(  !$o->user->rights['article_edit'] || !$co->blogCategories ? '' : "
                 <!--Doar moderatorii pot schimba categoria unui articol-->
                 <div class='admin-extra' >
                       <div> Category </div>
                       <select name='idCat'>
-                          ".$this->Render_itemsFromStr($o->blogCategories, $o, "
+                          ".$this->Render_itemsFromStr($co->blogCategories, $o, "
                                 <option value='{~ao->idCat}'
-                                        `.(~ao->idCat != ~o->idCat ? '' :  'selected' ).`>
+                                        `.(~ao->idCat != ~co->idCat ? '' :  'selected' ).`>
                                     {~ao->catName}
                                 </option>
                           ")."
@@ -95,7 +95,7 @@ category - poate daca vrei sa il muti in alta categorie
               <select name='idFormat'>
                   ".$this->Render_itemsFromStr($o->formats, $o, "
                         <option value='{~ao->idFormat}'
-                            `.(~ao->format != ~o->format ? '' :  'selected' ).` >
+                            `.(~ao->format != ~co->format ? '' :  'selected' ).` >
                                {~ao->format}
                         </option>
                   ")."

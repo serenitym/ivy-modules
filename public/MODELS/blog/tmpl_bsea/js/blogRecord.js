@@ -32,7 +32,7 @@ $.extend ( true, ivyMods.blog ,
 	asyncRecords : new fmw.asyncConf({
 		restoreCore: true,
 		dataSend: {
-			modName: 'blog',
+			modName: 'blog, handler',
 			methName: 'blog_renderData'
 		}
 	}),
@@ -201,7 +201,7 @@ $.extend ( true, ivyMods.blog ,
 
         // container pics
        // this.resizeContentPics(jqCont);
-        this.captionContentPics(jqCont);
+        //this.captionContentPics(jqCont);
     },
 
     resize_iframes: function(jqCont){
@@ -269,10 +269,19 @@ $.extend ( true, ivyMods.blog ,
        if(article.exists()) {
 
            jqCont = this.get_containerData(article);
-           this.set_containerPics(jqCont);
+	        // daca imaginile gasite sunt > 3 atunci
+           // le facem thumbnailuri si gallery
+           if(jqCont.imgs.length >= 3){
+               this.set_containerPics(jqCont);
+           }
 
-	       //resizing pics and iframes
+	        // set caption for photos
+	        this.captionContentPics(jqCont);
+
+	        //resizing pics
 	        this.resizeContentPics(jqCont);
+
+	        //resizing iframes
            if(jqCont.iframes.length) {
 
                this.resize_iframes(jqCont);
@@ -298,8 +307,20 @@ $.extend ( true, ivyMods.blog ,
           articlesBlog.map(function()
           {
               jqCont = ivyMods.blog.get_containerData($(this));
-              ivyMods.blog.set_containerPics(jqCont, ivyMods.blog.fancyboxGroup);
-              ivyMods.blog.resize_iframes(jqCont);
+
+	           // daca imaginile gasite sunt > 3 atunci
+	           // le facem thumbnailuri si gallery
+	           if(jqCont.imgs.length >= 3){
+		           ivyMods.blog.set_containerPics(jqCont, ivyMods.blog.fancyboxGroup);
+	           }
+
+              // set caption for photos
+	          ivyMods.blog.captionContentPics(jqCont);
+
+              //resizing iframes
+	           if(jqCont.iframes.length) {
+                  ivyMods.blog.resize_iframes(jqCont);
+	           }
 
               ivyMods.blog.fancyboxGroup++;
           });
