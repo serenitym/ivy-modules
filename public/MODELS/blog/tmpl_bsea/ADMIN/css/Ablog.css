@@ -17,6 +17,7 @@
 .SGrecord .content{min-height: 500px;}
 .SGrecord .recordTags{width: 220px;}
 
+
 /*==================[ archive ]===========================*/
 .addRec-title {width: 250px;}
 .addRec {text-align: right;}
@@ -28,7 +29,7 @@ form.SGrecord .btt-authors {width: 220px}
 
 form.SGrecord input.country,
 form.SGrecord input.city,
-form.SGrecord input.publishDate {width: 120px;}
+form.SGrecord input.publishDate {width: 100px;}
 
 /*=====================[ blog_settings.html]==================*/
 .blogSettings{

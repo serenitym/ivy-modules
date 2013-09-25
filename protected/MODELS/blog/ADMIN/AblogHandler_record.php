@@ -86,7 +86,7 @@ class AblogHandler_record extends blogHandler_record
     }
 
     // db methods
-        // update record methods
+    // update record methods
     function Get_validTags($tagsStr)
     {
         /**
@@ -137,81 +137,16 @@ class AblogHandler_record extends blogHandler_record
 
 
     }
-    function _hook_updateRecord()
+
+    function updateRecord_processData(&$posts)
     {
-       // echo "<b>blog_dbHandlers</b>  _POST";
-       //var_dump($_POST);
-        //=====================================[ preValidate data ]=============
-        /**
-         * Rules:
-         *
-         * 1. daca tipul recordului este acelasi cu cel curent scote-l din post
-         * 2. daca userul nu are drepturi de editare al recordurilor
-         *    - nu are drepturi de moderator si deci de css si js
-         *    - nu are dreptul de a schimba data publicarii unui articol
-         *
-         * 3. daca userul nu are drepturi de publicare atunci nu poate sa isi schimbe
-         * data publicarii
-         */
-
+        //daca tipul recordului este acelasi cu cel curent scote-l din post
         if($this->format == $_POST['idFormat']) {
-            unset($_POST['idFormat']);
+            unset($this->posts->idFormat);
         }
 
-        if(!$this->user->rights['article_edit']) {
-            unset($_POST['css']);
-            unset($_POST['js']);
-            unset($_POST['publishDate']);
-
-        } else {
-            if($_POST['publishDate'] != $this->publishDate) {
-                $_POST['republish'] = 1;
-            }
-        }
-
-
-        //=====================================[ validate data ]=================
-
-        /*use from yml: blogPests_updateRecord */
-        if (!$this->blog->Get_rights_articleEdit($this->uidRec, $this->uids)) {
-            return $this->fbk->SetGet_badmess(
-                        'error',
-                        'Not allowed to edit',
-                        'your are not the author of this article!!! ');
-                        //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
-        }
-        $postsConf =&$this->blog->posts_updateRecord;
-        $this->posts = handlePosts::Get_postsFlexy($postsConf, '', true);
-
-        //var_dump($this->blogPsts_updateRecord);
-        $validStat = true;
-
-        $validStat &= !empty($this->posts->title) ? true :
-                       $this->fbk->SetGet_badmessFbk(
-                           $postsConf['title']['fbk_notempty']
-                       );
-
-        $validStat &= !empty($this->posts->content) ? true :
-                        $this->fbk->SetGet_badmessFbk(
-                            $postsConf['content']['fbk_notempty']
-                        );
-
-
-        $validStat &= !empty($this->posts->lead) ? true :
-                       $this->fbk->SetGet_badmessFbk(
-                           $postsConf['lead']['fbk_notempty']
-                       );
-
-        // nu mai are rost sa procesam datele daca sunt invalide
-        if (!$validStat) {
-            return false;
-        }
-
-        //=====================================[ process data ]=================
-        // nu ii mai vad sensul
-        //$this->posts->content = addslashes($this->posts->content);
-
-        if ($this->status_recordTags) {
+        // din setarile blogului
+        if ($this->blog->status_recordTags) {
             $this->posts->recordTags = $this->Get_validTags($this->posts->recordTags);
         }
 
@@ -230,16 +165,87 @@ class AblogHandler_record extends blogHandler_record
             $this->posts->relatedStory = '';
         }
 
-        //echo "_hook_updateRecord() ";
-        //echo "validation = ".($validStat ? "true" : "false");
+    }
+    function updateRecord_validData(&$posts, &$postsConf)
+    {
+        $validStat = true;
 
-        // echo "<b>blog_dbHandlers</b> this->posts";
+
+        $validStat &= !empty($posts->title) ? true :
+                       $this->fbk->SetGet_badmessFbk(
+                           $postsConf['title']['fbk_notempty']
+                       );
+
+        $validStat &= !empty($posts->content) ? true :
+                        $this->fbk->SetGet_badmessFbk(
+                            $postsConf['content']['fbk_notempty']
+                        );
+
+
+        $validStat &= !empty($posts->lead) ? true :
+                       $this->fbk->SetGet_badmessFbk(
+                           $postsConf['lead']['fbk_notempty']
+                       );
+
+        return $validStat;
+
+
+    }
+    function updateRecord_userRights()
+    {
+        /*use from yml: blogPests_updateRecord */
+        if (!$this->blog->Get_rights_articleEdit($this->uidRec, $this->uids)) {
+            return $this->fbk->SetGet_badmess(
+                        'error',
+                        'Not allowed to edit',
+                        'your are not the author of this article!!! ');
+                        //."<br> your userID = {$this->user->uid} recorUserdID = $this->uidRec");
+        }
+        /**
+         * Rules:
+         *
+         * 2. daca userul nu are drepturi de editare al recordurilor
+         *    - nu are drepturi de moderator si deci de css si js
+         *    - nu are dreptul de a schimba data publicarii unui articol
+         *
+         * 3. daca userul nu are drepturi de publicare atunci nu poate sa isi schimbe
+         * data publicarii
+         */
+        if(!$this->user->rights['article_edit']) {
+           unset($_POST['css']);
+           unset($_POST['js']);
+           unset($_POST['publishDate']);
+
+        } else {
+            if($_POST['publishDate'] != $this->publishDate) {
+                $_POST['republish'] = 1;
+            }
+        }
+
+        return true;
+
+    }
+    function _hook_updateRecord()
+    {
+        // echo "<b>blog_dbHandlers</b>  _POST";
+        // var_dump($_POST);
+
+        // valideaza drepturile userului pe datele venite
+        if(!$this->updateRecord_userRights()) {
+            return false;
+        }
+        // preia datele din post
+        $postsConf =&$this->blog->posts_updateRecord;
+        $this->posts = handlePosts::Get_postsFlexy($postsConf, '', true);
+
+        // nu mai are rost sa procesam datele daca sunt invalide
+        if (!$this->updateRecord_validData($this->posts, $postsConf)) {
+            return false;
+        }
+        // proceseaza si altereaza datele
+        $this->updateRecord_processData($this->posts);
+
         //var_dump($this->posts);
-
-        //$this->C->reLocate();
-
-        //var_dump($this->posts);
-
         //return false;
         return true;
     }
@@ -285,6 +291,8 @@ class AblogHandler_record extends blogHandler_record
     {
 
         $posts = &$this->posts;
+        //echo "AblogHandler_record - updateRecord()";
+        //var_dump($posts);
         //=================================[ update tags ]======================
         if (isset($posts->recordTags) && is_array($posts->recordTags)) {
             $this->update_blogTags($posts->idRecord);
@@ -348,7 +356,7 @@ class AblogHandler_record extends blogHandler_record
         /**
          * butoanele de publish nu se vor afisa daca userul nu are permisiuni de publicare
          */
-        $idRecord      =   $_POST['idRecord'];
+        $idRecord      =   $_POST['BLOCK_id'];
         $query = "UPDATE blogRecords_stats SET publishDate = NOW() WHERE idRecord = '{$idRecord}' ";
         //echo $query;
         $this->DB->query($query);
@@ -356,7 +364,7 @@ class AblogHandler_record extends blogHandler_record
     }
     function  unpublish()
     {
-        $idRecord      =   $_POST['idRecord'];
+        $idRecord      =   $_POST['BLOCK_id'];
         $query = "UPDATE blogRecords_stats SET publishDate = NULL WHERE idRecord = '{$idRecord}' ";
         $this->C->Db_query($query);
         #echo $query;
@@ -396,11 +404,25 @@ class AblogHandler_record extends blogHandler_record
         }
 
    }
+
+    // configurare Ablog.js ( pt butoanele de la EDITmode)
+    function jsConfig(){
+        $this->C->jsTalk .="
+           ivyMods.blogConf = {
+                article_pub : ".$this->user->rights['article_pub'].",
+                publishStatus: '".$this->publishDate."'
+           };
+        ";
+
+    }
     function _init_()
     {
         parent::_init_();
         $this->fbk = &$this->C->feedback;
         $this->user     = &$this->C->user;
+
+        $this->jsConfig();
+
     }
 
 }
