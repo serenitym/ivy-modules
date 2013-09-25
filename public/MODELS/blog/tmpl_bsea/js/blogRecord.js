@@ -2,6 +2,8 @@ if( typeof ivyMods.blog == 'undefined'  ) {
     ivyMods.blog = {};
 }
 
+var disqus_shortname = 'blacksea-beta'; // required: replace example with your forum shortname
+
 $.extend ( true, ivyMods.blog ,
 {
 
@@ -103,13 +105,13 @@ $.extend ( true, ivyMods.blog ,
     	if (typeof group == undefined) {
     		var group = 'fancybox';
         	console.log('group: ' + group);
-    	} 
-    	
+    	}
+
         var htmlPics = '';
         var i = 1;
         for( var key in recordPics) {
             htmlPics += "<a class='container-photoThumbs fancybox' " +
-                            "data-fancybox-group='" + group + 
+                            "data-fancybox-group='" + group +
                             "' href='" + recordPics[key].src.replace('.thumbs/','') + "'>" +
                                 "<img class='photoThumbs' " +
                                     "src='" + recordPics[key].src + "'" +
@@ -330,11 +332,18 @@ $.extend ( true, ivyMods.blog ,
 
 	},
 
+    disqus_add: function(){
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    },
+
     init: function(){
 	    this.onload_article();
 	    this.onload_articlesBlog('unpublished');
 	    this.onload_articlesBlog(10);
 	    this.bind_getNext_blogRecords();
+	    this.disqus_add();
     }
 }
 );
