@@ -1,19 +1,16 @@
+if(typeof ivyMods.blogConf == 'undefined') {
+	ivyMods.blogConf = {
+		article_pub: false,
+		publishStatus: false
+	};
+
+}
+
 ivyMods.set_iEdit.blog = function(){
 
 
-    iEdit.add_bttsConf({
-        'SGrecord': {
-            modName: 'blog, handler',
-            edit: {
-                attrValue : 'edit article',
-                callback: { fn: ivyMods.blog.adminAuthors,
-                            context: ivyMods.blog
-                            //,args : ''
-                           }
-            },
 
-            saveBt: {attrValue : 'save article', methName: 'updateRecord'}
-           ,extraHtml:[
+	var extraHtml_Record = [
                 "<span>" +
                     "<input type='button' value='more fields'  class='iedit-btt' " +
                     " onclick='fmw.toggle(\"form[id^=EDITform] .admin-extraFields\"); return false;' />" +
@@ -27,7 +24,49 @@ ivyMods.set_iEdit.blog = function(){
                     "<input type='submit' name = 'deleteRecord'  value='delete article' class='iedit-btt' " +
 			               " onclick = 'return ivyMods.blog.confirmDelete();' />" +
                 "</span>"
-            ]
+            ];
+
+
+	//publish Buttons
+/*
+	console.log("article_pub = " + ivyMods.blogConf.article_pub
+						+ "publishStatus" + ivyMods.blogConf.publishStatus);
+*/
+	//daca am permisiuni de publicare
+	if(ivyMods.blogConf.article_pub) {
+
+		//console.log("Am permisiuni de publish");
+		// daca este publicat deja sau nu
+		 var publishButton = ivyMods.blogConf.publishStatus
+			 ? 'unpublish' : 'publish';
+
+
+	    extraHtml_Record.push(
+		    "<span>" +
+               "<input type='hidden' name='action_methName' value='"+publishButton+"'>" +
+               "<input type='submit' name='publishStat' value='"+publishButton+"' />" +
+          "</span>"
+	    );
+
+	} else {
+		//console.log("NU Am permisiuni de publish ");
+	}
+
+
+	// configul butoanelor de admin pentru EDITmode
+   iEdit.add_bttsConf({
+        'SGrecord': {
+            modName: 'blog, handler',
+            edit: {
+                attrValue : 'edit article',
+                callback: { fn: ivyMods.blog.adminAuthors,
+                            context: ivyMods.blog
+                            //,args : ''
+                           }
+            },
+
+            saveBt: {attrValue : 'save article', methName: 'updateRecord'}
+           ,extraHtml: extraHtml_Record
         },
         'record' : {
            modName: 'blog, handler',

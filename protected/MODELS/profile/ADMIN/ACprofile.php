@@ -131,7 +131,7 @@ class ACprofile extends Cprofile
             $this->change_uclass($this->profile->uid, $this->post->cid);
         }
 
-        return false;
+        return true;
     }
 
     // user methods
