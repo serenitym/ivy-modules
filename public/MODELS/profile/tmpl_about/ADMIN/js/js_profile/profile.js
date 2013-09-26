@@ -48,8 +48,6 @@ ivyMods.set_iEdit.sampleMod = function(){
                 "<input type='submit' name='deleteUser' value='delete user' />" +
             "</span>"
         );
-
-
     }
 
     iEdit.add_bttsConf(

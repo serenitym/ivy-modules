@@ -8,8 +8,6 @@ if(typeof ivyMods.blogConf == 'undefined') {
 
 ivyMods.set_iEdit.blog = function(){
 
-
-
 	var extraHtml_Record = [
                 "<span>" +
                     "<input type='button' value='more fields'  class='iedit-btt' " +
@@ -25,7 +23,6 @@ ivyMods.set_iEdit.blog = function(){
 			               " onclick = 'return ivyMods.blog.confirmDelete();' />" +
                 "</span>"
             ];
-
 
 	//publish Buttons
 /*
@@ -195,7 +192,6 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
                 this.popUpblogSettings();
             }
         }
-
     });
 }
 
