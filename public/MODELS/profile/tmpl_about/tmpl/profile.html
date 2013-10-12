@@ -6,70 +6,9 @@
 	<div class='textColumnBig right space '>
         <div class='EDeditor bio'>{$o->profile->bio}</div>
 	    <p></p>
-	    <div class='fullwidth'>
-            <div class='label'>  Stories</div>
-        </div>
-
-        ".( count($o->recordsArchive) == 0
-            ? "<p> There are no stories written </p>"
-            : "<ul class='contributions space'>"
-              . $this->Render_itemsFromStr(array_slice($o->recordsArchive, 0, 3), '', "
-                    <li>
-                        <a href='{~ao->record_href}' target='_blank'>
-                            {~ao->title}
-                        </a>
-                    </li>
-
-                ")
-              . "</ul>"
-
-              .( count($o->recordsArchive) <= 3 ? '' :
-                 "<ul class='contributions space' id='moreArchives_text' style='display: none;'>"
-                  . $this->Render_itemsFromStr(array_slice($o->recordsArchive, 10), '', "
-                        <li>
-                            <a href='{~ao->record_href}' target='_blank'>
-                                {~ao->title}
-                            </a>
-                        </li>
-
-                    ")
-                  . "</ul>"
-                  ."<div style='width: 60px; '>
-                       <div class='showMore' id='moreArchives'>More</div>
-                   </div>"
-               )
-
-        )."
-
-	    <div class='fullwidth'><div class='label'>Blog contributions</div></div>
-        ".( count($o->recordsBlog) == 0
-            ? "<p> There are no stories written </p>"
-            : "<ul class='contributions space'>"
-              . $this->Render_itemsFromStr(array_slice($o->recordsBlog,0, 3), '', "
-                    <li>
-                        <a href='{~ao->record_href}' target='_blank'>
-                        {~ao->title}
-                        </a>
-                    </li>
-              ")
-              . "</ul>"
-
-              .( count($o->recordsBlog) <= 10 ? '' :
-                "<ul class='contributions space' id='moreBlogs_text' style='display: none;'>"
-                . $this->Render_itemsFromStr(array_slice($o->recordsBlog, 3), '', "
-                      <li>
-                          <a href='{~ao->record_href}' target='_blank'>
-                          {~ao->title}
-                          </a>
-                      </li>
-                ")
-                . "</ul>"
-
-                ."<div style='width: 60px; '>
-                      <div class='showMore' id='moreBlogs'>More</div>
-                 </div>"
-              )
-        )."
+        <!--list articles-->
+        ". $this->Render_object($o,'',
+                    "MODELS/profile/tmpl_about/tmpl/listArticles.html")."
     </div>
 
     <div class='LeftColumnSmall space'>
