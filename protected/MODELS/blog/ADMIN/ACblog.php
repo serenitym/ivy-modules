@@ -61,8 +61,8 @@ class ACblog extends Ablog_requestHandler
     function Get_rights_articleEdit($uidRec, $uids = array())
     {
         $editRight = ($this->C->user->rights['article_edit'] )
-                      ||  $uidRec == $this->C->uid
-                      || in_array($this->C->uid, $uids) ;
+                      ||  $uidRec == $this->C->user->uid
+                      || in_array($this->C->user->uid, $uids) ;
 
 
         return $editRight;
