@@ -102,7 +102,9 @@ $.extend ( true, ivyMods.blog ,
         var htmlThumbPics = this.get_tmplThumbPics(recordPics, group);
 
         // ascunde pozele care trec de 9
-        jqCont.colectorPics.append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
+        jqCont.colectorPics
+	        .addClass('space')
+	        .append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
 
     },
     //#1
@@ -202,7 +204,8 @@ $.extend ( true, ivyMods.blog ,
         var htmlThumbPics = this.get_tmplThumbPics_galleria(recordPics);
 
         // ascunde pozele care trec de 9
-        jqCont.colectorPics.append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
+        jqCont.colectorPics
+	        .append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
 
     },
 
@@ -260,7 +263,7 @@ $.extend ( true, ivyMods.blog ,
 
 			 // adauga butonul de closeGalleria care va face remove la tot domul de galleria
 			 jqGalleria.prepend(
-				 "<div>" +
+				 "<div class='ivy-closeButton-canvas'>" +
 					 "<input type='button' class='ivy-light' value='close' id='galleria-close'" +
 					 " onclick=\"$('#galleria-container').remove();\">" +
 				 "</div>"
@@ -326,6 +329,7 @@ $.extend ( true, ivyMods.blog ,
        jqCont.iframes.map(function(){
 	        $(this).width(containerWidth);
            $(this).height(containerWidth * proportion);
+	        $(this).addClass('pull-right');
            /* console.log(
                   "container = " + containerWidth
                 + "\n height = " + (containerWidth * proportion)
@@ -342,6 +346,7 @@ $.extend ( true, ivyMods.blog ,
             //console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
             $(this).css('height','initial');
 	         $(this).width(containerWidth);
+	         $(this).addClass('pull-right');
 
         });
     },
@@ -387,6 +392,8 @@ $.extend ( true, ivyMods.blog ,
 	        // daca imaginile gasite sunt > 3 atunci
            // le facem thumbnailuri si gallery
            if(jqCont.imgs.length >= 3){
+	            // altfel va fi un spatiu gol daca nu sunt poze
+	            jqCont.colectorPics.addClass('space');
 					Galleria.loadTheme('/assets/galleria/themes/classic/galleria.classic.min.js');
                this.set_containerPics_galleria(jqCont);
            }
