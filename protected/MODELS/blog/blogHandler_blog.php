@@ -83,7 +83,7 @@ class blogHandler_blog extends ivyModule_objProperty
 
     function blog_setRecords($fullQuery, $limitStart = 0, $limitEnd = 10)
     {
-        $query = $fullQuery . "ORDER BY publishDate DESC LIMIT {$limitStart}, {$limitEnd}";
+        $query = $fullQuery . "ORDER BY publishDate DESC, idRecord DESC LIMIT {$limitStart}, {$limitEnd}";
         //echo "<b>blog_setData</b> {$query}";
         $this->records = $this->C->Db_Get_procRows($this, '_hookRow_blog', $query);
     }
