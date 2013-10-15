@@ -5,6 +5,26 @@
     )."
     <!-- start story -->
 	<div class='textColumnBig right'>
+        <div class=' fullwidth'>
+               <span class='EDtxt noBorder {$co->catResFile} Name {$co->statusPublish} title'>
+                   {$co->title}
+               </span>
+           </div>
+        <div class='imageColumnHead'>
+               <a href='$co->authorHref' class='ib'>{$co->fullName}</a>
+               ".(count($co->authors) == 0 ? '' :
+                $this->Render_itemsFromStr($co->authors,'', "
+                   , <a href='~ao->authorHref'  class='ib'>{~ao->fullName}</a>
+
+              "))."
+
+
+                ".($co->publishDate
+                   ? "<span class='ib'>/ {$co->publishDate}</span>"
+                   : "<p class='notPublished'>not yet published</p>")."
+
+       </div>
+
 	    <!-- <div class='theStory'>  -->
         <div class='EDeditor space lead'>
             {$co->lead}
@@ -47,30 +67,12 @@
 
     <!-- begin left -->
 	<div class='LeftColumnSmall {$co->catResFile}leftborder'>
-	    <div class=' fullwidth'>
-            <span class='EDtxt noBorder {$co->catResFile} Name {$co->statusPublish} title'>
-                {$co->title}
-            </span>
-        </div>
-	    <div class='imageColumnHead'>
-            <a href='$co->authorHref' class='ib'>{$co->fullName}</a>
-            ".(count($co->authors) == 0 ? '' :
-             $this->Render_itemsFromStr($co->authors,'', "
-                , <a href='~ao->authorHref'  class='ib'>{~ao->fullName}</a>
 
-           "))."
-
-
-             ".($co->publishDate
-                ? "<span class='ib'>/ {$co->publishDate}</span>"
-                : "<p class='notPublished'>not yet published</p>")."
-
-        </div>
 	    <div class='imageColumnHead'>
             ".(!$co->tagsName ? '' :
                "
                     Filed under:&nbsp;
-                    <span class='{$co->catResFile}'>
+                    <span class='ib space {$co->catResFile}'>
                          <!--<a href=''>tag1</a>,
                          <a href=''>tag2</a>,
                          <a href=''>tag3</a>-->
@@ -86,7 +88,7 @@
             )."
 
         </div>
-        <div class='fullwidth space thumbRecordPics'  id='recordThumbs_{$co->idRecord}' >
+        <div class='fullwidth thumbRecordPics'  id='recordThumbs_{$co->idRecord}' >
             <!--<img class='photoGalleryThumbs' src='foto/16.jpg'/>
             <img class='photoGalleryThumbs' src='foto/16.jpg'/>
             <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->

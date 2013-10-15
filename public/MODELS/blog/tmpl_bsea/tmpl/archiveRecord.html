@@ -7,6 +7,24 @@
         {$co->HTMLmessage_record}
         <!-- start story -->
         <div class='textColumnBig right'>
+            <div class='EDtxt Name blue title'>
+                {$co->title}
+            </div>
+            <div class='imageColumnHead orange space authName'>
+                <a href='$o->authorHref'  class='ib'>{$co->fullName}</a>
+                ".(count($co->authors) == 0 ? '' :
+                 $this->Render_itemsFromStr($co->authors,'', "
+                    , <a href='~ao->authorHref' class='ib'>{~ao->fullName}</a>
+
+               "))."
+
+                ".($co->publishDate
+                    ? "<span class='ib'>/ {$co->publishDate}</span>"
+                    : "<p class='notPublished'>not yet published</p>")."
+
+            </div>
+
+
             <!-- <div class='theStory'>  -->
             <div class='ATmpl'> Lead </div>
             <div class='EDeditor lead'>
@@ -41,26 +59,13 @@
         </div>
     <!-- end story -->
         <div class='LeftColumnSmall greyleftborder'> <!-- begin left -->
-            <div class='EDtxt Name blue title'>
-                {$co->title}
-            </div>
-            <div class='imageColumnHead orange space authName'>
-                <a href='$o->authorHref'  class='ib'>{$co->fullName}</a>
-                ".(count($co->authors) == 0 ? '' :
-                 $this->Render_itemsFromStr($co->authors,'', "
-                    , <a href='~ao->authorHref' class='ib'>{~ao->fullName}</a>
 
-               "))."
-
-                ".($co->publishDate
-                    ? "<span class='ib'>/ {$co->publishDate}</span>"
-                    : "<p class='notPublished'>not yet published</p>")."
-
-            </div>
-            <div  class='imageColumnHead orange space'>
-                ".( $co->folderName!='' ? "FOLDER: " : "
-                    <span class='ATmpl-inline'>FOLDER</span>
-                ")."
+        ".( $co->folderName!=''
+         ? " <div  class='imageColumnHead orange space'>
+                    FOLDER: "
+         : " <div  class='imageColumnHead orange'>
+                    <span class='ATmpl-inline space'>FOLDER</span> "
+        )."
 
                 <a href='{$co->hrefFolderFilter}' class='EDsel idFolder' data-iedit-options = '{$o->jsonFolders}'  >
                     {$co->folderName}
@@ -68,7 +73,7 @@
 
             </div>
             <!-- <div class='textContainer orange'>@bradutz</div> -->
-            <div class='fullwidth space thumbRecordPics' id='recordThumbs_{$co->idRecord}'>
+            <div class='fullwidth thumbRecordPics' id='recordThumbs_{$co->idRecord}'>
                 <!--<img class='photoGalleryThumbs' src='foto/16.jpg'/>
                 <img class='photoGalleryThumbs' src='foto/16.jpg'/>
                 <img class='photoGalleryThumbs' src='foto/21.jpg'/>-->
@@ -122,8 +127,8 @@
 
     <div class='block-full'>
         <div class='divider'></div>
-        <p class='ATmpl b t10'>Continut Articol</p>
-        <div class='EDeditor content'
+       <!-- <p class='ATmpl b t10'>Continut Articol</p>-->
+        <div class='EDeditor pull-right content'
              data-iedit-cketoolbar ='".(!$this->user->rights['article_tmpl'] ?  'embedVideo' :  'admin' )."'
         >
             {$co->content}
