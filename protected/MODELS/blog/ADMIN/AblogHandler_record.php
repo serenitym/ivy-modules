@@ -2,8 +2,8 @@
 /**
  * PHP Version 5.3+
  *
- * @category 
- * @package 
+ * @category
+ * @package
  * @author Ioana Cristea <ioana@serenitymedia.ro>
  * @copyright 2010 Serenity Media
  * @license http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
@@ -298,7 +298,7 @@ class AblogHandler_record extends blogHandler_record
             $this->update_blogTags($posts->idRecord);
         }
         //================================[  update authors ]===================
-        if (count($posts->authors) > 0) {
+        if (count($posts->authors) > 0 || count($this->authors) > 0) {
            $this->update_authors($posts->idRecord);
         }
 
