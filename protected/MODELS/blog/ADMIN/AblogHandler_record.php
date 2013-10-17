@@ -228,7 +228,7 @@ class AblogHandler_record extends blogHandler_record
     function _hook_updateRecord()
     {
         // echo "<b>blog_dbHandlers</b>  _POST";
-        // var_dump($_POST);
+       // var_dump($_POST);
 
         // valideaza drepturile userului pe datele venite
         if(!$this->updateRecord_userRights()) {
@@ -298,7 +298,7 @@ class AblogHandler_record extends blogHandler_record
             $this->update_blogTags($posts->idRecord);
         }
         //================================[  update authors ]===================
-        if (count($posts->authors) > 0) {
+        if (count($posts->authors) > 0 || count($this->authors) > 0) {
            $this->update_authors($posts->idRecord);
         }
 
