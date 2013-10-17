@@ -2,7 +2,7 @@
     <div class='divider'></div>
     <div class='block space overflow'></div>
     ".(count($co->records) == 0 ?
-       "<b>Sorry there are no articles found</b>" :
+       "<b>Coming soon</b>" :
         $this->Render_itemsFromPath($co->records, $o,
         "MODELS/blog/tmpl_bsea/tmpl/blogPrevRecord.html")
     )."
