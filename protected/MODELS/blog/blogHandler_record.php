@@ -31,6 +31,15 @@ class blogHandler_record extends ivyModule_objProperty
     }
     function _hookRow_record($row)
     {
+        $row['authorRights'] = $this->rowDb
+                                    ->Get_rights_articleEdit($row['uidRec'], $row['uids']);
+
+        // daca articolul nu este publicat si userul nu are permisiuni de autor
+        //sau nu este nimeni logat - eroare 404
+        if(!$row['publishDate'] && !$row['authorRights']) {
+            Toolbox::relocate(PUBLIC_URL);
+        }
+
         $row['tags']              = $this->rowDb->Get_tagsArray($row['tagsName']);
         $row['hrefFolderFilter']  = $this->rowDb->Get_record_hrefFolderFilter($row['idFolder']);
         // pt blogRecord.html
@@ -46,8 +55,8 @@ class blogHandler_record extends ivyModule_objProperty
             $row['uids']       = explode(', ',$row['uidsCSV']);
             $row['fullNames']  = explode(', ',$row['fullNamesCSV']);
             $row['authors']    = $this->rowDb->Get_authors($row['uids'], $row['fullNames']);
-
         }
+
         return $row;
 
      }

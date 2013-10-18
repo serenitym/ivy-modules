@@ -132,11 +132,11 @@ class blog_rowDb
 
     function Get_rights_articleEdit($uidRec, $uids = array())
     {
-        $editRight = ($this->C->user->rights['article_edit'] )
-                      ||  $uidRec == $this->C->user->uid
-                      || in_array($this->C->user->uid, $uids) ;
-
-
+        $editRight = $this->C->user->uid
+                     && ($this->C->user->rights['article_edit']
+                         ||  $uidRec == $this->C->user->uid
+                         || in_array($this->C->user->uid, $uids)
+                     ) ;
         /*echo "Userul articles_edit = ".$this->C->user->rights['article_edit']
               . " autor({$uidRec}) = ". $this->C->user->uid. " " .($uidRec == $this->C->user->uid ? 'DA' : "NU");*/
         //var_dump($this->C->user->rights);

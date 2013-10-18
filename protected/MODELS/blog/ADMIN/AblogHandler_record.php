@@ -45,7 +45,7 @@ class AblogHandler_record extends blogHandler_record
         // nu prea isi are rostul daca nu poate administra
         $row['blogCategories'] = $this->Get_blogCategories();
 
-        $this->ED = $this->rowDb->Get_recordED($row['uidRec'], $row['uids']);
+        $this->ED = !$row['authorRights'] ? 'not' :'';
 
 
         return $row;
