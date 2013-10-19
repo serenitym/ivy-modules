@@ -29,7 +29,16 @@
 .SGrecord-archive .content  {
     width: 65%;
 }
+
+.SGrecord-archive .sideContent {
+    width: 30%;
+    min-height: 3000px;
+   /* background: lightblue;*/
+}
+
 .SGrecord-archive div[id^="cke_editor_content"]{float: right;}
+.SGrecord-archive div[id^="cke_editor_sideContent"]{float: left;}
+
 
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
 

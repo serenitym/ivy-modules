@@ -128,6 +128,12 @@
     <div class='block-full'>
         <div class='divider'></div>
        <!-- <p class='ATmpl b t10'>Continut Articol</p>-->
+        <div class='clearfix'></div>
+
+        <div class='EDeditor pull-left sideContent'>
+            {$co->sideContent}
+        </div>
+
         <div class='EDeditor pull-right content'
              data-iedit-cketoolbar ='".(!$this->user->rights['article_tmpl'] ?  'embedVideo' :  'admin' )."'
         >

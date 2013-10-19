@@ -304,7 +304,7 @@ class AblogHandler_record extends blogHandler_record
 
         $queries = array();
         //==============================[ update main blogRecords ]=============
-        $columns = 'idCat, title, content, lead, leadSec, city, country';
+        $columns = 'idCat, title, content, lead, sideContent, leadSec, city, country';
         $sets = handlePosts::Db_Get_setString($this->posts, $columns);
         $query = "UPDATE blogRecords SET {$sets}
                   WHERE idRecord = '{$posts->idRecord}' ";

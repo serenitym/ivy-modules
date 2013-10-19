@@ -40,6 +40,7 @@ class blog_baseQuery extends ivyModule_objProperty
                      uidRec,
                      title,
                      content,
+                     sideContent,
                      lead,
                      leadSec,
                      country,
