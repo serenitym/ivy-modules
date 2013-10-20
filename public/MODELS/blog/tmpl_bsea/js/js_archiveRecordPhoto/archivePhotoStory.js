@@ -33,13 +33,7 @@ $.extend ( true, ivyMods.blog ,
 		this.jq.recordGallery.height(height);
 	},
 
-   /**
-    *  functie generalista pentru tipurile de articole
-    *  apelata automat de onload_article();
-    *  o astfel de functie poate fi creata si pentru alte tipuri
-    *  de articole cu ar fi story , multimedia...etc
-	*/
-	manageArticle : function(jqCont){
+	archivePhoto_gallery: function(jqCont){
 		/**
 		 * indentifica continutul ( content )
 		 * creaza deasupra lui un container pentru galerie
@@ -66,6 +60,20 @@ $.extend ( true, ivyMods.blog ,
 		Galleria.run(this.sel.recordGallery ,{
 			 dataSource: '#'+jqCont.galleriaID
 		 });
+	},
+
+   /**
+    *  functie generalista pentru tipurile de articole
+    *  apelata automat de onload_article();
+    *  o astfel de functie poate fi creata si pentru alte tipuri
+    *  de articole cu ar fi story , multimedia...etc
+	*/
+	manageArticle : function(jqCont){
+		if(jqCont.imgs.length >= 3){
+			this.archivePhoto_gallery(jqCont);
+		} else {
+			jqCont.imgs.show();
+		}
 
 	}
 });
