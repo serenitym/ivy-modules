@@ -7,10 +7,17 @@ var disqus_shortname = 'blacksea-beta'; // required: replace example with your f
 $.extend ( true, ivyMods.blog ,
 {
 	 limitSet : 10,
+	css: {
+		cls: {
+			picCaption: 'storyCaption'
+		},
+		ids: {}
+	},
     sel: {
         basePathPic : "/RES/uploads/images/",
         thumbPathPic : "/RES/uploads/.thumbs/images/",
         colectorPics : '*[class$=thumbRecordPics]',
+	     sideContent:      "*[class$=sideContent]",
         imgs:          '*[class$=lead] img, *[class$=content] img',
         iframes:       '*[class$=lead] iframe, *[class$=content] iframe',
         article:       'div[class$=SGrecord]',
@@ -24,11 +31,13 @@ $.extend ( true, ivyMods.blog ,
 
     },
     jqCont: {
+	   htmlThumbPics: '',
       jq: {},
       jqImgs : {},
       jqColectorPics: {},
       gallery : {},
-      liveEditStat: {}
+      liveEditStat: {},
+	   recordPics : []
     },
 
 	asyncRecords : new fmw.asyncConf({
@@ -38,8 +47,13 @@ $.extend ( true, ivyMods.blog ,
 			methName: 'blog_renderData'
 		}
 	}),
-	fancyboxGroup: 1,
+	//fancyboxGroup: 1,
     // ========================[ event Callbacks ]==============================
+	/**
+	 * Incarcare asincron a articolelor din blog
+	 * Probabil aceste metode ar trebui sa stea in alt js specific doar
+	 * templateului de blogRecords
+	 */
     bind_getNext_blogRecords: function(){
 
 	      var loadButton = $(this.sel.getNext_blogRecords);
@@ -82,7 +96,7 @@ $.extend ( true, ivyMods.blog ,
     	}
 
         var htmlPics = '';
-        var i = 1;
+        //var i = 1;
         for( var key in recordPics) {
             htmlPics += "<a class='container-photoThumbs fancybox' " +
                             "data-fancybox-group='" + group +
@@ -163,6 +177,8 @@ $.extend ( true, ivyMods.blog ,
 	     this.createFancybox(jqCont);
 	 },
 
+
+
     // ========================[ thumbnails - galleria ]========================
 	//#1
     get_tmplThumbPics_galleria : function(recordPics) {
@@ -198,10 +214,8 @@ $.extend ( true, ivyMods.blog ,
     //#2
     set_thumbPics_galleria: function(jqCont){
 
-	     // preia json cu pozele pt galerie
-        var recordPics    = this.get_RecordPics(jqCont);
 	     // seteaza html-ul pozelor
-        var htmlThumbPics = this.get_tmplThumbPics_galleria(recordPics);
+       var htmlThumbPics = this.get_tmplThumbPics_galleria(jqCont.recordPics);
 
         // ascunde pozele care trec de 9
         jqCont.colectorPics
@@ -273,7 +287,7 @@ $.extend ( true, ivyMods.blog ,
 			 return false;
 		 });
 	 },
-	 set_containerPics_galleria: function(jqCont, group){
+	 set_containerPics_galleria: function(jqCont){
 	     //thumb pics
 	     this.set_thumbPics_galleria(jqCont);
 	     this.createGalleria(jqCont);
@@ -281,6 +295,11 @@ $.extend ( true, ivyMods.blog ,
 
     //=======================[ container pics ]=================================
     //#1
+	 /**
+	 * returneaza un array cu datele despre imaginile gasite in content
+	 * @param jqCont
+	 * @returns {Array}
+	 */
     get_RecordPics: function(jqCont){
 
         var recordPics = new Array();
@@ -307,13 +326,22 @@ $.extend ( true, ivyMods.blog ,
 
     },
     //#1
+	/**
+	 * pune aturile imaginilor ca si captions
+	 * accordtin to design si doar daca nu suntem in liveEdit mode
+	 * @param jqCont
+	 */
     captionContentPics: function(jqCont){
 
         if(jqCont.liveEditStat == 0) {
             jqCont.imgs.map(function(){
                 var caption = $(this).attr('alt');
                 if(caption) {
-                    $(this).after("<div class='storyCaption'>"+caption+"</div>");
+                    $(this).after(
+	                    "<div class='"+this.css.cls.picCaption+"'>"
+	                        +caption
+	                    +"</div>"
+                    );
                 }
             });
         }
@@ -366,13 +394,19 @@ $.extend ( true, ivyMods.blog ,
 
         var jqCont = {};
 
-        jqCont.jq   = jqContainer;
-        jqCont.imgs = jqContainer.find(this.sel.imgs);
-        jqCont.iframes = jqContainer.find(this.sel.iframes);
+        jqCont.jq           =  jqContainer;
+	    // imaginile din interiorul contentului si leadului
+        jqCont.imgs         =  jqContainer.find(this.sel.imgs);
+	    // iframeurile din content si lead ex: youtube etc..
+        jqCont.iframes      =  jqContainer.find(this.sel.iframes);
+	    // unde anume vor fi puse imaginile thumbnal
         jqCont.colectorPics =  jqContainer.find(this.sel.colectorPics);
-       // jqCont.gallery      =  jqContainer.find(this.sel.gallery);
-        jqCont.galleriaID      =  jqContainer.find(this.sel.galleria).attr('id');
+       // jqCont.gallery    =  jqContainer.find(this.sel.gallery);
+	    // id-ul galleriei din cadrul containerului
+        jqCont.galleriaID   =  jqContainer.find(this.sel.galleria).attr('id');
         jqCont.liveEditStat =  jqContainer.find(this.sel.liveEdit).length;
+  	     // preia json cu pozele pt galerie
+	     jqCont.recordPics   =  this.get_RecordPics(jqCont);;
 
         return jqCont;
 
@@ -380,7 +414,13 @@ $.extend ( true, ivyMods.blog ,
     },
 
 	 //==========================================================================
-
+	/**
+	 * functie apelata automat
+	 * la incarcarea unui articol
+	 * - testeaza daca s-a incarcat un articol , daca selectia articolului este
+	 * valida
+	 *
+	 */
     onload_article: function(){
 	    var jqCont = {};
 
@@ -388,20 +428,29 @@ $.extend ( true, ivyMods.blog ,
        var article = $(this.sel.article)
        if(article.exists()) {
 
+	        // ia datele despte articol
            jqCont = this.get_containerData(article);
 	        // daca imaginile gasite sunt > 3 atunci
            // le facem thumbnailuri si gallery
            if(jqCont.imgs.length >= 3){
+
 	            // altfel va fi un spatiu gol daca nu sunt poze
-	            jqCont.colectorPics.addClass('space');
+	           jqCont.colectorPics.addClass('space');
 					Galleria.loadTheme('/assets/galleria/themes/classic/galleria.classic.min.js');
+	           // seteaza galeia cu adaugare de thumbnailuri , si create galeria
                this.set_containerPics_galleria(jqCont);
+
+	            // daca exista o astfel de functie declara printr-un js inclus
+	            // va fi apelata ( aici ex: in archivePhotoStory.js
+	            if(typeof this.manageArticle == 'function') {
+		            this.manageArticle(jqCont);
+	            }
            }
 
-	        // set caption for photos
+	        // set caption for photos from alt atribute
 	        this.captionContentPics(jqCont);
 
-	        //resizing pics
+	        //resizing pics - so they mach the design
 	        this.resizeContentPics(jqCont);
 
 	        //resizing iframes
@@ -422,7 +471,6 @@ $.extend ( true, ivyMods.blog ,
 	 onload_articlesBlog: function(blogSet){
 		// blogset = setul de articole , see: blogRecords.html
 
-		//var fancyboxGroup = 1;
       var jqCont = {};
 
 		var articlesBlog = $(this.sel.blogSet(blogSet)+this.sel.articlesBlog);
@@ -437,19 +485,15 @@ $.extend ( true, ivyMods.blog ,
 	           // le facem thumbnailuri si gallery
 	           if(jqCont.imgs.length >= 3){
 		           ivyMods.blog.set_containerPics_galleria(jqCont);
-
-		           //ivyMods.blog.set_containerPics(jqCont, ivyMods.blog.fancyboxGroup);
 	           }
 
               // set caption for photos
-	          ivyMods.blog.captionContentPics(jqCont);
+	           ivyMods.blog.captionContentPics(jqCont);
 
               //resizing iframes
 	           if(jqCont.iframes.length) {
                   ivyMods.blog.resize_iframes(jqCont);
 	           }
-
-              ivyMods.blog.fancyboxGroup++;
           });
       } else {
 //          console.log('no articles from blog found la selectorul '+ this.sel.blogSet(blogSet)+this.sel.articlesBlog);

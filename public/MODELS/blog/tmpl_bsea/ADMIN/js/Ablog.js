@@ -56,7 +56,7 @@ ivyMods.set_iEdit.blog = function(){
             modName: 'blog, handler',
             edit: {
                 attrValue : 'edit article',
-                callback: { fn: ivyMods.blog.adminAuthors,
+                callback: { fn: ivyMods.blog.adminCallback,
                             context: ivyMods.blog
                             //,args : ''
                            }
@@ -145,6 +145,7 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
             // via asset tokeninput
             if(typeof this.authors != 'undefined') {
                 //console.log('adminAuthors pt selectorul = '+this.sel.adminAuthors+' bucati '+$(this.sel.adminAuthors).length);
+
                 $(this.sel.adminAuthors).tokenInput(
                     fmw.ajaxProxy,
                     {   prePopulate: this.authors,
@@ -157,6 +158,10 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
                 console.log("adminAuthors a fost apelata dar se pare ca sunt probleme");
             }
         },
+	    // rescrisa in photoStory pt adaugare de functionalitate
+	     adminCallback : function(){
+	    		this.adminAuthors();
+	     },
         popUpblogSettings: function(){
 
 
@@ -183,6 +188,7 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
                // + "data = "+data + "\n"
             );
         },*/
+
         blogSettings_liveEdit: function(){
 
             iEdit.init.start_iEdit(this.sel.blogSettings);
