@@ -30,39 +30,62 @@ class blog_requestHandler extends ivyModule
 
 
 
-    function get_keyHandler($methodHandles)
+
+    function get_handler($handlers , $handlerKey)
     {
-        $keyHandler  = $_GET['idRec'] ? 'idRec' :  $this->idTree;
 
         // determinam categoria care trebuie listata
-        if (!isset($methodHandles[$keyHandler])) {
+        if (!isset($handlers[$handlerKey])) {
             error_log("[ ivy ] blog_handlers - _handle_requests :"
                      . " Atentie nu a fost setat nici un method handler pentru "
-                     . " idTree = {$this->idTree}"
+                     . " handlerKey = {$handlerKey}"
                      );
             return false;
         }
 
-        error_log("[ ivy ] blog_handlers - _handle_requests :"
-             . " A fost setat method handler = {$methodHandles[$keyHandler]} "
-             . " pentru idTree = {$this->idTree}"
-              );
+        /**
+         * daca s-a cerut un record , reapeleaza functia recursiv
+         * cu key handler pentru record
+         */
+        if (isset($_GET['idRec']) && $handlerKey!='idRec') {
 
-        return $methodHandles[$keyHandler];
+            return $this->get_handler($handlers[$handlerKey], 'idRec');
+
+        } else {
+
+            error_log("[ ivy ] blog_handlers - _handle_requests :"
+                . " A fost setat method handler = {".$handlers[$handlerKey]."} "
+                . " pentru handlerKey = {$handlerKey}"
+            );
+
+            return $handlers[$handlerKey];
+        }
+
 
     }
-    function get_tmplFile($objHandleName, $tmplFiles)
+    function get_tmplFile($handler, $tmplKey = 'tmplFile')
     {
-        $keyTmplFile =   $objHandleName . ( isset($_GET['idRec']) ? $this->idTree : '');
+        /**
+         * Daca avem request de un anumit recType , desi asta nu s-ar intampla
+         * decat daca este cerut un record => in restul cazurilor este inutila
+         */
+        //echo "get_tmplFile";
+        //var_dump($handler);
+        if(isset($_GET['idRec']) && $tmplKey == 'tmplFile' ) {
 
-        if (!isset($tmplFiles[$keyTmplFile])) {
-            error_log("[ ivy ] blog_handlers - _handle_requests :  "
-                       . "Nu exista template_file asociat cu {$keyTmplFile}"
-            );
-            return false;
-        } else {
-            return $tmplFiles[$keyTmplFile];
+            $recType = $this->template_context->format ?: $_GET['recType'];
+            $tmplFile =  $this->get_tmplFile($handler, $tmplKey.'_'.$recType);
+            if($tmplFile) {
+                return $tmplFile;
+            }
         }
+
+        if (!isset($handler[$tmplKey])) {
+            error_log("[ ivy ] blog_handlers - _handle_requests nu exista
+            template file pentru  : $tmplKey " );
+            return false;
+        }
+        return $handler[$tmplKey];
     }
 
     /**
@@ -76,14 +99,30 @@ class blog_requestHandler extends ivyModule
      */
     function _handle_requests()
     {
+       // echo "blog_requestHandler";
+        //var_dump($this->handlers);
 
-        $objHandleName = $this->get_keyHandler($this->methodHandles);
+        /**
+         * Sufixul numelui handlerului
+         */
+        $handler = $this->get_handler($this->handlers, $this->idTree);
+        $objHandleName = $handler['handler'];
+        /**
+         * handlerul este obiectul care se va ocupa de requesturi
+         * ex: blog, archive, home , record = obiecte handler care se ocupa de
+         * - datele necesare afisarii templateului
+         * - de requesturile de delete, add, update ale adminului
+         */
         $this->handler = $this->C->Module_Build_objProp($this,
                                             $this->handlerPrefix.$objHandleName);
 
         if($this->handler) {
+            /**
+             * obiectul la care se va face referire din cadrul templateul
+             * obiectul context ( feature nou - see CrenderTmpl)
+             */
             $this->template_context = $this->handler;
-            $this->template_file    = $this->get_tmplFile($objHandleName, $this->tmplFiles);
+            $this->template_file    = $this->get_tmplFile($handler);
         }
 
     }

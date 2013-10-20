@@ -11,40 +11,28 @@
 .blogRecords .record .blogPrev-lead img,
 .blogRecords .record .blogPrev-content img,
 .SGrecord .lead img,
-.SGrecord-blog .content img
-{
-    width: 100% !important;
-    height: initial !important;
-
-}
+.SGrecord-blog .content img { width: 100% !important; height: initial !important; }
 
 
-.SGrecord .content{
-    font-family: "futura-pt", Arial, sans-serif;
-    font-size: 17px;
-    line-height: 20px;
-    color: #333;
-    font-weight: 200;
-}
-.SGrecord-archive .content  {
-    width: 65%;
-}
+.SGrecord .content{ font-family: "futura-pt", Arial, sans-serif; font-size: 17px; line-height: 20px; color: #333; font-weight: 200; }
+.SGrecord-archive .content  { width: 65%; }
 
-.SGrecord-archive .sideContent {
-    width: 30%;
-    min-height: 500px;
-   /* background: lightblue;*/
-}
+.SGrecord-archive .sideContent { width: 30%; min-height: 500px; /* background: lightblue;*/ }
 
 .SGrecord-archive div[id^="cke_editor_content"]{float: right;}
 .SGrecord-archive div[id^="cke_editor_sideContent"]{float: left;}
 
 
+/*SGrecord-archivePhoto*/
+.SGrecord-archivePhoto .content img{display: none;}
+.SGrecord-archivePhoto .lead img{display: none;}
+form.SGrecord-archivePhoto .ELMcontent .content img{ display: block !important; }
+form.SGrecord-archivePhoto .ELMcontent .lead img{ display: block !important; }
+
+form.SGrecord-archivePhoto .ELMcontent #recordGallery { display: none; }
 .notPublished {text-transform: lowercase !important; color: darkgray; font-style: italic;}
 
-#sharepanel .addthis_toolbox {
-    margin-top: -6px !important;
-}
+#sharepanel .addthis_toolbox { margin-top: -6px !important; }
 
 .ivy-closeButton-canvas{
     background: rgba(255,255,255,0.8);
