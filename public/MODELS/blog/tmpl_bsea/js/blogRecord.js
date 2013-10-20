@@ -336,9 +336,10 @@ $.extend ( true, ivyMods.blog ,
         if(jqCont.liveEditStat == 0) {
             jqCont.imgs.map(function(){
                 var caption = $(this).attr('alt');
+	             var ivyBlog = ivyMods.blog;
                 if(caption) {
                     $(this).after(
-	                    "<div class='"+this.css.cls.picCaption+"'>"
+	                    "<div class='"+ivyBlog.css.cls.picCaption+"'>"
 	                        +caption
 	                    +"</div>"
                     );
@@ -439,13 +440,12 @@ $.extend ( true, ivyMods.blog ,
 					Galleria.loadTheme('/assets/galleria/themes/classic/galleria.classic.min.js');
 	           // seteaza galeia cu adaugare de thumbnailuri , si create galeria
                this.set_containerPics_galleria(jqCont);
-
-	            // daca exista o astfel de functie declara printr-un js inclus
-	            // va fi apelata ( aici ex: in archivePhotoStory.js
-	            if(typeof this.manageArticle == 'function') {
-		            this.manageArticle(jqCont);
-	            }
            }
+	         // daca exista o astfel de functie declara printr-un js inclus
+            // va fi apelata ( aici ex: in archivePhotoStory.js
+            if(typeof this.manageArticle == 'function') {
+	            this.manageArticle(jqCont);
+            }
 
 	        // set caption for photos from alt atribute
 	        this.captionContentPics(jqCont);
