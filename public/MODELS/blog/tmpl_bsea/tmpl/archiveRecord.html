@@ -11,7 +11,7 @@
                 {$co->title}
             </div>
             <div class='imageColumnHead orange space authName'>
-                <a href='$o->authorHref'  class='ib'>{$co->fullName}</a>
+                <a href='$co->authorHref'  class='ib'>{$co->fullName}</a>
                 ".(count($co->authors) == 0 ? '' :
                  $this->Render_itemsFromStr($co->authors,'', "
                     , <a href='~ao->authorHref' class='ib'>{~ao->fullName}</a>
