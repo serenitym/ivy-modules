@@ -68,7 +68,7 @@ $.extend ( true, ivyMods.blog ,
     *  o astfel de functie poate fi creata si pentru alte tipuri
     *  de articole cu ar fi story , multimedia...etc
 	*/
-	manageArticle : function(jqCont){
+	manageArticle_dep : function(jqCont){
 		if(jqCont.imgs.length >= 3){
 			this.archivePhoto_gallery(jqCont);
 		} else {

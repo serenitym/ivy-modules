@@ -123,6 +123,15 @@ class blog_requestHandler extends ivyModule
              */
             $this->template_context = $this->handler;
             $this->template_file    = $this->get_tmplFile($handler);
+
+            $this->C->jsTalk .="
+             if( typeof ivyMods.blog == 'undefined'  ) {
+                 ivyMods.blog = {};
+             }
+              ivyMods.blog.conf = {
+                   templateFile: '".$this->template_file."'
+              };
+           ";
         }
 
     }

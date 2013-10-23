@@ -160,7 +160,14 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
         },
 	    // rescrisa in photoStory pt adaugare de functionalitate
 	     adminCallback : function(){
-	    		this.adminAuthors();
+
+		     this.adminAuthors();
+
+		     /**
+		      * Remove all gallery stuff
+		      */
+		      $('form *[id^=gallery-container]').remove();
+
 	     },
         popUpblogSettings: function(){
 
