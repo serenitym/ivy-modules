@@ -34,3 +34,9 @@ form.SGrecord-archivePhoto .ELMcontent #recordGallery { display: none; }
 
 #sharepanel .addthis_toolbox { margin-top: -6px !important; }
 
+.ivy-closeButton-canvas{
+    background: rgba(255,255,255,0.8);
+    height: 27px;
+    padding: 3px 0px 0px 0px;
+    border-radius: 5px;
+}
