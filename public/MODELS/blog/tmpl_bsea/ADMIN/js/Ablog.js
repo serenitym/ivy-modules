@@ -131,7 +131,8 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
             blogFormats: "*[$=formats]",
             blogFormat: "*[$=format-container]",
             blogFormat_name: "format-container",
-            blogSettings: '.blogSettings'
+            blogSettings: '.blogSettings',
+	         adminAuthors: 'form #adminAuthors'
         },
 
 	     confirmDelete: function(){
@@ -144,7 +145,9 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
         adminAuthors: function() {
             // via asset tokeninput
             if(typeof this.authors != 'undefined') {
-                //console.log('adminAuthors pt selectorul = '+this.sel.adminAuthors+' bucati '+$(this.sel.adminAuthors).length);
+                console.log('adminAuthors pt selectorul = '
+	                + this.sel.adminAuthors
+	                +' bucati '+$(this.sel.adminAuthors).length);
 
                 $(this.sel.adminAuthors).tokenInput(
                     fmw.ajaxProxy,
@@ -166,6 +169,7 @@ if( typeof ivyMods.blog!= 'undefined'  ) {
 		     /**
 		      * Remove all gallery stuff
 		      */
+		     console.log("Here in adminCallback");
 		      $('form *[id^=gallery-container]').remove();
 
 	     },
