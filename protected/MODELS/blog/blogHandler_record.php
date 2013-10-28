@@ -116,6 +116,7 @@ class blogHandler_record extends ivyModule_objProperty
     }
     function record_setData()
     {
+
         $sql                = $this->baseQuery->Get_queryRecord();
         $this->record       = $this->C->Db_Set_procModProps($this, '_hookRow_record', $sql->fullQuery);
         $this->record_SetDataRelated();

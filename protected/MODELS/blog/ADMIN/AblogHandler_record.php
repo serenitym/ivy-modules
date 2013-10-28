@@ -291,7 +291,7 @@ class AblogHandler_record extends blogHandler_record
     {
 
         $posts = &$this->posts;
-        //echo "AblogHandler_record - updateRecord()";
+       // echo "AblogHandler_record - updateRecord()";
         //var_dump($posts);
         //=================================[ update tags ]======================
         if (isset($posts->recordTags) && is_array($posts->recordTags)) {
@@ -339,11 +339,11 @@ class AblogHandler_record extends blogHandler_record
 
         }
 
-        /*var_dump($_POST);
+        var_dump($_POST);
          foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }
-        return false;*/
+        return false;
 
         $this->C->Db_queryBulk($queries, false);
         return true;
