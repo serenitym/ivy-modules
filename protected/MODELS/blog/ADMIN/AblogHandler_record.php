@@ -339,11 +339,11 @@ class AblogHandler_record extends blogHandler_record
 
         }
 
-        var_dump($_POST);
+        /*var_dump($_POST);
          foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }
-        return false;
+        return false;*/
 
         $this->C->Db_queryBulk($queries, false);
         return true;
