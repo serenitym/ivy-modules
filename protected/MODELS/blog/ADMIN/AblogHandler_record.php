@@ -236,8 +236,9 @@ class AblogHandler_record extends blogHandler_record
         }
         // preia datele din post
         $postsConf =&$this->blog->posts_updateRecord;
-        $this->posts = handlePosts::Get_postsFlexy($postsConf, '', true);
+        $this->posts = handlePosts::Get_postsFlexy($postsConf, '', false);
 
+        //var_dump($this->posts);
         // nu mai are rost sa procesam datele daca sunt invalide
         if (!$this->updateRecord_validData($this->posts, $postsConf)) {
             return false;
@@ -305,7 +306,7 @@ class AblogHandler_record extends blogHandler_record
         $queries = array();
         //==============================[ update main blogRecords ]=============
         $columns = 'idCat, title, content, lead, sideContent, leadSec, city, country';
-        $sets = handlePosts::Db_Get_setString($this->posts, $columns);
+        $sets = handlePosts::Db_Get_setString($this->posts, $columns, false);
         $query = "UPDATE blogRecords SET {$sets}
                   WHERE idRecord = '{$posts->idRecord}' ";
         $queries['blogRecords'] = $query;
@@ -339,7 +340,7 @@ class AblogHandler_record extends blogHandler_record
 
         }
 
-        /*var_dump($_POST);
+       /* var_dump($this->posts);
          foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }
