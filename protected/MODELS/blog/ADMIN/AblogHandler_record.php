@@ -309,7 +309,7 @@ class AblogHandler_record extends blogHandler_record
         $sets = handlePosts::Db_Get_setString($this->posts, $columns);
         $query = "UPDATE blogRecords SET {$sets}
                   WHERE idRecord = '{$posts->idRecord}' ";
-        $queries['blogRecords'] = $query;
+        $queries['blogRecords_req'] = $query;
 
         error_log("[ ivy ] blog_dbHandlers blogRecords query = ".$query);
 
@@ -349,11 +349,11 @@ class AblogHandler_record extends blogHandler_record
 
         }
 
-       /* var_dump($this->posts);
+        /*var_dump($this->posts);
          foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
-        }
-        return false;*/
+        }*/
+        //return false;
 
         $this->C->Db_queryBulk($queries, false);
         return true;
