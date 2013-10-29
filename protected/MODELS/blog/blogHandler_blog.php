@@ -60,8 +60,17 @@ class blogHandler_blog extends ivyModule_objProperty
          * + fullName
          * + tagsName
          */
-        $row['record_href'] = $this->rowDb->Get_record_href($row);
-        $row['tags']        = $this->rowDb->Get_tagsArray($row['tagsName']);
+        if(!$row['leadSec']){
+            $row['leadPrev']    =  $row['lead'];
+            $row['contentPrev'] = $row['content'];
+        } else {
+            $row['leadPrev']    =  $row['leadSec'];
+            $row['contentPrev'] = $row['lead'] . ' ' .$row['content'];
+        }
+
+
+        $row['record_href']     = $this->rowDb->Get_record_href($row);
+        $row['tags']            = $this->rowDb->Get_tagsArray($row['tagsName']);
         if(isset($this->tree[$row['idCat']])) {
             $row['catResFile']  = $this->tree[$row['idCat']]->resFile;
         }
