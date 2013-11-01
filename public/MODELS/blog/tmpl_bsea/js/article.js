@@ -135,8 +135,8 @@ ivyMods.blogArticle = function(jqContainer){
 				  * adauga butonul de closeGalleria care va face remove la tot domul de galleria
 				  */
 				 this.jq.prepend(
-					 "<div class='ivy-closeButton-canvas'>" +
-						 "<input type='button' class='ivy-light' value='close' id='galleria-close'" +
+					 "<div class='galleria-bar-close'>" +
+						 "<input type='button' class='' value='close' id='galleria-close'" +
 						 " onclick=\"$('#galleria-container').remove();\">" +
 					 "</div>"
 				 );
@@ -202,9 +202,11 @@ ivyMods.blogArticle = function(jqContainer){
 		        basePathPic : "/RES/uploads/images/",
 		        thumbPathPic : "/RES/uploads/.thumbs/images/",
 		        colectorPics : '*[class$=thumbRecordPics]',
-			     sideContent:      "*[class$=sideContent]",
-		        imgs:          '*[class$=lead] img, *[class$=content] img',
-		        iframes:       '*[class$=lead] iframe, *[class$=content] iframe',
+			     sideContent:      "*[class$=pulledQuotes]",
+				  containers:    '*[class$=lead] , *[class$=content]',
+				// [class^=EDeditor] inportant deoarece altfel va face ref la ELMcontent
+		        imgs:          '*[class$=lead] img, *[class$=content]:not(.ELMcontent) img',
+		        iframes:       '*[class$=lead] iframe, *[class$=content]:not(.ELMcontent) iframe',
 		        article:       'div[class$=SGrecord]',
 		        articlesBlog:  'div[class~=blogPrevRec]',
 			     blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
@@ -219,10 +221,12 @@ ivyMods.blogArticle = function(jqContainer){
 
    //deduse
 	var jq           =  jqContainer;
+	var containers   =  jqContainer.find(sel.containers).not('.ELMcontent');
+	//alert('containers = ' + containers.length  );
 	 // imaginile din interiorul contentului si leadului
-	var imgs         =  jqContainer.find(sel.imgs);
+	var imgs         =  containers.find('img');
 	 // iframeurile din content si lead ex: youtube etc..
-	var iframes      =  jqContainer.find(sel.iframes);
+	var iframes      =  containers.find('iframe');
 	 // unde anume vor fi puse imaginile thumbnal
 	var colectorPics =  jqContainer.find(sel.colectorPics);
 	 // jqCont.gallery    =  jqContainer.find(this.sel.gallery);
@@ -337,7 +341,7 @@ ivyMods.blogArticle = function(jqContainer){
         //console.log("containerWidth " + containerWidth );
         imgs.map(function()
         {
-            //console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
+            console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
             $(this).css('height','initial');
 	         $(this).width(containerWidth);
 	         $(this).addClass('pull-right');

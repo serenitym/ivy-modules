@@ -15,7 +15,7 @@ $.extend ( true, ivyMods.blog ,
 	    blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
 
 	    records: "*[class$=SGrecord] , *[class$=record]",
-       recordArchive_content: "*[class~=SGrecord-archive] *[class$=content]",
+       recordArchive_content: "*[class~=SGrecord-archive] *[class$=content]:not(.ELMcontent)",
        selectedFilters : 'filters-selected',
        hoverFilters : 'filters-hover',
        filtersPanel: function(filterId) {return "#" + filterId + "_panel"; }
@@ -154,7 +154,7 @@ $.extend ( true, ivyMods.blog ,
         // ia datele despte articol
 		 var jqCont = new ivyMods.blogArticle(article);
         // incarca galleria
-        Galleria.loadTheme('/assets/galleria/themes/classic/galleria.classic.min.js');
+        Galleria.loadTheme('/assets/galleria/themes/twelve/galleria.twelve.min.js');
 
        /**
         * daca imaginile gasite sunt > 3 atunci  le facem thumbnailuri si gallery
@@ -216,7 +216,8 @@ $.extend ( true, ivyMods.blog ,
        if(articlesBlog.length == 0) {
 	       return ;
        }
-       Galleria.loadTheme('/assets/galleria/themes/classic/galleria.classic.min.js');
+       Galleria.loadTheme('/assets/galleria/themes/twelve/galleria.twelve.min.js');
+       //Galleria.loadTheme('/assets/galleria/themes/classic/classic.twelve.min.js');
 
        articlesBlog.map(function()
        {

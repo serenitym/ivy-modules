@@ -17,10 +17,10 @@
 .SGrecord .content{ font-family: "futura-pt", Arial, sans-serif; font-size: 17px; line-height: 20px; color: #333; font-weight: 200; }
 .SGrecord-archive .content  { width: 65%; }
 
-.SGrecord-archive .sideContent { width: 30%; min-height: 500px; /* background: lightblue;*/ }
+.SGrecord-archive .pulledQuotes { width: 30%; min-height: 500px; /* background: lightblue;*/ }
 
 .SGrecord-archive div[id^="cke_editor_content"]{float: right;}
-.SGrecord-archive div[id^="cke_editor_sideContent"]{float: left;}
+.SGrecord-archive div[id^="cke_editor_pulledQuotes"]{float: left;}
 
 
 /*SGrecord-archivePhoto*/
