@@ -76,7 +76,7 @@ ivyMods.blogArticle = function(jqContainer){
 
 			 colectorPics.find("a").on('click', function(){
 
-				 // =========================[ construieste dom-ul pt galleria ]=======
+				 // =========================[ construieste dom-ul pt galleria ]====
 				 /**
 				  * Testeaza si retine cea mai mare inaltime
 				  * ( intre cea a browserului si cea a lui body)
@@ -97,7 +97,7 @@ ivyMods.blogArticle = function(jqContainer){
 	          );
 
 
-				 //==============================[ start galleria ]====================
+				 //==============================[ start galleria ]=================
 				 /**
 				  * Apeleaza si configureaza galeria
 				  * - sa porneasca de la imaginea care a fost apasata
@@ -110,12 +110,14 @@ ivyMods.blogArticle = function(jqContainer){
 				 });
 
 				 Galleria.run('#galleria',{
-					 dataSource: '#'+galleriaID
+					 dataSource: '#'+galleriaID,
+					 imageCrop: false,
+					 fullscreenCrop: false
+
 				 });
 
-
 				 /**
-				  * ==========================[resize galleria]======================
+				  * ==========================[resize galleria]=====================
 				 *  cumva nu imi merge functia asta nu stiu de ce???
 				 */
 				 this.jq = $('#galleria');
@@ -192,45 +194,43 @@ ivyMods.blogArticle = function(jqContainer){
 	// ============================[ properties and collections of props ]=======
 
 	//defaults
-	var css =  {cls: {
-						picCaption: 'storyCaption'
-				   },
-				   ids: {}
-					};
+	var css =  {
+		cls: { picCaption: 'storyCaption' },
+	   ids: {}
+	};
 	var limitSet = 10;
 	var sel =  {
-		        basePathPic : "/RES/uploads/images/",
-		        thumbPathPic : "/RES/uploads/.thumbs/images/",
-		        colectorPics : '*[class$=thumbRecordPics]',
-			     sideContent:      "*[class$=pulledQuotes]",
-				  containers:    '*[class$=lead] , *[class$=content]',
-				// [class^=EDeditor] inportant deoarece altfel va face ref la ELMcontent
-		        imgs:          '*[class$=lead] img, *[class$=content]:not(.ELMcontent) img',
-		        iframes:       '*[class$=lead] iframe, *[class$=content]:not(.ELMcontent) iframe',
-		        article:       'div[class$=SGrecord]',
-		        articlesBlog:  'div[class~=blogPrevRec]',
-			     blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
-		      //  gallery :      '*[class$=thumbRecordPics] a.fancybox',
-		        galleria :      '*[class$=thumbRecordPics]',
-		        liveEdit:      '.ELMcontent',
-		        adminAuthors: 'form #adminAuthors',
-			     getNext_blogRecords: "input[class$=getNext_blogRecords]",
-			     content: "*[class$=content]"
-
-		    };
+        basePathPic : "/RES/uploads/images/",
+        thumbPathPic : "/RES/uploads/.thumbs/images/",
+        colectorPics : '*[class$=thumbRecordPics]',
+	     sideContent:      "*[class$=pulledQuotes]",
+		  containers:    '*[class$=lead] , *[class$=content]',
+		// [class^=EDeditor] inportant deoarece altfel va face ref la ELMcontent
+        imgs:          '*[class$=lead] img, *[class$=content]:not(.ELMcontent) img',
+        iframes:       '*[class$=lead] iframe, *[class$=content]:not(.ELMcontent) iframe',
+        article:       'div[class$=SGrecord]',
+        articlesBlog:  'div[class~=blogPrevRec]',
+	     blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
+      //  gallery :      '*[class$=thumbRecordPics] a.fancybox',
+        galleria :      '*[class$=thumbRecordPics]',
+        liveEdit:      '.ELMcontent',
+        adminAuthors: 'form #adminAuthors',
+	     getNext_blogRecords: "input[class$=getNext_blogRecords]",
+	     content: "*[class$=content]"
+   };
 
    //deduse
 	var jq           =  jqContainer;
 	var containers   =  jqContainer.find(sel.containers).not('.ELMcontent');
 	//alert('containers = ' + containers.length  );
-	 // imaginile din interiorul contentului si leadului
+	// imaginile din interiorul contentului si leadului
 	var imgs         =  containers.find('img');
-	 // iframeurile din content si lead ex: youtube etc..
+	// iframeurile din content si lead ex: youtube etc..
 	var iframes      =  containers.find('iframe');
-	 // unde anume vor fi puse imaginile thumbnal
+	// unde anume vor fi puse imaginile thumbnal
 	var colectorPics =  jqContainer.find(sel.colectorPics);
-	 // jqCont.gallery    =  jqContainer.find(this.sel.gallery);
-	 // id-ul galleriei din cadrul containerului
+	// jqCont.gallery    =  jqContainer.find(this.sel.gallery);
+	// id-ul galleriei din cadrul containerului
 	var galleriaID   =  jqContainer.find(sel.galleria).attr('id');
 	var liveEditStat =  jqContainer.find(sel.liveEdit).length;
 	// preia json cu pozele pt galerie
@@ -296,7 +296,6 @@ ivyMods.blogArticle = function(jqContainer){
 				});
 		   }
 		},
-
 	   /**
 	 * pune aturile imaginilor ca si captions
 	 * accordtin to design si doar daca nu suntem in liveEdit mode
@@ -348,6 +347,5 @@ ivyMods.blogArticle = function(jqContainer){
 
         });
     },
-
 	}
 };
