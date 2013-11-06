@@ -212,8 +212,7 @@ class AblogHandler_record extends blogHandler_record
          * data publicarii
          */
         if(!$this->user->rights['article_edit']) {
-           unset($_POST['css']);
-           unset($_POST['js']);
+           unset($_POST['scripts']);
            unset($_POST['publishDate']);
 
         } else {
@@ -314,7 +313,7 @@ class AblogHandler_record extends blogHandler_record
         error_log("[ ivy ] blog_dbHandlers blogRecords query = ".$query);
 
         //==============================[ update main blogRecords ]=============
-        $columns = ' content, lead, sideContent, leadSec, city, country';
+        $columns = ' content, lead, sideContent, leadSec, city, country, scripts';
         $sets = handlePosts::Db_Get_setString($this->posts, $columns, false);
         $query = "UPDATE blogRecords SET {$sets}
                   WHERE idRecord = '{$posts->idRecord}' ";
@@ -350,7 +349,8 @@ class AblogHandler_record extends blogHandler_record
         }
 
         /*var_dump($this->posts);
-         foreach($queries AS $table => $query) {
+        print_r($queries);*/
+         /*foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }*/
         //return false;

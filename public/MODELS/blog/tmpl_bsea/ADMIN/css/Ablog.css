@@ -12,10 +12,11 @@
     .leadSec{ height: 70px; width: 180px;}
 
 .SGrecord {/*width: 1000px;*/ position: relative;}
-.SGrecord .title{width: 100%;}
+.SGrecord .title{width: 99%;}
 .SGrecord .lead{min-height: 90px;}
 .SGrecord .content{min-height: 500px;}
 .SGrecord .recordTags{width: 220px;}
+.SGrecord .scripts{width: 600px; height: 300px; white-space: nowrap;}
 
 
 /*==================[ archive ]===========================*/
