@@ -20,12 +20,17 @@ ivyMods.blogArticle = function(jqContainer){
       var alt = '';
       var srcBig = '';
 
+      //imgs.attr('exif', 'true').exifLoad();
+
       imgs.map(function()
       {
           //console.log(" img = "+ $(this).attr('src'));
           srcBig = $(this).attr('src');
           src    = srcBig.replace(sel.basePathPic, sel.thumbPathPic);
           alt    = $(this).attr('alt');
+
+          model  = $(this).exifSingle('Model');
+            console.log("Model is: " + model);
 
           recordPics.push( {srcBig: srcBig, src: src, alt: alt} );
       });

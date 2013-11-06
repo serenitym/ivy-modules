@@ -2,8 +2,8 @@
 /**
  * PHP Version 5.3+
  *
- * @category 
- * @package 
+ * @category
+ * @package
  * @author Ioana Cristea <ioana@serenitymedia.ro>
  * @copyright 2010 Serenity Media
  * @license http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
@@ -51,27 +51,20 @@ class blog_rowDb
          }
     }
     function Get_recordPics(&$row)                  {
-       // preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches);
-        //preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $row['content'], $matches);
         preg_match_all('/(?<=\<img).+src=[\'"]([^\'"]+)/i', $row['content'], $matches);
-        //echo "<b>Get_record_mainPic : matches </b>";
-        //var_dump($matches);
         return $matches;
-
     }
+
     function Get_record_mainPic(&$row)              {
          #====================================[ main Pic ]===========================================================================
-        /*$row['record_mainPic_src'] = preg_match_all("/<img\b[^>]+?src\s*=\s*[\'\"]?([^\s\'\"?\#>]+).*\/>/", $row['content'], $matches)
-                                 ? $matches[1][0]
-                                 : "";*/
+
         $matches = $this->Get_recordPics($row);
-
         if ($matches[1]) {
-            return  $matches[1][0];
+            return  str_replace('uploads/', 'uploads/.thumbs/', $matches[1][0]);
         }
-
         # echo $row['title']."<br>".var_dump($matches)."<br>";
     }
+
     function Get_record_href(&$row)                 {
 
        return "index.php?idT={$row['idTree']}".
