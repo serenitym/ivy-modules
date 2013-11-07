@@ -43,6 +43,7 @@ class blog_baseQuery extends ivyModule_objProperty
                      sideContent,
                      lead,
                      leadSec,
+                     scripts,
                      country,
                      city,
                      entryDate,
