@@ -348,8 +348,8 @@ class AblogHandler_record extends blogHandler_record
 
         }
 
-        /*var_dump($this->posts);
-        print_r($queries);*/
+        //var_dump($this->posts);
+        //print_r($queries);
          /*foreach($queries AS $table => $query) {
             echo "<br><br><b>table = $table query = </b> <br> $query ";
         }*/

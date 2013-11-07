@@ -1,7 +1,9 @@
 ".(isset($_SESSION['activeEdit'])
     ? (!$co->scripts ? '' :
         "<div class='block space' style='color: grey;'><p>Your scripts are not available because you are in <b> Edit mode</b> !</p></div>")
-    : $co->scripts
+    :   "<script type='text/javascript'>
+                ".$co->scripts."
+         </script>"
 )."
 <div class='{$co->ED}SING block space SGrecord-archive SGrecord' id='SGrecord_{$co->idRecord}_{$o->lang}' >
         ".(!$this->admin ? '' :
