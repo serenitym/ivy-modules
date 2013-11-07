@@ -62,12 +62,15 @@ category - poate daca vrei sa il muti in alta categorie
                     {$co->publishDate}
                 </div>
             </div>
+        ")."
+
+        ".(!$o->user->rights['article_edit'] ? '' : "
             <div class='admin-extra' >
-                <div> Scripts </div>
-                <textarea name='scripts' class='scripts' >
-                    {$co->scripts}
-                </textarea>
-            </div>
+               <div> Scripts </div>
+               <textarea name='scripts' class='scripts' >
+                   {$co->scripts}
+               </textarea>
+           </div>
         ")."
 
 

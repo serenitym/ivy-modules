@@ -16,7 +16,7 @@
 .SGrecord .lead{min-height: 90px;}
 .SGrecord .content{min-height: 500px;}
 .SGrecord .recordTags{width: 220px;}
-.SGrecord .scripts{width: 600px; height: 300px; white-space: nowrap;}
+.SGrecord .scripts{width: 600px; height: 300px; white-space: nowrap;overflow-y: scroll !important;}
 
 
 /*==================[ archive ]===========================*/
