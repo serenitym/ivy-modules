@@ -9,6 +9,7 @@
 ivyMods.blogArticle = function(jqContainer){
 
 	// ============================[ methods or collection of methods ]==========
+
 	/**
 	 * returneaza un array cu datele despre imaginile gasite in content
 	 * @param jqCont
@@ -20,20 +21,22 @@ ivyMods.blogArticle = function(jqContainer){
       var alt = '';
       var srcBig = '';
 
-      //imgs.attr('exif', 'true').exifLoad();
+      imgs.map(function(){
 
-      imgs.map(function()
-      {
-          //console.log(" img = "+ $(this).attr('src'));
-          srcBig = $(this).attr('src');
-          src    = srcBig.replace(sel.basePathPic, sel.thumbPathPic);
-          alt    = $(this).attr('alt');
+		       srcBig = $(this).attr('src');
+             src    = srcBig.replace(sel.basePathPic, sel.thumbPathPic);
+             alt    = $(this).attr('alt');
+		       console.log(" 1img = "+ $(this).attr('src')
+              +  ' '
+              + ' sel.basePathPic = '
+              + sel.basePathPic
+             );
 
-          model  = $(this).exifSingle('Model');
-            console.log("Model is: " + model);
+             recordPics.push( {srcBig: srcBig, src: src, alt: alt} );
 
-          recordPics.push( {srcBig: srcBig, src: src, alt: alt} );
-      });
+	      });
+		//alert(recordPics.length);
+
       /*var test = '';
       alert(recordPics.length);
       for( var key in recordPics) test += recordPics[key]+'\n\n';
@@ -101,7 +104,6 @@ ivyMods.blogArticle = function(jqContainer){
 	             "</div>"
 	          );
 
-
 				 //==============================[ start galleria ]=================
 				 /**
 				  * Apeleaza si configureaza galeria
@@ -118,7 +120,6 @@ ivyMods.blogArticle = function(jqContainer){
 					 dataSource: '#'+galleriaID,
 					 imageCrop: false,
 					 fullscreenCrop: false
-
 				 });
 
 				 /**
@@ -127,7 +128,7 @@ ivyMods.blogArticle = function(jqContainer){
 				 */
 				 this.jq = $('#galleria');
 
-				// galleria.popupMetrics();
+				 // galleria.popupMetrics();
 				 var marginLeft = this.jq.width() / 2;
 
 				 var scrollTop = $(window).scrollTop();
@@ -135,7 +136,6 @@ ivyMods.blogArticle = function(jqContainer){
 
 				 this.jq.css('margin-left', marginLeft);
 				 this.jq.css('top', top);
-
 
 				 /**
 				  * close button
@@ -239,7 +239,7 @@ ivyMods.blogArticle = function(jqContainer){
 	var galleriaID   =  jqContainer.find(sel.galleria).attr('id');
 	var liveEditStat =  jqContainer.find(sel.liveEdit).length;
 	// preia json cu pozele pt galerie
-	var recordPics   =  get_RecordPics();
+	var recordPics = get_RecordPics();
 
 	//=========================== [public properties and methods]================
 	return {
@@ -351,6 +351,6 @@ ivyMods.blogArticle = function(jqContainer){
 	         $(this).addClass('pull-right');
 
         });
-    },
+    }
 	}
 };

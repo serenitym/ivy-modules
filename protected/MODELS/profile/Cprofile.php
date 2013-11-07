@@ -46,6 +46,7 @@ class Cprofile extends Cuser{
         //echo "Cprofile query = $queryProfile <br>";
 
         $profile =$this->C->Db_Get_procRows($this, '_hookRow_userData', $queryProfile);
+
         $this->profile =  (object) $profile[0];
 
 
@@ -73,7 +74,12 @@ class Cprofile extends Cuser{
     // about page
     function _hookRow_aboutData($row)
     {
+        $dbStrings = array('uploads/', '.png', '.jpg', '.PNG', '.JPG');
+        $replacementStrings = array('uploads/.thumbs/', '_300x250.png', '_300x250.jpg', '_300x250.PNG', '_300x250.JPG');
+
+        $row['photo'] = str_replace($dbStrings, $replacementStrings, $row['photo']);
         $row['hrefProfile'] = "?idT={$this->idTree}&idC={$this->idNode}&uid=".$row['uid'];
+
         return $row;
     }
 

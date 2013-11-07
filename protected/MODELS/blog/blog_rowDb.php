@@ -60,7 +60,10 @@ class blog_rowDb
 
         $matches = $this->Get_recordPics($row);
         if ($matches[1]) {
-            return  str_replace('uploads/', 'uploads/.thumbs/', $matches[1][0]);
+            $path = pathinfo($matches[1][0]);
+            $thumbnail = $path['dirname'] . '/'
+                       . $path['filename'] . '_300x250.' . $path['extension'];
+            return  str_replace('uploads/', 'uploads/.thumbs/', $thumbnail);
         }
         # echo $row['title']."<br>".var_dump($matches)."<br>";
     }

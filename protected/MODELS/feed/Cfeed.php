@@ -53,7 +53,7 @@ class Cfeed
             and photo-reportage.';
         $properties['link']='http://theblacksea.eu/';
         $properties['title']='The Black Sea';
-        $properties['dc:date']='2002-05-06T00:00:00Z';
+        //$properties['dc:date']='2002-05-06T00:00:00Z';
         $this->rss_writer_object->addchannel($properties);
 
         /*
@@ -72,7 +72,7 @@ class Cfeed
          *  Then add your channel items one by one.
          */
 
-        $this->populateFeed(50);
+        $this->populateFeed(15);
 
         /*
          *  If your channel has a search page, after adding the channel items, specify a search form details this way.
@@ -125,10 +125,16 @@ class Cfeed
 
         while($row = $result->fetch_array()) {
             $properties=array();
-            $properties['description']=$row['content'];
-            $properties['link']='http://theblacksea.eu/index.php?idT='.$row['idTree'].'&idC='.$row['idCat'].'&idRec='.$row['idRecord'];
-            $properties['title']=$row['title'];
-            $properties['dc:date']='2002-05-06T00:00:00Z';
+            $properties['description'] = $row['content'];
+            $properties['link']        = 'http://theblacksea.eu/index.php?idT = '
+                                        .$row['idTree'].'&idC = '
+                                        .$row['idCat'].'&idRec = '
+                                        .$row['idRecord'];
+            $properties['title']       = $row['title'];
+            //$properties['dc:date']     = '2002-05-06T00:00:00Z';
+            //$properties['dc:date']     = $row['publishDate'] . 'T00:00:00Z';
+            $properties['dc:date']     = $row['publishDate'];
+
             $this->rss_writer_object->additem($properties);
         }
     }

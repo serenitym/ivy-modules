@@ -8,7 +8,11 @@ if( typeof ivyMods.blog == 'undefined'  ) {
 $.extend ( true, ivyMods.blog ,
 {
  	 limitSet : 10,
+	 templates: {
+		subscribeForm:  "fw/MODELS/blog/tmpl_bsea/tmpl/subscribeFormular.html"
+	 },
     sel      : {
+	    subscribeBtt: '#subscribeBsea',
        article:       'div[class$=SGrecord]',
        articlesBlog:  'div[class~=blogPrevRec]',
        getNext_blogRecords: "input[class$=getNext_blogRecords]",
@@ -260,8 +264,20 @@ $.extend ( true, ivyMods.blog ,
 		this.bindsFilters();
 	 },
 
+	 subscribeButton : function(){
+		 $(ivyMods.blog.sel.subscribeBtt).bind('click',
+			 function(){
+				 //alert('butonul de subscribe a fost apasat');
+			  fmw.popUp.init({
+            pathGet:  ivyMods.blog.templates.subscribeForm,
+            headerName: "Newsletter subscribe",
+            widthPop: 350
+         });
+		 });
+	 },
 	 onload_home: function(){
 		 this.resizeTumbs_archive();
+		 this.subscribeButton();
 	 },
 
     init: function(){
