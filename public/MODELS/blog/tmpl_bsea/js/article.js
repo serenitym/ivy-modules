@@ -1,15 +1,6 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: ioana
- * Date: 10/22/13
- * Time: 5:45 PM
- * To change this template use File | Settings | File Templates.
- */
-
 ivyMods.blogArticle = function(jqContainer){
 
 	// ============================[ methods or collection of methods ]==========
-
 	/**
 	 * returneaza un array cu datele despre imaginile gasite in content
 	 * @param jqCont
@@ -36,7 +27,6 @@ ivyMods.blogArticle = function(jqContainer){
 
 	      });
 		//alert(recordPics.length);
-
       /*var test = '';
       alert(recordPics.length);
       for( var key in recordPics) test += recordPics[key]+'\n\n';
@@ -44,8 +34,13 @@ ivyMods.blogArticle = function(jqContainer){
       */
       return recordPics;
 	};
+	var set_recordPicsExif = function(){
+
+
+	};
 	var galleria = {
 		jq: {},
+
 		metrics: function(article){
 			var  metrics = {};
 			metrics.width  = article.width();
@@ -59,6 +54,7 @@ ivyMods.blogArticle = function(jqContainer){
 			}
 
 		},
+
 		refreshMetrics: function(article){
 
 			var metrics = this.metrics(article);
@@ -66,6 +62,7 @@ ivyMods.blogArticle = function(jqContainer){
 				$(this).widthHeight(metrics.width, metrics.height);
 			});
 		},
+
 		popupMetrics : function(){
 
 			/*alert('a ajuns pana aici ');*/
@@ -153,6 +150,7 @@ ivyMods.blogArticle = function(jqContainer){
 
 			 });
 		},
+
 		get_tmplThumbPics : function() {
 
 		    /**
@@ -183,6 +181,7 @@ ivyMods.blogArticle = function(jqContainer){
 	        //alert(htmlPics);
 	        return htmlPics;
       },
+
 		set_thumbPics: function(){
 
 	     // seteaza html-ul pozelor
@@ -193,16 +192,11 @@ ivyMods.blogArticle = function(jqContainer){
 	        .append(htmlThumbPics).find('*[class^=container-photoThumbs]:gt(8)').hide();
 
       }
-
 	};
 
 	// ============================[ properties and collections of props ]=======
-
 	//defaults
-	var css =  {
-		cls: { picCaption: 'storyCaption' },
-	   ids: {}
-	};
+	var css =  { cls: { picCaption: 'storyCaption' }, ids: {} };
 	var limitSet = 10;
 	var sel =  {
         basePathPic : "/RES/uploads/images/",
@@ -210,13 +204,13 @@ ivyMods.blogArticle = function(jqContainer){
         colectorPics : '*[class$=thumbRecordPics]',
 	     sideContent:      "*[class$=pulledQuotes]",
 		  containers:    '*[class$=lead] , *[class$=content]',
-		// [class^=EDeditor] inportant deoarece altfel va face ref la ELMcontent
+		  //[class^=EDeditor] inportant deoarece altfel va face ref la ELMcontent
         imgs:          '*[class$=lead] img, *[class$=content]:not(.ELMcontent) img',
         iframes:       '*[class$=lead] iframe, *[class$=content]:not(.ELMcontent) iframe',
         article:       'div[class$=SGrecord]',
         articlesBlog:  'div[class~=blogPrevRec]',
 	     blogSet:       function(blogSet){return '*[class^=blogSet_'+blogSet+'] '; },
-      //  gallery :      '*[class$=thumbRecordPics] a.fancybox',
+        // gallery :      '*[class$=thumbRecordPics] a.fancybox',
         galleria :      '*[class$=thumbRecordPics]',
         liveEdit:      '.ELMcontent',
         adminAuthors: 'form #adminAuthors',
@@ -224,7 +218,7 @@ ivyMods.blogArticle = function(jqContainer){
 	     content: "*[class$=content]"
    };
 
-   //deduse
+   //obtained
 	var jq           =  jqContainer;
 	var containers   =  jqContainer.find(sel.containers).not('.ELMcontent');
 	//alert('containers = ' + containers.length  );
@@ -234,16 +228,14 @@ ivyMods.blogArticle = function(jqContainer){
 	var iframes      =  containers.find('iframe');
 	// unde anume vor fi puse imaginile thumbnal
 	var colectorPics =  jqContainer.find(sel.colectorPics);
-	// jqCont.gallery    =  jqContainer.find(this.sel.gallery);
 	// id-ul galleriei din cadrul containerului
 	var galleriaID   =  jqContainer.find(sel.galleria).attr('id');
 	var liveEditStat =  jqContainer.find(sel.liveEdit).length;
 	// preia json cu pozele pt galerie
-	var recordPics = get_RecordPics();
+	var recordPics   = get_RecordPics();
 
 	//=========================== [public properties and methods]================
 	return {
-
 		htmlThumbPics: '',
 	   jq: jq,
 	   imgs : imgs,
@@ -302,10 +294,10 @@ ivyMods.blogArticle = function(jqContainer){
 		   }
 		},
 	   /**
-	 * pune aturile imaginilor ca si captions
-	 * accordtin to design si doar daca nu suntem in liveEdit mode
-	 * @param jqCont
-	 */
+	   * set alt atribute as caption for images according to the design
+	   * and only if the site is not in liveEdit state
+	   * @param jqCont
+	   */
       captionContentPics: function(){
 
         if(liveEditStat != 0) return;
@@ -345,7 +337,7 @@ ivyMods.blogArticle = function(jqContainer){
         //console.log("containerWidth " + containerWidth );
         imgs.map(function()
         {
-            console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
+            console.log('counter = ' + counter + "imagine width " + $(this).attr('src') + ' = ' + $(this).width());
             $(this).css('height','initial');
 	         $(this).width(containerWidth);
 	         $(this).addClass('pull-right');

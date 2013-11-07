@@ -1,9 +1,7 @@
+var art = {};
 if( typeof ivyMods.blog == 'undefined'  ) {
-    ivyMods.blog = {
-	    conf: { templateFile: ''}
-    };
+    ivyMods.blog = { conf: { templateFile: ''} };
 }
-
 
 $.extend ( true, ivyMods.blog ,
 {
@@ -24,20 +22,16 @@ $.extend ( true, ivyMods.blog ,
        hoverFilters : 'filters-hover',
        filtersPanel: function(filterId) {return "#" + filterId + "_panel"; }
     },
-
 	 asyncRecords     : new fmw.asyncConf({
 		restoreCore: true,
-		dataSend: {
-			modName: 'blog, handler',
-			methName: 'blog_renderData'
-		}
+		dataSend: { modName: 'blog, handler', methName: 'blog_renderData' }
 	}),
 	 disqus_shortname : 'the-black-sea',
 	 //used by onload_article
 	 contSize   : {
 		 //templateFileName: function(jqcont) {return containerul de referinta pt galleria}
 		 'archiveRecord' : function(jqCont){return jqCont.jq;},
-		 'blogRecord' : function(jqCont){
+		 'blogRecord' :    function(jqCont){
 			 var articleContent = jqCont.jq.find('*[class$=content][class^=EDeditor]');
 			 return articleContent
 		 }
@@ -47,23 +41,14 @@ $.extend ( true, ivyMods.blog ,
      * @type {string}
      */
     tmplManager: {
-	   'blog' : 'onload_blog' ,
-	   'blogRecord' : 'onload_article',
+	   'blog' :          'onload_blog' ,
+	   'blogRecord' :    'onload_article',
 	   'archiveRecord' : 'onload_article',
-		'home': 'onload_home',
-		'archive': 'onload_archive'
+		'home':           'onload_home',
+		'archive':        'onload_archive'
     },
 
     // ========================[ event Callbacks ]==============================
-	 // archive - thumbPictures
-	 resizeTumbs_archive: function(){
-		 //alert('s-a loadat arhiva sau home si avem sau nu ac');
-       ivyMods.blogSite.resizeImgContainer('.mainFeaturedImg > a > ', 248/152);
-       $(window).resize(function() {
-          ivyMods.blogSite.resizeImgContainer('.mainFeaturedImg > a > ', 248/152);
-       });
-	 },
-
 	 // archive -filters
 	 removeallFilters: function(){
 		 $(".imageColumn.filter").removeClass(this.sel.selectedFilters);
@@ -71,6 +56,7 @@ $.extend ( true, ivyMods.blog ,
 		 $(".filter_panel").hide();
 
 	 },
+
 	 selectFilter : function(jqFilter){
 		 this.removeallFilters();
 		 jqFilter.addClass(this.sel.selectedFilters);
@@ -78,6 +64,7 @@ $.extend ( true, ivyMods.blog ,
 		 $(this.sel.filtersPanel(filterId)).show();
 
 	 },
+
 	 hoverFilter: function(jqFilter){
         if (jqFilter.hasClass(this.sel.selectedFilters)) {
 
@@ -85,6 +72,7 @@ $.extend ( true, ivyMods.blog ,
 	        jqFilter.toggleClass(this.sel.hoverFilters);
         }
 	 },
+
 	 bindsFilters: function(){
 
 		 this.selectFilter($('.'+this.sel.selectedFilters));
@@ -98,12 +86,7 @@ $.extend ( true, ivyMods.blog ,
 
 	 },
 
-	 //pt blog
-	 /**
-	 * Incarcare asincron a articolelor din blog
-	 * Probabil aceste metode ar trebui sa stea in alt js specific doar
-	 * templateului de blogRecords
-	 */
+	 //async load for blog articles
     bind_getNext_blogRecords: function(){
 
 	      var loadButton = $(this.sel.getNext_blogRecords);
@@ -136,8 +119,7 @@ $.extend ( true, ivyMods.blog ,
 
      },
 
-	 //pt article
-	 //comentarii
+	 //pt article - comentarii
     disqus_add: function(){
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + this.disqus_shortname + '.disqus.com/embed.js';
@@ -145,22 +127,30 @@ $.extend ( true, ivyMods.blog ,
     },
 
 	 // ================================[ managers ]==============================
-	 /**
-	 * la loadul unui articol de tip archive/story sau blog
-	 */
- 	 onload_article: function(){
-       // prepare article
-        var article = $(this.sel.article)
-        if(!article.exists()) {
-	        return ;
-        }
+    // article
+	 resizeMedia_article: function(jqCont){
+		 //resizing pics - so they mach the design
+		  jqCont.resizeContentPics(jqCont);
 
-        // ia datele despte articol
-		 var jqCont = new ivyMods.blogArticle(article);
-        // incarca galleria
+        //resizing iframes
+        if(jqCont.iframes.length) {
+
+	        jqCont.resize_iframes();
+            $(window).resize(function() {
+	            jqCont.resize_iframes();
+
+            });
+        }
+        $(window).resize(function() {
+	        jqCont.resizeContentPics();
+        });
+	 },
+
+	 galleries_article: function(jqCont){
+		  // incarca galleria
         Galleria.loadTheme('/assets/galleria/themes/twelve/galleria.twelve.min.js');
 
-       /**
+        /**
         * daca imaginile gasite sunt > 3 atunci  le facem thumbnailuri si gallery
         * #1 - altfel va fi un spatiu gol daca nu sunt poze
         * #2 - seteaza galeia cu adaugare de thumbnailuri , si create galeria
@@ -183,29 +173,30 @@ $.extend ( true, ivyMods.blog ,
         // manage galleries inside article
 		  jqCont.galleria.article( this.contSize[this.conf.templateFile](jqCont));
 
-        // set caption for photos from alt atribute
+		  // set caption for photos from alt atribute
 		  jqCont.captionContentPics();
 
-        //resizing pics - so they mach the design
-		  jqCont.resizeContentPics(jqCont);
+	 },
 
-        //resizing iframes
-        if(jqCont.iframes.length) {
-
-	        jqCont.resize_iframes();
-            $(window).resize(function() {
-	            jqCont.resize_iframes();
-
-            });
+	  /**
+	 * la loadul unui articol de tip archive/story sau blog
+	 */
+ 	 onload_article: function(){
+        // prepare article
+        var article = $(this.sel.article)
+        if(!article.exists()) {
+	        return ;
         }
-        $(window).resize(function() {
-	        jqCont.resizeContentPics();
-        });
+        // ia datele despte articol
+		  var jqCont = new ivyMods.blogArticle(article);
 
-       // adauga api-ul de commenturi
-		 if(jqCont.liveEditStat == 0){
-			 this.disqus_add();
-		 }
+		  this.galleries_article(jqCont);
+		  this.resizeMedia_article(jqCont);
+
+        // adauga api-ul de commenturi
+   	  if(jqCont.liveEditStat == 0){
+			  this.disqus_add();
+		  }
 	 },
 
 	 //multiple articles
@@ -253,11 +244,21 @@ $.extend ( true, ivyMods.blog ,
        });
 
 	 },
+
   	 onload_blog : function(){
 		 this.set_articlesBlog('unpublished');
 	    this.set_articlesBlog(10);
 	    this.bind_getNext_blogRecords();
-	},
+	 },
+
+    // archive - thumbPictures
+	 resizeTumbs_archive: function(){
+		 //alert('s-a loadat arhiva sau home si avem sau nu ac');
+       ivyMods.blogSite.resizeImgContainer('.mainFeaturedImg > a > ', 248/152);
+       $(window).resize(function() {
+          ivyMods.blogSite.resizeImgContainer('.mainFeaturedImg > a > ', 248/152);
+       });
+	 },
 
 	 onload_archive: function(){
 		this.resizeTumbs_archive();
@@ -275,6 +276,7 @@ $.extend ( true, ivyMods.blog ,
          });
 		 });
 	 },
+
 	 onload_home: function(){
 		 this.resizeTumbs_archive();
 		 this.subscribeButton();
@@ -287,7 +289,6 @@ $.extend ( true, ivyMods.blog ,
 	    if(typeof manager == 'function') {
 		    manager.call(this);
 	    }
-
     }
 }
 );
@@ -295,3 +296,5 @@ $.extend ( true, ivyMods.blog ,
 $(document).ready(function(){
     ivyMods.blog.init();
 });
+
+

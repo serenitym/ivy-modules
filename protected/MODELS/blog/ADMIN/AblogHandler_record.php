@@ -219,6 +219,7 @@ class AblogHandler_record extends blogHandler_record
             if($_POST['publishDate'] != $this->publishDate) {
                 $_POST['republish'] = 1;
             }
+            $_POST['scripts'] = base64_encode($_POST['scripts']);
         }
 
         return true;

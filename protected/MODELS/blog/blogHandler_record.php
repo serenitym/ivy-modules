@@ -57,6 +57,9 @@ class blogHandler_record extends ivyModule_objProperty
             $row['authors']    = $this->rowDb->Get_authors($row['uids'], $row['fullNames']);
         }
 
+        if($row['scripts']) {
+            $row['scripts'] = base64_decode($row['scripts']);
+        }
         return $row;
 
      }
