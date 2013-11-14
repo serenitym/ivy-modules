@@ -34,7 +34,28 @@ form.SGrecord-archivePhoto .ELMcontent #recordGallery { display: none; }
 
 #sharepanel .addthis_toolbox { margin-top: -6px !important; }
 #followpanel   {text-align: center;}
-#followpanel #followpanel-buttons {margin: 0px auto; width: 110px;}
+#followpanel #followpanel-buttons {margin: 0px auto; width: 130px;}
+#followpanel #followpanel-buttons a.rssButton,
+a.rssButton
+{
+    float: left; display:inline-block; width:32px; height: 32px;
+    background: url('img/rss.png');
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 0px;
+    opacity: 0.4;
+}
+#followpanel #followpanel-buttons a.rssButton:hover,
+a.rssButton:hover
+{
+    background: url('img/rss_hover.png');
+     background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    opacity: 1;
+}
 #followpanel #followpanel-buttons a.subscribeButton,
 a.subscribeButton
 {

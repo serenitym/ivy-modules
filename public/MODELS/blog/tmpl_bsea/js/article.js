@@ -337,7 +337,7 @@ ivyMods.blogArticle = function(jqContainer){
         //console.log("containerWidth " + containerWidth );
         imgs.map(function()
         {
-            console.log('counter = ' + counter + "imagine width " + $(this).attr('src') + ' = ' + $(this).width());
+            console.log("imagine width " + $(this).attr('src') + ' = ' + $(this).width());
             $(this).css('height','initial');
 	         $(this).width(containerWidth);
 	         $(this).addClass('pull-right');
