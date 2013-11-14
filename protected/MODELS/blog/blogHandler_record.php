@@ -134,5 +134,6 @@ class blogHandler_record extends ivyModule_objProperty
     function _init_()
     {
         $this->record_setData();
+        $this->C->siteTitle = $this->title;
     }
 }

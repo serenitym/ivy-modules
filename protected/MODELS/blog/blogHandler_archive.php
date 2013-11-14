@@ -158,6 +158,7 @@ class blogHandler_archive extends ivyModule_objProperty
     {
         $this->archive_setData();
         $this->filters_setData();
+        $this->C->siteTitle = $this->tree[$this->idTree]->name;
     }
 
 }
