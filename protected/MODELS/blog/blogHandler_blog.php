@@ -130,6 +130,8 @@ class blogHandler_blog extends ivyModule_objProperty
     function _init_()
     {
         $this->blog_setData();
+        $this->C->siteTitle = $this->tree[$this->idTree]->name;
+
     }
 
 
