@@ -1,6 +1,11 @@
 @charset "UTF-8";
 
 .authName { clear: both;}
+.authName a, .authName a:hover, .authName a:active  {border-bottom: 0px;}
+
+.lead a, .lead a:hover, .lead a:active,
+.content a, .content a:hover, .content a:active
+{ color: rgb(116,192,226); border-bottom: 0px; }
 
 /* blogPrevRecord.html */
 .blogPrev-lead {margin-bottom: 20px;}
@@ -57,16 +62,7 @@ a.rssButton:hover
     opacity: 1;
 }
 #followpanel #followpanel-buttons a.subscribeButton,
-a.subscribeButton
-{
-    float: left; display:inline-block; width:32px; height: 32px;
-    background: url('img/subscribe1.png');
-    background-size: 22px 22px;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-bottom: 0px;
-    opacity: 0.4;
-}
+a.subscribeButton { float: left; display:inline-block; width:32px; height: 32px; background: url('img/subscribe1.png'); background-size: 22px 22px; background-repeat: no-repeat; background-position: center; border-bottom: 0px; opacity: 0.4; }
 #followpanel #followpanel-buttons a.subscribeButton:hover,
 a.subscribeButton:hover
 {
