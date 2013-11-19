@@ -58,14 +58,25 @@
 						<a class='addthis_button_facebook'></a>
 						<a class='addthis_button_twitter'></a>
 						<a class='addthis_button_vk'></a>
+						<a class='addthis_button_reddit'></a>
+                        <a class='at300bs at15nc at15t_diaspora'
+                                href='http://sharetodiaspora.github.io/?title="
+                                .$co->title
+                                ."&url="
+                                .urlencode(Toolbox::curURL())
+                                ."' 
+                                target='_blank'>
+                                <!--<img src='/assets/addthis/diaspora_badge.png'>-->
+                        </a>
 					</div>
                     <!-- AddThis Button END -->
 
                     <!--www.theblacksea.eu/index.php?idT=88&idC=88&idRec=1139&recType=story-->
+
                     <div class='bsea-fblike'>
                         <div id='fb-root'></div>
                         <div class = 'fb-like'
-                             data-href = 'http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."
+                                data-href = '" . Toolbox::curURL() . "'
                              data-width = '20' data-layout = 'button_count'
                              data-action = 'like' data-show-faces = 'false'
                              data-share = 'false'>

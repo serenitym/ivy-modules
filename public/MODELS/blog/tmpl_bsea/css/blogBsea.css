@@ -34,7 +34,7 @@ form.SGrecord-archivePhoto .ELMcontent #recordGallery { display: none; }
 
 #sharepanel .addthis_toolbox { margin-top: -6px !important; }
 #followpanel   {text-align: center;}
-#followpanel #followpanel-buttons {margin: 0px auto; width: 130px;}
+#followpanel #followpanel-buttons {margin: 0px auto; width: 160px;}
 #followpanel #followpanel-buttons a.rssButton,
 a.rssButton
 {
@@ -82,4 +82,8 @@ a.subscribeButton:hover
     height: 27px;
     padding: 3px 0px 0px 0px;
     border-radius: 5px;
+}
+
+div#discovery {
+    display: none;
 }
