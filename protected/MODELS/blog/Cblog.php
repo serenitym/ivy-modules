@@ -111,6 +111,7 @@ class Cblog extends blog_requestHandler
      */
     function _init_()
     {
+        //var_dump($this);
         $this->Set_objHelpers();
         $this->Set_blogSettings();
         $this->_handle_requests();

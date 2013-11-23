@@ -118,7 +118,7 @@ class blogHandler_archive extends ivyModule_objProperty
         */
         $this->sqlRecords   = $this->baseQuery->Get_queryRecords(array('category' => ''));
 
-        $query = $this->sqlRecords->fullQuery.' ORDER BY entryDate DESC, idRecord DESC';
+        $query = $this->sqlRecords->fullQuery.' ORDER BY publishDate DESC, idRecord DESC';
         $this->records = $this->C->Db_Get_procRows($this, '_hookRow_archive', $query);
         //echo "blog_handlers - archive_setData : this->records";
         //var_dump($this->records);
