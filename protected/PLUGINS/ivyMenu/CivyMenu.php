@@ -2,7 +2,7 @@
 class menuSet{
 
     var $idMenu = 1;                # id-ul meniului si implicit al setului
-    var $templateMethod='default';            # postfix al metodei pentru crearea meniului
+    var $templateMethod='default';  # postfix al metodei pentru crearea meniului
     var $levels = 1;                # numarul de level-uri ale meniului
     /**
      * ->items
@@ -24,7 +24,7 @@ class menuSet{
     function __construct($options){
 
         $this->idMenu         = isset($options['idMenu']) ? $options['idMenu'] : '';
-        $this->templateMethod = isset($options['tempalteMethod']) ? $options['templateMethod'] : '';
+        $this->templateMethod = isset($options['templateMethod']) ? $options['templateMethod'] : '';
         $this->levels         = isset($options['levels']) ? $options['levels'] : '';
     }
 
@@ -33,9 +33,10 @@ class CivyMenu{
 
     var $masterTree;
     var $current_idMenu = 1;
-    var $menuSet1 = array('idMenu' => 1,
-                           'templateMethod' => 'default',
-                           'levels' => 1);
+    var $menuSet1 = array(//'idMenu' => 1,
+                          //'templateMethod' => 'default',
+                          //'levels' => 1
+                         );
 
     /**
      * Functie apelata in cazul in care menuSet->levels > 1
@@ -111,8 +112,8 @@ class CivyMenu{
                   $this->masterTree = $this->C->Build_masterTree(false);
               }
 
-          #   echo "<b>getMenu_multilevel - masterTree </b> <br>";
-          #   var_dump($this->masterTree);
+             //echo "<br><b>getMenu_multilevel - masterTree </b> <br>";
+             //var_dump($this->masterTree);
               while($row  = $res->fetch_assoc())
               {
                       $name  = $row['name_'.$this->lang];
@@ -208,15 +209,17 @@ class CivyMenu{
     */
     function _setRes_($resPath){
 
-
         $currentSet = &$this->{'menuSet'.$this->current_idMenu};
         $currentSet['strUl'] = '';
 
         $this->setMenu_multiLevel($this->current_idMenu);
 
-        $this->{'iterateMenu_'.$currentSet['templateMethod']}($currentSet['items'], $this->current_idMenu );
 
-        file_put_contents($resPath,$currentSet['strUl']);
+        $methodName = 'iterateMenu_' . $currentSet['templateMethod'];
+
+        $this->{$methodName}($currentSet['items'], $this->current_idMenu);
+
+        Toolbox::Fs_writeTo($resPath, $currentSet['strUl']);
 
        # var_dump($this->menuSet1);
 
@@ -231,7 +234,7 @@ class CivyMenu{
     function set_menuSet($idMenu){
 
         if(isset($this->{'menuSet'.$idMenu}))
-        $this->current_idMenu = $idMenu;
+            $this->current_idMenu = $idMenu;
     }
 
     function _init_(){

@@ -37,8 +37,24 @@ class ivyMailer
 
       public $message = array();
 
+      static function build()
+      {
+        if (defined('SMTP_PORT'))
+            $mail = new self(SMTP_SERVER, SMTP_PORT);
+        else
+            $mail = new self(SMTP_SERVER);
+
+        $mail->username = SMTP_USER;
+        $mail->password = SMTP_PASS;
+
+        $mail->subject = "Empty subject.";
+        $mail->message['text'] = "Empty message.";
+
+        return $mail;
+      }
+
     public function __construct($server = "127.0.0.1", $port = 25)
-    {/*{{{*/
+    {
         $this->_server = $server;
         $this->_port = $port;
         $this->_connectTimeout = 30;
@@ -49,42 +65,42 @@ class ivyMailer
         $this->log = array();
         $this->headers['MIME-Version'] = "1.0";
         //$this->headers['Content-type'] = "text/plain; charset=utf-8";
-    }/*}}}*/
+    }
 
     /*********************[ API public functions ]**********************/
 
     public function defineText($text)
-    {/*{{{*/
+    {
         $this->message['text'] = $text;
-    }/*}}}*/
+    }
 
     public function defineHtml($html)
-    {/*{{{*/
+    {
         $this->message['html'] = $html;
-    }/*}}}*/
+    }
 
     public function setSubject($subject)
-    {/*{{{*/
+    {
         $this->subject = $subject;
-    }/*}}}*/
+    }
 
     public function setFrom($addr, $name="")
-    {/*{{{*/
+    {
         $this->from = array($addr, $name);
-    }/*}}}*/
+    }
 
     public function addCc($addr, $name="")
-    {/*{{{*/
+    {
         $this->mailCc[] = array($addr, $name);
-    }/*}}}*/
+    }
 
     public function addTo($addr, $name="")
-    {/*{{{*/
+    {
         $this->mailTo[] = array($addr, $name);
-    }/*}}}*/
+    }
 
     public function send()
-    {/*{{{*/
+    {
         $newline = self::CRLF;
 
         $errno = $errstr = NULL;
@@ -141,7 +157,7 @@ class ivyMailer
         foreach ($this->headers as $key => $val)
           $headers .= $key . ': ' . $val . self::CRLF;
 
-        file_put_contents(
+        Toolbox::Fs_writeTo(
             LOG_PATH . 'mail.log',
             "{$headers}$newline{$this->body}$newline."
         );
@@ -154,37 +170,37 @@ class ivyMailer
         $this->log['quit']  = $this->SendCMD("QUIT");
 
         fclose($this->_skt);
-    }/*}}}*/
+    }
 
     /********************[ Protected class members ]********************/
 
     protected function sendCmd($cmd)
-    {/*{{{*/
+    {
         fputs($this->_skt, $cmd . self::CRLF);
 
         return $this->GetResponse();
-    }/*}}}*/
+    }
 
     protected function formatAddress( &$addr )
-    {/*{{{*/
+    {
         if ($addr[1] == "")
             return $addr[0];
         else
             return "\"{$addr[1]}\" <{$addr[0]}>";
-    }/*}}}*/
+    }
 
     protected function formatAddressList( &$addrList )
-    {/*{{{*/
+    {
         $list = "";
         foreach ($addrList as $addr) {
             if ($list) $list .= ", ".self::CRLF."\t";
             $list .= $this->formatAddress($addr);
         }
         return $list;
-    }/*}}}*/
+    }
 
     protected function generateMultipart()
-    {/*{{{*/
+    {
         $this->hash = md5(date('r', time()));
         //$this->body = "--PHP-mixed-{$this->hash}
 //Content-Type: multipart/alternative; boundary=\"PHP-alt-{$this->hash}\"
@@ -204,10 +220,10 @@ class ivyMailer
 
         //$this->headers['Content-type'] = "multipart/mixed; boundary=\"PHP-mixed-".$this->hash."\"";
         $this->headers['Content-type'] = "multipart/alternative; boundary=\"PHP-alt-".$this->hash."\"";
-    }/*}}}*/
+    }
 
     protected function generateText()
-    {/*{{{*/
+    {
         $this->body .= "
 --PHP-alt-{$this->hash}
 Content-Type: text/plain; charset=\"utf-8\"
@@ -216,10 +232,10 @@ Content-Transfer-Encoding: 7bit
 {$this->message['text']}
 
 ";
-    }/*}}}*/
+    }
 
     protected function generateHtml()
-    {/*{{{*/
+    {
         $this->body .= "
 --PHP-alt-{$this->hash}
 Content-Type: text/html; charset=\"utf-8\"
@@ -228,17 +244,17 @@ Content-Transfer-Encoding: 7bit
 {$this->message['html']}
 
 ";
-    }/*}}}*/
+    }
 
     protected function setHeaders( &$headers )
-    {/*{{{*/
+    {
         foreach ($headers as $key => $value) {
             $this->headers .= "$key: $value" . self::CRLF;
         }
-    }/*}}}*/
+    }
 
     private function getResponse()
-    {/*{{{*/
+    {
         stream_set_timeout($this->_skt, $this->_responseTimeout);
         $response       = '';
         while (($line   = fgets($this->_skt, 515)) != false) {
@@ -246,6 +262,6 @@ Content-Transfer-Encoding: 7bit
             if (substr($line, 3, 1)==' ') break;
         }
         return trim($response);
-    }/*}}}*/
+    }
 
 }

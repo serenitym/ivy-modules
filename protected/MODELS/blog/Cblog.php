@@ -1,277 +1,124 @@
 <?php
-class Cblog extends blog_handlers
+/**
+ * PHP Version 5.3+
+ *
+ * @category 
+ * @package  blog
+ * @author Ioana Cristea <ioana@serenitymedia.ro>
+ * @copyright 2010 Serenity Media
+ * @license http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
+ * @link http://serenitymedia.ro
+ */
+
+/**
+ * Class Cblog
+ *
+ * @package blog
+ * @subpackage
+ * @category
+ * @copyright Copyright (c) 2010 Serenity Media
+ * @license   http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
+ * @link      http://serenitymedia.ro
+ * @author
+ */
+class Cblog extends blog_requestHandler
 {
-    var $methodHandle ;
-    var $assocTmplFile;
-    var $tmplFiles;
-    var $blogModels;
-    var $blogSections;
-    var $subtreeIds = array();
+    //objectsProps
+    var $rowDb;  // instance of blog_rowDb
+    var $filters; // instance of blog_filters
+    var $baseQuery; // instance of blog_baseQuery;
+
 
     // home vars
+    /**
+     * @var
+     */
     var $tmpTree ;
     var $tmpIdTree ;
     var $filterRecTypes = array();
+    var $uid = 0;
 
-    // general seters
-    function hrefFilter($filterName, $filterValue)
+    // blog settings
+    /**
+     * array( array( 'value' => idFolder, 'name' => folderName ) )
+     *
+     * utilizat pt autocomplete pt liveEdit  ( EDsel )
+     * @var array
+     */
+    var $folders;
+    var $jsonFolders;
+    /**
+     * array( array('idFormat' => '', 'format' => '') )
+     * @var array
+     */
+    var $formats;
+
+     /**
+     * Set blog Settings
+     *
+     * Uses:
+     *
+     * * dbTable - blogRecord_folder = (*idFolder*, parentFolder, folderName, idTmpl);
+     * * dbTable - blogRecord_folder = (*idFormat*, format, idTmpl);
+     *
+     * @todo * table - blogTags_banned =>  **bannedTags** = [{idTag: '', tagName: ''}]
+     * @todo * table - blogRecord_tmplFiles => **tmplFiles** = array(array( idTmpl=> '', tmplFile=> ''),...)
+     *
+     * @todo * table - blogRecord_types =>  **types**     = [ {idType: '', type: '', idTmpl:'', tmplFile: '' } ]
+     *
+     * @uses Cblog::folders      array( array( 'value' => idFolder, 'name' => folderName ) )
+     * @uses Cblog::jsonFolders
+     * @uses Cblog::formats     array( array('idFormat' => '', 'format' => '') )
+     */
+    protected function Set_blogSettings()
     {
-        return "filterName={$filterName}&filterValue={$filterValue}";
-    }
-    function Set_filterRecTypes($baseUrl) {
+        //=============================================[ folders ]==============
+        $query = "SELECT idFolder AS value, folderName AS name
+                  FROM blogRecord_folders";
+        $this->folders = $this->C->Db_Get_rows($query);
 
-        foreach ($this->blogModels As $recType) {
-           $this->filterRecTypes[$recType] =$baseUrl
-                                            ."&".$this->hrefFilter('recType', $recType)   ;
-        }
-    }
+        $emptySelect = array(
+                            array('value' => 0, 'name' => 'none' )
+                       );
+        $folders = array_merge($emptySelect, $this->folders);
 
+        $this->jsonFolders = json_encode($folders);
 
-    //===============================================[ query Filters ]==========
+       // echo "Set_blogSettings - jsonFolders = ".$this->jsonFolders;
 
-    function Get_recTypeFilter($recType)
-    {
-        return " modelBlog_name = '{$recType}' ";
-    }
-
-    function Get_tagFilter($filterValue)
-    {
-        return ' tagsName LIKE "%'.$filterValue.'%" ';
-    }
-
-    function Set_subtreeIds($idNode, &$tree)
-    {
-        array_push($this->subtreeIds, $idNode);
-
-        if (isset($tree[$idNode]->children )
-            && count($tree[$idNode]->children) > 0
-        ) {
-            foreach ($tree[$idNode]->children AS $idChild) {
-                $this->Set_subtreeIds($idChild, $tree);
-            }
-        }
-    }
-    function Get_categoryFilter($idNode = '')
-    {
-        /*
-         * categoria ar trebui deja sa fie stiuta este $idNode
-         * acum ne intereseaza toate recordurile care au idCat IN (listaIduri)
-         *
-         * listaIduri = categoria curenta + categoriile paritzi si subparinti
-         * cu s-ar zice toate nodurile unui subTree sau tree
-         * aici mi se pare ca avem nevoie de o functie de ajutor (recursiva )
-         * */
-        //var_dump($this->tree[$this->idNode]);
-        $tree   = $this->tmpTree ? $this->tmpTree : $this->tree;
-        $idNode = $idNode ? $idNode : $this->idNode;
-
-        // clean subTreeIds
-        $this->subtreeIds = array();
-        $this->Set_subtreeIds($idNode, $tree);
-        if (!$this->subtreeIds) {
-            error_log("[ ivy ] Cblog - Get_categoryFilter : "
-                      ." Nu s-au putut lua nodurile din subtree-ul : $idNode"
-            );
-        } else {
-            $subTreeIds = implode(',', $this->subtreeIds);
-            error_log("[ ivy ] Cblog - Get_categoryFilter : "
-                      ."  pt  subtree-ul : $idNode avem nodurile : $subTreeIds ");
-            return " idCat IN ( $subTreeIds )";
-        }
-
-
-    }
-    function _handle_requestFilters($filters = array())
-    {
-        //filterList
-        $filtersStrs = array();
-
-        // check for requested filter
-        if (isset($_REQUEST['filterName']) && isset($_REQUEST['filterValue'])) {
-           $filters[$_REQUEST['filterName']] =  $_REQUEST['filterValue'];
-        }
-        // ar trebui sa am un requested filters si ca array
-
-        if (count($filters)) {
-
-            foreach ($filters AS $filterName => $filterValue) {
-                //test if method exists
-                if (!method_exists($this, 'Get_'.$filterName.'Filter')) {
-                    error_log("[ ivy ] Cblog - Get_queryRecords :"
-                              ." Sorry the filter $filterName has no method handler "
-                    );
-                } else {
-                    $filter = $this->{'Get_'.$filterName.'Filter'}($filterValue);
-                    array_push($filtersStrs, $filter);
-                }
-            }
-        }
-
-        return $filtersStrs;
-    }
-
-    function Get_basicFilter()
-    {
-        $wheres = array();
-        if(!$this->editRecords_Permss )
-        {
-           if (!$this->admin) {
-               array_push($wheres, " publishDate is not NULL ");
-           } else {
-               array_push($wheres, " (uidRec='{$this->uid}' OR publishDate is not NULL) ");
-
-           }
-        }
-
-        return  $wheres;
-    }
-
-
-    //===============================================[ query builders ]=========
-    function Get_baseQueryRecord()
-    {
-        /**
-         *  blogRecords_view  -- leftOUTER JOIN  (blogRecords cu blogRecords_settings)
-         *
-         *
-         * VIEW blogTagsName_view AS
-                 SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ', ' ) AS tagsName
-               FROM blogTags
-                   JOIN blogMap_recordsTags
-                   ON ( blogTags.idTag = blogMap_recordsTags.idTag )
-               GROUP BY idRecord
-         *
-         * -- ATENTIE -- Nu sunt sigura ca este cea mai eficienta metoda cu acest view  (dar mom pare cea mai simpla)
-         *
-        */
-
-         $query = "SELECT
-                            blogRecords_view.idRecord,
-                            idCat,uidRec,entryDate,publishDate,nrRates,ratingTotal,
-                            title,content,lead,leadSec, country, city,
-                            modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
-
-                            uid_Rec, fullName,
-
-                            tagsName
-
-                             FROM blogRecords_view
-                             JOIN
-                              (
-                                 SELECT uid AS uid_Rec, CONCAT(first_name,'  ',last_name) AS fullName
-                                 from auth_user_details
-
-                              ) AS TBuserName
-                              ON (blogRecords_view.uidRec = TBuserName.uid_Rec)
-
-                              LEFT OUTER JOIN
-                              (
-                                SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ',' ) AS tagsName
-                              		FROM blogMap_recordsTags
-                              		GROUP BY idRecord
-                              )AS TBtagsName
-                              ON (blogRecords_view.idRecord = TBtagsName.idRecord)
-
-                                           ";
-
-         return $query;
+        //=============================================[ formats ]==============
+        $query = "SELECT idFormat , format
+                  FROM blogRecord_formats";
+        $this->formats =     $this->C->Db_Get_rows($query);
 
     }
 
-    function Get_baseQueryRecords()
+    protected function Set_objHelpers()
     {
-
-        $query = "SELECT
-                    blogRecords_view.idRecord,
-                    idCat,uidRec,entryDate,publishDate,nrRates,ratingTotal,
-                    title,content,lead,leadSec, country, city,
-                    modelBlog_name,modelComm_name,commentsView,commentsStat,commentsApprov,SEO,
-
-                    uid_Rec, fullName,
-
-                    tagsName
-
-                    FROM blogRecords_view
-                         JOIN
-                         (
-                           SELECT uid AS uid_Rec, CONCAT(first_name,'  ',last_name) AS fullName
-                           FROM auth_user_details
-                         ) AS TBuserName
-                         ON (blogRecords_view.uidRec = TBuserName.uid_Rec)
-
-                         LEFT OUTER JOIN
-                         (
-                           SELECT idRecord, GROUP_CONCAT( tagName SEPARATOR  ', ' ) AS tagsName
-                                FROM blogMap_recordsTags
-                                GROUP BY idRecord
-                         ) AS TBtagsName
-                          ON (blogRecords_view.idRecord = TBtagsName.idRecord)
-
-                          ";
-
-
-     return $query;
+        error_log("[ivy]");
+        error_log("[ivy] Cblog - Set_objHelpers ");
+        error_log("[ivy] Cblog - Set_objHelpers - tring o set up helpers");
+        $this->rowDb     = $this->C->Module_Build_objProp($this, 'blog_rowDb');
+        $this->filters   = $this->C->Module_Build_objProp($this, 'blog_filters');
+        $this->baseQuery = $this->C->Module_Build_objProp($this, 'blog_baseQuery');
 
     }
     /**
-     * @param        $filters  = array($filterName => $filterValue);
+     * init blog
      *
-     * @return array
+     * @uses Cblog::Set_blogSettings() get blog settings from data base
+     * @uses blog_handlers::_handle_requests() resolve requests
      */
-    function Get_queryRecords($filters, $query = '')
-    {
-         $sql = new stdClass();
-        //$sql->parts['query'];
-        //$sql->fullQuery;
-
-
-        $sql->parts['query']  = $query ? $query:  $this->Get_baseQueryRecords(); // return string
-        $basicFilters         = $this->Get_basicFilter();  //return array
-        $requestFilters       = $this->_handle_requestFilters($filters);
-
-        $sql->parts['wheres'] = array_merge($basicFilters, $requestFilters);
-        $sql->fullQuery       = $sql->parts['query'].
-                                 (count($sql->parts['wheres']) == 0
-                                  ? ''
-                                  : ' WHERE '.implode(' AND ', $sql->parts['wheres'])
-                                 );
-
-        error_log("[ ivy ] Cblog - Get_queryRecords : {$sql->fullQuery}");
-
-        return $sql;
-    }
-
-    function Get_queryRecord()
-    {
-        $sql = new stdClass();
-        //$sql->parts['query'];
-        //$sql->fullQuery;
-
-        $sql->parts['query'] = $this->Get_baseQueryRecord();
-        $sql->parts['where'] = " WHERE blogRecords_view.idRecord = '{$_GET['idRec']}'" ;
-
-        $sql->fullQuery = implode(' ', $sql->parts);
-        error_log("[ ivy ] Cblog - Get_queryRecords : {$sql->fullQuery}");
-
-        return $sql;
-
-    }
-
-
     function _init_()
     {
+        //var_dump($this);
+        $this->Set_objHelpers();
+        $this->Set_blogSettings();
         $this->_handle_requests();
 
-        #=======================================================================
         if (!isset($this->uid)) {
             error_log('[ ivy ] Cblog - _init_ : Nici un user nu a fost setat ');
         }
-
-
     }
-
-
-
-
-    function __construct($C){  }
 }
+
