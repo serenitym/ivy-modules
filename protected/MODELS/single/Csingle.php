@@ -1,33 +1,69 @@
 <?php
-class Csingle{
+/**
+ * PHP Version 5.3+
+ *
+ * @category 
+ * @package 
+ * @author Ioana Cristea <ioana@serenitymedia.ro>
+ * @copyright 2010 Serenity Media
+ * @license http://www.gnu.org/licenses/agpl-3.0.txt AGPLv3
+ * @link http://serenitymedia.ro
+ */
 
+class Csingle
+{
+    //??? dont know
+    var $test = 1;
+    /**
+     * @var array ("nodeName" => array(
+     *              [ hadlers=>'handler1, handlers2,....' ],
+     *              template => 'template_name',
+     *              template_file => 'templateFile_name'
+     *             ), ...)
+     */
+    var $requests = array();
+    var $template;
+    // templateFile to include
+    var $template_file = '';
+    // data provided to the template
+    var $data;
+    //obiectul handler - care va contine si va prelua datele pt  un anumit template
+    var $template_context;
 
-   /* function _render_(){
+    public function set_tmplFile($template){
+        //echo "Something";
+        $this->template_file = $template;
+        return $this;
+    }
+    public function set_data($json){
+        $jsonDec = json_decode($json);
+        $this->data = $jsonDec;
+        //var_dump($this);
+        return $this->C;
+    }
+    public function set_tmplContext($contextName){
+        $this->template_context = $this->$contextName;
+    }
 
-        $LG = $this->LG;
-        $idC = $this->C->idNode;
+    protected function set_handlers(){
+        if(isset($this->requests[$this->nodeResFile])
+            && $this->requests[$this->nodeResFile]
+        ){
+            //echo "Am un request pt pagina  ".$this->nodeResFile."<br>";
 
-        if(file_exists($this->RESpath))
-             $pageContent = file_get_contents($this->RESpath);
-        else
-        {
-            $pageContent = 'Nu exista continut la pagina <b>'.$this->RESpath.'</b>';
-            file_put_contents($this->RESpath,$pageContent);
+            $handler = $this->requests[$this->nodeResFile];
+            $this->template_file = $handler['template_file'] ?: $this->template_file;
+            $this->template      = $handler['template'] ?: $this->template;
+
+            foreach( $handler['handlers'] AS $handlerName) {
+              //  echo "Am un handler  $handlerName <br>";
+
+                $this->$handlerName =  $this->C->Module_Build_objProp($this, $handlerName);
+            }
         }
-
-
-        #_________________________________________________________________
-
-        $display ="<div class='SING ALLpage' id='single_{$idC}_{$LG}'>
-                        <div class='EDeditor single'>
-                            $pageContent
-                        </div>
-                  </div>";
-
-        return  $display;
-    }*/
-
-    function __construct($C){
-
+    }
+    public function _init_(){
+        $this->set_handlers();
+        //echo "<br>Instantiat modul spongeb<br>";
     }
 }

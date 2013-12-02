@@ -77,9 +77,7 @@ class Cblog extends blog_requestHandler
                   FROM blogRecord_folders";
         $this->folders = $this->C->Db_Get_rows($query);
 
-        $emptySelect = array(
-                            array('value' => 0, 'name' => 'none' )
-                       );
+        $emptySelect = array( array('value' => 0, 'name' => 'none' )                    );
         $folders = array_merge($emptySelect, $this->folders);
 
         $this->jsonFolders = json_encode($folders);

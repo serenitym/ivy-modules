@@ -45,9 +45,10 @@ class ACblog extends Ablog_requestHandler
      *
      */
 
+    //handler for general texts in template
+    var $text;
+
     var $folders;
-
-
     var $posts; // object with posts->postName
 
     var $HTMLmessage_record ;
@@ -256,6 +257,12 @@ class ACblog extends Ablog_requestHandler
                   FROM blogRecord_folders";
         $this->folders =   $this->C->Db_Get_rows($query);
 
+    }
+
+    function Set_objHelpers(){
+        parent::Set_objHelpers();
+
+        $this->text = $this->C->Module_Build_objProp($this, 'blogHandler_text');
     }
     function _init_()
     {
