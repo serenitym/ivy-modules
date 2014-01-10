@@ -140,6 +140,14 @@ class AblogHandler_record extends blogHandler_record
 
     function updateRecord_processData(&$posts)
     {
+        // encript '
+        $this->posts->title         =  htmlentities($this->posts->title, ENT_QUOTES);
+        $this->posts->leadSec       =  htmlentities($this->posts->leadSec, ENT_QUOTES);
+        $this->posts->country       =  htmlentities($this->posts->country, ENT_QUOTES);
+        $this->posts->city          =  htmlentities($this->posts->city, ENT_QUOTES);
+        $this->posts->relatedStory  =  htmlentities($this->posts->relatedStory, ENT_QUOTES);
+
+
         //daca tipul recordului este acelasi cu cel curent scote-l din post
         if($this->format == $_POST['idFormat']) {
             unset($this->posts->idFormat);
