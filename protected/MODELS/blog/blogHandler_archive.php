@@ -71,10 +71,30 @@ class blogHandler_archive extends ivyModule_objProperty
          * [ TB blogMap_recordsTags]
            tagsName
         */
+        /**
+         * daca formatul paginii este de tip link
+         * si linkul se afla in leadul articolului
+         * si nu este activat live edit
+         * => linkul la articol va fi chiar leadul articolului
+         * => leadSec va ramane asa cum este => trebuie pus leadSec/ preview lead
+         *
+         * pentru a avea un preview lead la articol
+         *
+         */
+        $linkPage = $row['format'] == 'link'
+                    && $row['lead']
+                    && !$_SESSION['activeEdit'];
 
-        $row['leadSec']          = $this->rowDb->Get_leadSec($row, 80);
+        if($linkPage){
+            $row['record_href']      =  strip_tags($row['lead'])."' target='_blank";
+        } else {
+            $row['record_href']      = $this->rowDb->Get_record_href($row);
+            $row['leadSec']          = $this->rowDb->Get_leadSec($row, 80);
+        }
+
+
         $row['record_mainPic']   = $this->rowDb->Get_record_mainPic($row);
-        $row['record_href']      = $this->rowDb->Get_record_href($row);
+
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
 
 

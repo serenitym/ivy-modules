@@ -236,7 +236,7 @@ class ACblog extends Ablog_requestHandler
         var_dump($this->formats);*/
 
         $template = $this->C->Render_objectFromPath($this,
-        "MODELS/blog/tmpl_bsea/ADMIN/tmpl/blog_settings.html"
+            $this->modDirPub."tmpl_bsea/ADMIN/tmpl/blog_settings.html"
         );
 
         if($template) {

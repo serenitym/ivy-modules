@@ -132,6 +132,7 @@ class blog_baseQuery extends ivyModule_objProperty
                     content,
                     lead,
                     leadSec,
+
                     country,
                     city,
                     entryDate,
