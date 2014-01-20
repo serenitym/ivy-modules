@@ -138,6 +138,12 @@ class blog_filters extends ivyModule_objProperty
     {
         return " uidRec = '{$filterValue}' ";
     }
+    function Get_authFilter($filterValue){
+        return "( uidRec = '{$filterValue}' OR
+                  blogRecords_view.idRecord IN
+                      (SELECT idRecord FROM blogRecords_authors
+                                              WHERE  uid = '{$filterValue}' )  )";
+    }
     //#1.1
     function Set_subtreeIds($idNode, &$tree)
     {
@@ -207,7 +213,7 @@ class blog_filters extends ivyModule_objProperty
     function Get_publishFilter()
     {
         return " publishDate is not NULL ";
-    }
+    } 
     //#1
     function Get_basicFilter()
     {

@@ -43,9 +43,11 @@ class blogHandler_profile
             var_dump($this->tmpTree);*/
             $sql   = $this->baseQuery->Get_queryRecords(array(
                     'category' => $this->blog->tmpIdTree,
-                    'uid'=>$uid)
+                    'auth'=>$uid)
             );
             $query = $sql->fullQuery.' ORDER BY entryDate DESC';
+
+            //echo "<b>query - profile_getData pt tree {$idTree}</b>".$query."<br>";
 
             return $this->C->Db_Get_procRows($this, '_hookRow_profile', $query);
         }
