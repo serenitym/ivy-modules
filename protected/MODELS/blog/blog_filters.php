@@ -19,12 +19,10 @@ class blog_filters extends ivyModule_objProperty
      */
     var $currFilter;
 
-
     function hrefFilter($filterName, $filterValue)
     {
         return "filterName={$filterName}&filterValue={$filterValue}";
     }
-
     // Set_filterRecTypes
     function Get_hrefFilterRecTypes($baseUrl)
     {
@@ -210,10 +208,11 @@ class blog_filters extends ivyModule_objProperty
         return $where;
 
     }
+
     function Get_publishFilter()
     {
         return " publishDate is not NULL ";
-    } 
+    }
     //#1
     function Get_basicFilter()
     {
@@ -223,7 +222,6 @@ class blog_filters extends ivyModule_objProperty
 
         return  $wheres;
     }
-
     //#2
     function _handle_requestFilters($filters = array())
     {
@@ -254,7 +252,6 @@ class blog_filters extends ivyModule_objProperty
 
         return $filtersStrs;
     }
-
     /**
      * Setarea filtrului curent
      * @uses

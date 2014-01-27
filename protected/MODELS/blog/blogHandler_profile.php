@@ -53,8 +53,7 @@ class blogHandler_profile
         }
 
     }
-    function profile_setData($uid)
-    {
+    function profile_setData($uid)    {
         // archive records writen by author
         $this->recordsArchive = $this->profile_getData('88', $uid );
 
