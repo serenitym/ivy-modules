@@ -44,7 +44,7 @@ class ACTOOLbar
     protected function Set_defaults()
     {
         array_push( $this->buttons,
-        "<a href='index.php?logOUT=1' id='logOUT'>
+        "<a href='/?logOUT=1' id='logOUT'>
             Log out
          </a>"
         );
