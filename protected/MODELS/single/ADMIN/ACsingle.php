@@ -35,5 +35,6 @@ class ACsingle extends Csingle
         if (isset($_REQUEST['save_single'])) {
             $this->savePage();
         }
+    }
 
 }
