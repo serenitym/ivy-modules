@@ -138,6 +138,27 @@ class AblogHandler_record extends blogHandler_record
 
     }
 
+    function createAltFromExif($document)
+    {
+        $dom = new DomDocument;
+        $dom->loadHTML($document);
+
+        foreach ($dom->getElementsByTagName('img') as $item) {
+            $alt = $item->getAttribute('alt');
+
+            if (strlen($alt) < 1) {
+                $src  = $item->getAttribute('src');
+                $exif = json_decode(file_get_contents($src.'.exif', true));
+
+                if (strlen(trim($exif->ImageDescription)) > 0) {
+                    $item->setAttribute('alt', $exif->ImageDescription);
+                }
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
     function updateRecord_processData(&$posts)
     {
         // encript '
@@ -146,6 +167,7 @@ class AblogHandler_record extends blogHandler_record
         $this->posts->country       =  htmlentities($this->posts->country, ENT_QUOTES);
         $this->posts->city          =  htmlentities($this->posts->city, ENT_QUOTES);
         $this->posts->relatedStory  =  htmlentities($this->posts->relatedStory, ENT_QUOTES);
+        $this->posts->content       =  $this->createAltFromExif($this->posts->content);
 
 
         //daca tipul recordului este acelasi cu cel curent scote-l din post
