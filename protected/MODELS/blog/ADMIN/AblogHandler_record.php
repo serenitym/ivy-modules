@@ -147,11 +147,16 @@ class AblogHandler_record extends blogHandler_record
             $alt = $item->getAttribute('alt');
 
             if (strlen($alt) < 1) {
-                $src  = $item->getAttribute('src');
+                $src  = str_replace(
+                    'uploads/images/',
+                    'uploads/.thumbs/images/',
+                    $item->getAttribute('src')
+                );
                 $exif = json_decode(file_get_contents($src.'.exif', true));
 
                 if (strlen(trim($exif->ImageDescription)) > 0) {
                     $item->setAttribute('alt', $exif->ImageDescription);
+                    $exif->ImageDescription;
                 }
             }
         }
