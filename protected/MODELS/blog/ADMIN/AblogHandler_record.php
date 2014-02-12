@@ -152,9 +152,17 @@ class AblogHandler_record extends blogHandler_record
                     'uploads/.thumbs/images/',
                     $item->getAttribute('src')
                 );
-                $exif = json_decode(file_get_contents($src.'.exif', true));
+
+                $curlSession = curl_init();
+                curl_setopt($curlSession, CURLOPT_URL, $src . '.exif');
+                curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+                curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+
+                $exif = json_decode(curl_exec($curlSession));
+                curl_close($curlSession);
 
                 if (strlen(trim($exif->ImageDescription)) > 0) {
+                    //var_dump($exif->ImageDescription);
                     $item->setAttribute('alt', $exif->ImageDescription);
                     $exif->ImageDescription;
                 }
