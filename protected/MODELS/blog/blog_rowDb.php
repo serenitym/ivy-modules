@@ -62,7 +62,7 @@ class blog_rowDb
         if ($matches[1]) {
             $path = pathinfo($matches[1][0]);
             $thumbnail = $path['dirname'] . '/'
-                       . $path['filename'] . '_300x250.' . $path['extension'];
+                       . $path['filename'] . '-small.' . $path['extension'];
             return  str_replace('uploads/', 'uploads/.thumbs/', $thumbnail);
         }
         # echo $row['title']."<br>".var_dump($matches)."<br>";
