@@ -21,6 +21,7 @@ class blogHandler_record extends ivyModule_objProperty
     var $baseQuery;
     var $filters;
     var $rowDb;
+    var $quotesProblemsFields = array('content', 'lead', 'leadSec', 'title','pulledQuotes');
 
 
     function _hookRow_recordRelated($row)
@@ -57,9 +58,17 @@ class blogHandler_record extends ivyModule_objProperty
             $row['authors']    = $this->rowDb->Get_authors($row['uids'], $row['fullNames']);
         }
 
+        // solving the quotes problem
         if($row['scripts']) {
             $row['scripts'] = base64_decode($row['scripts']);
         }
+        //var_dump($row);
+        foreach($this->quotesProblemsFields AS $field){
+            if($row[$field]) {
+                $row[$field] = $this->rowDb->GET_solve_quotes($row[$field]);
+            }
+        }
+
         return $row;
 
      }

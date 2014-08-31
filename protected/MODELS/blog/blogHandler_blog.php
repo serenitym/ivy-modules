@@ -13,6 +13,8 @@ class blogHandler_blog extends ivyModule_objProperty
     var $baseQuery;
     var $filters;
     var $rowDb;
+    var $quotesProblemsFields = array('content', 'lead', 'leadSec', 'title');
+
 
     function _hookRow_blog($row)
     {
@@ -85,6 +87,12 @@ class blogHandler_blog extends ivyModule_objProperty
             $row['authors']    = $this->rowDb->Get_authors($row['uids'], $row['fullNames']);
 
         }
+        foreach($this->quotesProblemsFields AS $field){
+            if($row[$field]) {
+                $row[$field] = $this->rowDb->GET_solve_quotes($row[$field]);
+            }
+        }
+
         #var_dump($row);
         return $row;
     }

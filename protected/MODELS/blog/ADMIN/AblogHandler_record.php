@@ -174,13 +174,19 @@ class AblogHandler_record extends blogHandler_record
 
     function updateRecord_processData(&$posts)
     {
-        // encript '
+        // encript
         $this->posts->title         =  htmlentities($this->posts->title, ENT_QUOTES);
         $this->posts->leadSec       =  htmlentities($this->posts->leadSec, ENT_QUOTES);
         $this->posts->country       =  htmlentities($this->posts->country, ENT_QUOTES);
         $this->posts->city          =  htmlentities($this->posts->city, ENT_QUOTES);
         $this->posts->relatedStory  =  htmlentities($this->posts->relatedStory, ENT_QUOTES);
         $this->posts->content       =  $this->createAltFromExif($this->posts->content);
+
+        foreach($this->quotesProblemsFields AS $field){
+            if($this->posts->$field) {
+                $this->posts->$field = $this->rowDb->SET_solve_quotes($this->posts->$field, $field);
+            }
+        }
 
 
         //daca tipul recordului este acelasi cu cel curent scote-l din post

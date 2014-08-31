@@ -169,7 +169,9 @@ class blogHandler_home extends ivyModule_objProperty
        $sql   = $this->baseQuery->Get_queryRecords(array('category' => $this->blog->tmpIdTree));
        $query = $sql->fullQuery.' ORDER BY publishDate DESC, idRecord DESC LIMIT 8';
 
+        //echo $query;
        return $this->C->Db_Get_procRows($this, '_hookRow_archive', $query);
+
 
     }
     function home_setData()

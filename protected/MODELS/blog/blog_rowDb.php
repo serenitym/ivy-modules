@@ -14,14 +14,36 @@ class blog_rowDb
 {
     var $blog; // pointer la obiectul principal blog
 
-    function Get_content(&$row, $lenght = 100)      {
+    function GET_solve_quotes($string){
+        if(!$string) return;
+        return str_replace(array( "''", '&#39;&#39;', '&#039;&#039;'),
+                           array("'", '&#39;', '&#039;'),
+                           $string);
 
-         if(!$row['content']){
-             $string =    substr(strip_tags($row['content']),0,$lenght);
+    }
+    function SET_Solve_quotes($string, $fieldName = ''){
+        if(!$string) return;
+        $solvedString = str_replace(array("'", '&#39;', '&#039;'),
+                                       array( "''", '&#39;&#39;', '&#039;&#039;'),
+                                        $string);
+       /* error_log( "fieldName = {$fieldName} \n ".
+             "{$solvedString}");*/
+        return $solvedString;
+    }
+    function Get_content($content, $lenght = '' )     {
+
+        // nu are logica aceasta conditie
+        if(!$content) {
+            return;
+        }
+        $content = str_replace(array("'", "&#39;"),
+                               array( "''", "&#39;&#39;"),
+                               $content);
+        if($lenght){
+             $string =    substr(strip_tags($content),0,$lenght);
              return substr($string, 0, strrpos( $string, ' ') );
-         }
-         else
-             return $row['content'];
+        }
+        return $content;
     }
     function Get_content_noPic(&$row, $lenght = 100){
 

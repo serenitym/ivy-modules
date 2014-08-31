@@ -51,6 +51,8 @@ class blogHandler_archive extends ivyModule_objProperty
     var $baseQuery;
     var $filters;
     var $rowDb;
+    var $quotesProblemsFields = array('content', 'lead', 'leadSec', 'title');
+
 
     function _hookRow_archive($row)
     {
@@ -97,6 +99,11 @@ class blogHandler_archive extends ivyModule_objProperty
 
         $row['ReadMore_link']    = "<a href='{$row['record_href']}'> Read More</a>";
 
+        foreach($this->quotesProblemsFields AS $field){
+            if($row[$field]) {
+                $row[$field] = $this->rowDb->GET_solve_quotes($row[$field]);
+            }
+        }
 
         #var_dump($row);
         return $row;
