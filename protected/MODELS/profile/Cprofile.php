@@ -78,10 +78,12 @@ class Cprofile extends Cuser{
         $replacementStrings = array('uploads/.thumbs/', '_300x250.png', '_300x250.jpg', '_300x250.PNG', '_300x250.JPG');
 
         $photoFile = str_replace($dbStrings, $replacementStrings, $row['photo']);
-        if(is_file($photoFile)){
-
+        $pathFile =  str_replace('%20', ' ', $photoFile);
+        if(is_file($pathFile)){
             $row['photo'] = $photoFile;
         }
+        /*echo "<b>photo_path initial= </b>  ".$row['photo']. " <b>thumb = </b>".$photoFile.
+            (is_file($pathFile) ? "<b> true </b>" : "<b> false </b>")."<br><br>";*/
         $row['hrefProfile'] = "?idT={$this->idTree}&idC={$this->idNode}&uid=".$row['uid'];
 
         return $row;
