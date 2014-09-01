@@ -77,7 +77,11 @@ class Cprofile extends Cuser{
         $dbStrings = array('uploads/', '.png', '.jpg', '.PNG', '.JPG');
         $replacementStrings = array('uploads/.thumbs/', '_300x250.png', '_300x250.jpg', '_300x250.PNG', '_300x250.JPG');
 
-        $row['photo'] = str_replace($dbStrings, $replacementStrings, $row['photo']);
+        $photoFile = str_replace($dbStrings, $replacementStrings, $row['photo']);
+        if(is_file($photoFile)){
+
+            $row['photo'] = $photoFile;
+        }
         $row['hrefProfile'] = "?idT={$this->idTree}&idC={$this->idNode}&uid=".$row['uid'];
 
         return $row;
